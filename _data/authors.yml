@@ -75,3 +75,33 @@ Sher Badshah:
   bio: 
   alumni: false
   links:
+
+Manpreet Singh:
+  name: Manpreet Singh
+  role: Master
+  avatar: /assets/images/members/manpreet.png
+  advisor: Dr. Hassan Sajjad
+  date: Summer 2023
+  bio:
+  alumni: false
+  links:
+
+Megan Cao:
+  name: Megan Cao
+  role: Undergraduate
+  avatar: /assets/images/members/default.png
+  advisor: Dr. Hassan Sajjad
+  date: Winter 2023
+  bio:
+  alumni: false
+  links:
+
+Hassaan Asif:
+  name: Hassaan Asif
+  role: Undergraduate
+  avatar: /assets/images/members/default.png
+  advisor: Dr. Hassan Sajjad
+  date: Winter 2023
+  bio:
+  alumni: false
+  links:
