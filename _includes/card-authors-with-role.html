@@ -30,7 +30,7 @@
             {% endif %}
         </b>
 
-        {% if author.advisor %}
+        <!-- {% if author.advisor %}
         <div class="author-advisor">
             <b>
                 {% if author.role == "Postdoc" %}
@@ -47,6 +47,17 @@
                 ({{ author.date }})
             </span>
             {% endif %}
+        </div>
+        {% endif %} -->
+
+        {% if author.coadvisor %}
+        <div class="author-advisor">
+            <b>
+                co-supervisor:
+            </b>
+            <span>
+                {{ author.coadvisor }}
+            </span>
         </div>
         {% endif %}
 

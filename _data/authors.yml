@@ -44,7 +44,8 @@ Jinkun Chen:
   name: Jinkun Chen
   role: PhD
   avatar: /assets/images/members/jinkun.jpeg
-  advisor: Dr. Hassan Sajjad, Dr. Evangelos Milios
+  advisor: Dr. Hassan Sajjad
+  coadvisor: <a class="profile_sub_link" href="https://web.cs.dal.ca/~eem/">Dr. Evangelos Milios</a>
   date: Winter 2021
   bio: 
   alumni: false
@@ -53,11 +54,11 @@ Jinkun Chen:
     url: https://jinkunchen.com
   - label: Twitter
     url: https://twitter.com/_jinnkunn
-  - label: LinkedIn
-    url: https://www.linkedin.com/in/jinkun-chen/
   - label: GitHub
     url: https://github.com/jinnkunn
-
+  - label: LinkedIn
+    url: https://www.linkedin.com/in/jinkun-chen/
+    
 Xuemin Yu:
   name: Xuemin Yu
   role: PhD
@@ -113,6 +114,16 @@ Megan Cao:
 Hassaan Asif:
   name: Hassaan Asif
   role: Undergraduate
+  avatar: /assets/images/members/default.png
+  advisor: Dr. Hassan Sajjad
+  date: Winter 2023
+  bio:
+  alumni: false
+  links:
+
+Neelam Uppal:
+  name: Neelam Uppal
+  role: Intern
   avatar: /assets/images/members/default.png
   advisor: Dr. Hassan Sajjad
   date: Winter 2023
