@@ -33,6 +33,11 @@ plugins:
   - jekyll-feed
   - jekyll-include-cache
 
+analytics:
+  provider: "google-gtag"
+  google:
+    tracking_id: "G-E96ST603V5"
+    anonymize_ip: false # default
 
 # Exclude from processing.
 # The following items will not be processed, by default.
