@@ -23,6 +23,6 @@ classes: wide
 
 {% include card-authors-with-role.html authors=site.data.authors role="Undergraduate" alumni=false %}
 
-### Interns
+### Research Assistants
 
-{% include card-authors-with-role.html authors=site.data.authors role="Intern" alumni=false %}
+{% include card-authors-with-role.html authors=site.data.authors role="RA" alumni=false %}
