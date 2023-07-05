@@ -124,9 +124,13 @@ Hassaan Asif:
 Neelam Uppal:
   name: Neelam Uppal
   role: RA
-  avatar: /assets/images/members/default.png
+  avatar: /assets/images/members/neelam.jpg
   advisor: Dr. Hassan Sajjad
   date: Winter 2023
   bio:
   alumni: false
   links:
+    - label: LinkedIn
+      url: https://www.linkedin.com/in/neelam-uppal-76380124b
+    - label: Website
+      url: https://neelamuppal.super.site
