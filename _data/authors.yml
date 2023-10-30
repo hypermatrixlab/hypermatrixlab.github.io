@@ -140,6 +140,7 @@ Domenic Rosati:
   role: PhD
   avatar: /assets/images/members/domenic.jpg
   advisor: Dr. Hassan Sajjad
+  coadvisor: <a class="profile_sub_link" href="https://web.cs.dal.ca/~rudzicz/">Dr. Frank Rudzicz</a>
   date: Fall 2023
   bio:
   alumni: false
