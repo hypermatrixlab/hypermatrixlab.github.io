@@ -144,5 +144,13 @@ Domenic Rosati:
   bio:
   alumni: false
   links:
+    - label: Website
+      url: https://domenicrosati.github.io/
     - label: LinkedIn
       url: https://www.linkedin.com/in/cinemod-itasor
+    - label: GitHub
+      url: https://github.com/domenicrosati
+    - label: Scholar
+      url: https://scholar.google.com/citations?user=80aJAKYAAAAJ&hl=en
+    - label: Twitter
+      url: https://twitter.com/domenic_rosati
