@@ -134,3 +134,15 @@ Neelam Uppal:
       url: https://www.linkedin.com/in/neelam-uppal-76380124b
     - label: Website
       url: https://neelamuppal.super.site
+
+Domenic Rosati:
+  name: Domenic Rosati 
+  role: PhD
+  avatar: /assets/images/members/domenic.jpg
+  advisor: Dr. Hassan Sajjad
+  date: Fall 2023
+  bio:
+  alumni: false
+  links:
+    - label: LinkedIn
+      url: https://www.linkedin.com/in/cinemod-itasor
