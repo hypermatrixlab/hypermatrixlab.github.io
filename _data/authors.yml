@@ -56,7 +56,7 @@ Jinkun Chen:
     url: https://twitter.com/_jinnkunn
   - label: LinkedIn
     url: https://www.linkedin.com/in/jinkun-chen/
-    - label: GitHub
+  - label: GitHub
     url: https://github.com/jinnkunn
     
 Xuemin Yu:
@@ -92,7 +92,7 @@ Sher Badshah:
 David Arps:
   name: David Arps
   role: PhD
-  avatar: /assets/images/members/default.jpeg
+  avatar: /assets/images/members/david.jpeg
   advisor: Dr. Hassan Sajjad
   coadvisor: <a class="profile_sub_link" href="https://user.phil.hhu.de/kallmeyer/">Dr. Laura Kallmeyer</a>
   date: Winter 2021
