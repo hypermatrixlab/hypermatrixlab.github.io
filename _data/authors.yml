@@ -107,18 +107,8 @@ Megan Cao:
   avatar: /assets/images/members/default.png
   advisor: Dr. Hassan Sajjad
   date: Winter 2023
-  bio:
-  alumni: false
-  links:
-
-Hassaan Asif:
-  name: Hassaan Asif
-  role: Undergraduate
-  avatar: /assets/images/members/default.png
-  advisor: Dr. Hassan Sajjad
-  date: Winter 2023
-  bio:
-  alumni: false
+  bio: Joined Master at the University of Toronto
+  alumni: true
   links:
 
 Neelam Uppal:
@@ -162,7 +152,7 @@ David Arps:
   avatar: /assets/images/members/david.jpeg
   advisor: Dr. Hassan Sajjad
   coadvisor: <a class="profile_sub_link" href="https://user.phil.hhu.de/kallmeyer/">Dr. Laura Kallmeyer</a>
-  date: Winter 2021
+  date: Fall 2023
   bio: 
   alumni: false
   links:
