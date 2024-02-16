@@ -89,25 +89,6 @@ Sher Badshah:
     - label: Scholar
       url: https://scholar.google.ca/citations?user=oxMDd5sAAAAJ&hl=en
 
-David Arps:
-  name: David Arps
-  role: PhD
-  avatar: /assets/images/members/david.jpeg
-  advisor: Dr. Hassan Sajjad
-  coadvisor: <a class="profile_sub_link" href="https://user.phil.hhu.de/kallmeyer/">Dr. Laura Kallmeyer</a>
-  date: Winter 2021
-  bio: 
-  alumni: false
-  links:
-  - label: Website
-    url: https://davidarps.github.io/
-  - label: LinkedIn
-    url: https://www.linkedin.com/in/david-arps-603b28286/
-  - label: Scholar
-    url: https://scholar.google.com/citations?user=T0kG3rIAAAAJ
-  - label: GitHub
-    url: https://github.com/davidarps
-
 Manpreet Singh:
   name: Manpreet Singh
   role: Master
@@ -174,3 +155,22 @@ Domenic Rosati:
       url: https://scholar.google.com/citations?user=80aJAKYAAAAJ&hl=en
     - label: Twitter
       url: https://twitter.com/domenic_rosati
+
+David Arps:
+  name: David Arps
+  role: PhD
+  avatar: /assets/images/members/david.jpeg
+  advisor: Dr. Hassan Sajjad
+  coadvisor: <a class="profile_sub_link" href="https://user.phil.hhu.de/kallmeyer/">Dr. Laura Kallmeyer</a>
+  date: Winter 2021
+  bio: 
+  alumni: false
+  links:
+  - label: Website
+    url: https://davidarps.github.io/
+  - label: LinkedIn
+    url: https://www.linkedin.com/in/david-arps-603b28286/
+  - label: Scholar
+    url: https://scholar.google.com/citations?user=T0kG3rIAAAAJ
+  - label: GitHub
+    url: https://github.com/davidarps
