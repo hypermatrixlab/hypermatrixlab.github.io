@@ -17,7 +17,7 @@ keywords: # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: hyper_matrix.png # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
-url: https://hypermatrix.cs.dal.ca # the base hostname & protocol for your site
+url: hypermatrixlab.github.io # the base hostname & protocol for your site
 # baseurl: / # the subpath of your site, e.g. /blog/
 baseurl: "" # the subpath of your site, e.g. /blog/
 last_updated: false # set to true if you want to display last updated in the footer
@@ -192,7 +192,6 @@ plugins:
   - jekyll-imagemagick
   - jekyll-minifier
   - jekyll-paginate-v2
-  - jekyll-scholar
   - jekyll/scholar
   - jekyll-sitemap
   - jekyll-target-blank
