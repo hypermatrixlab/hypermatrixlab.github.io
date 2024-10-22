@@ -3,7 +3,7 @@ name: Deploy Jekyll site to GitHub Pages
 on:
   push:
     branches:
-      - main  # or 'master' if that's your default branch
+      - main
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies for building Ruby
         run: sudo apt-get install -y libssl-dev libreadline-dev zlib1g-dev
 
-      - name: Install rbenv
+      - name: Install rbenv and Ruby 3.3.5
         run: |
           curl -fsSL https://github.com/rbenv/rbenv-installer/raw/main/bin/rbenv-installer | bash
           echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $GITHUB_ENV
@@ -43,4 +43,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
-          force_orphan: true  # Force push to gh-pages even if there are conflicts
+          force_orphan: true
