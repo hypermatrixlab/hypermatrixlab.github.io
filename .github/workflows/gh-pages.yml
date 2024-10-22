@@ -13,28 +13,34 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
 
+      - name: Install dependencies for building Ruby
+        run: sudo apt-get install -y libssl-dev libreadline-dev zlib1g-dev
+
+      - name: Install rbenv
+        run: |
+          curl -fsSL https://github.com/rbenv/rbenv-installer/raw/main/bin/rbenv-installer | bash
+          echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $GITHUB_ENV
+          echo 'eval "$(rbenv init -)"' >> $GITHUB_ENV
+          source $GITHUB_ENV
+          rbenv install 3.3.5
+          rbenv global 3.3.5
+
       - name: Setup Git config
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3.5'  # Make sure this matches your Ruby version
-          bundler-cache: true
-
-      - name: Install dependencies
+      - name: Install Bundler and dependencies
         run: |
+          gem install bundler
           bundle install
 
       - name: Build the site
-        run: |
-          bundle exec jekyll build
+        run: bundle exec jekyll build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
-          force_orphan: true  # Add this to force push to gh-pages
+          force_orphan: true  # Force push to gh-pages even if there are conflicts
