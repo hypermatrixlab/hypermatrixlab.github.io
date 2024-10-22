@@ -14,6 +14,9 @@ group :jekyll_plugins do
     gem 'jekyll-twitter-plugin'
     gem 'jekyll-compress-images'
     gem 'jemoji'
+    gem 'observer'
+    gem 'ostruct'
+
     # gem 'mini_racer'
     gem 'unicode_utils'
     gem 'webrick'
