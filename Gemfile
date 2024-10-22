@@ -1,10 +1,14 @@
 source 'https://rubygems.org'
+gem 'jekyll', '3.10.0'
+gem 'jekyll-scholar' # For handling the bibliography
+gem 'webrick' # Needed to run Jekyll locally on Ruby 3.x
 
-gem 'github-pages', group: :jekyll_plugins
-
-group :other_plugins do
-  gem 'httparty'
-  gem 'feedjira'
-  gem 'unicode_utils'
-  gem 'webrick'
+group :jekyll_plugins do
+  gem 'jekyll-feed'
+  gem 'jekyll-sitemap'
+  gem 'jekyll-paginate-v2'
+  gem 'jekyll-compress-images'
 end
+
+gem 'httparty'
+gem 'feedjira'
