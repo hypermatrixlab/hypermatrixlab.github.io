@@ -20,18 +20,8 @@ group :jekyll_plugins do
     gem 'unicode_utils'
 end
 
-# Optional dependencies in a separate group
-group :optional do
+# Optional dependencies
+group :development do
     gem 'httparty'
     gem 'feedjira'
-end
-
-# Platform-specific gems
-platforms :ruby do
-    gem 'nokogiri'
-end
-
-# Development gems
-group :development do
-    gem 'rake'
 end

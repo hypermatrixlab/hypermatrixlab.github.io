@@ -10,7 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NOKOGIRI_USE_SYSTEM_LIBRARIES: true
+      BUNDLE_PATH: vendor/bundle
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
     
     steps:
     - uses: actions/checkout@v3
@@ -24,20 +26,20 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libvips42 libvips-dev libmagickwand-dev imagemagick
+        sudo apt-get install -y libvips42 libmagickwand-dev imagemagick
     
-    - name: Configure Bundler
+    - name: Configure bundler
       run: |
+        bundle config set --local deployment 'false'
         bundle config set --local path 'vendor/bundle'
-        bundle config set --local frozen 'false'
-        bundle config set --local without 'development test'
     
-    - name: Install Ruby dependencies
+    - name: Bundle install
       run: |
-        bundle install --jobs 4 --retry 3
+        bundle install
         
     - name: Build site
-      run: bundle exec jekyll build
+      run: |
+        bundle exec jekyll build
       env:
         JEKYLL_ENV: production
       
