@@ -4,12 +4,12 @@ permalink: /publications/
 title: Publications
 description: 
 nav: true
-nav_order: 2
+nav_order: 6
 ---
 
 <div class="publications">
 <h2 class="category">All Publications</h2>
-   {% bibliography --file "papers" --template "bib" %}
+  {% bibliography --file papers --template bib %}
   <button class="show-more" id="show-more-btn">
       Show More
   </button>
