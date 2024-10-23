@@ -14,7 +14,7 @@ group :jekyll_plugins do
     gem 'jekyll-twitter-plugin'
     gem 'jekyll-compress-images'
     gem 'jemoji'
-    gem 'faraday-retry', '>= 2.2.1'
+    gem 'faraday-retry', '~> 2.2'
     gem 'unicode_utils'
     gem 'webrick'
     gem 'observer'
