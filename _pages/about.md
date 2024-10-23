@@ -53,7 +53,7 @@ staff:
     - name: Manpreet Singh
       description: Master student
       website: https://www.linkedin.com/in/manpreet-singh-52b2271ab
-      picture: manpreet.png
+      picture: manpreet.jpeg
 
 support:
   title: Interns and Research Assistant
