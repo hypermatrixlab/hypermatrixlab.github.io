@@ -8,7 +8,7 @@ nav_order: 2
 ---
 <div class="highlight-publications">
 <h2 class="category">Selected Publications</h2>
-  {% bibliography --file highlights --template highlight --max 2 %}
+  {% bibliography --file highlights --template highlight %}
 </div>
 
 <div class="publications">
