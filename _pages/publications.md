@@ -6,11 +6,6 @@ description:
 nav: true
 nav_order: 2
 ---
-<!-- <div class="highlight-publications">
-<h2 class="category">Selected Publications</h2>
-  {% bibliography --file highlights --template highlight --max 2 %}
-</div> -->
-
 <div class="publications">
 <h2 class="category">All Publications</h2>
   {% bibliography --file papers --template bib %}
