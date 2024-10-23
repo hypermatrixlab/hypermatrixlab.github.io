@@ -8,7 +8,7 @@ middle_name:
 last_name: Research Lab
 email:
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Dalhousie AI & NLP Lab
+  Dalhousie University AI & NLP lab
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
@@ -17,9 +17,8 @@ keywords: # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: hyper_matrix.png # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
-url: hypermatrixlab.github.io # the base hostname & protocol for your site
-# baseurl: / # the subpath of your site, e.g. /blog/
-baseurl: "" # the subpath of your site, e.g. /blog/
+url: https://hypermatrix.cs.dal.ca/ # the base hostname & protocol for your site
+baseurl: / # the subpath of your site, e.g. /blog/
 last_updated: false # set to true if you want to display last updated in the footer
 impressum_path: /contact # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
 
@@ -141,10 +140,10 @@ collections:
     output: true
     permalink: /news/:path/
   projects:
-    output: false
+    output: true
     permalink: /projects/:path/
   events:
-    output: false
+    output: true
     permalink: /events/:path/
 
 news_scrollable: true # adds a vertical scroll bar if there are more than 3 news items
