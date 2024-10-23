@@ -14,9 +14,10 @@ group :jekyll_plugins do
     gem 'jekyll-twitter-plugin'
     gem 'jekyll-compress-images'
     gem 'jemoji'
-    # gem 'mini_racer'
+    gem 'faraday-retry', '>= 2.2.1'
     gem 'unicode_utils'
     gem 'webrick'
+
 end
 group :other_plugins do
     gem 'httparty'

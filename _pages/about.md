@@ -87,33 +87,30 @@ Our mission is to advance the field of AI by making models that are not only pow
     <li>ACL findings 2023: Impact of Adversarial Training on Robustness and Generalizability of Language Models</li>
 
 {%- for group in page.groups -%}
-
-  <h2 class="category">{{page.[group].title}}</h2>
-    <div class="grid">
-      {%- for person in page.[group].people -%}
-          <article class="grid-item card">
-            {% if person.picture -%}
-              <img class="avatar" src="/assets/img/{{person.picture}}" alt="Portrait ({{person.name}})" width="auto" height="auto">
+  <h2 class="category">{{ group.title }}</h2>
+  <div class="grid">
+    {%- for person in group.people -%}
+      <article class="grid-item card">
+        {% if person.picture -%}
+          <img class="avatar" src="/assets/img/{{person.picture}}" alt="Portrait ({{person.name}})" width="auto" height="auto">
+        {%- else -%}
+          <img class="avatar" src="/assets/img/hyper_matrix.png" alt="Portrait ({{person.name}})" width="auto" height="auto">
+        {%- endif -%}
+        <div class="card-body">
+          <h2 class="card-title">
+            {% if person.website -%}
+              <a href="{{person.website}}">{{person.name}}</a>
             {%- else -%}
-              <img class="avatar" src="/assets/img/hyper_matrix.png" alt="Portrait ({{person.name}})" width="auto" height="auto">
+              {{person.name}}
             {%- endif -%}
-          <div class="card-body">
-            <!-- <h2 class="card-title">{{person.name}}</h2> -->
-            <h2 class="card-title">
-              {% if person.website -%}
-                <a href="{{person.website}}">{{person.name}}</a>
-              {%- else -%}
-                {{person.name}}
-              {%- endif -%}
-            </h2>
-            <div class="card-text">
-              {{person.description}}
-            </div>
-            </div>
-          </article>
-      {%- endfor -%}
-    </div>
-  {%- endfor -%}
+          </h2>
+          <div class="card-text">{{ person.description }}</div>
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+{%- endfor -%}
+
 
   <!-- <h2 class="category">Join Our Team</h2>
   Join us! <a href="/jobs">→Open positions</a> -->
