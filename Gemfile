@@ -11,3 +11,8 @@ group :jekyll_plugins do
     gem 'jekyll-sitemap'
     gem 'jemoji'
 end
+
+# Optional - you can comment these out if not needed
+group :development do
+    gem 'rake'
+end

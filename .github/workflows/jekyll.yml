@@ -3,8 +3,6 @@ name: Build and Deploy Jekyll
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
@@ -19,33 +17,38 @@ jobs:
         ruby-version: '3.2'
         bundler-cache: true
 
-    - name: Install Dependencies
+    - name: Configure Bundler
       run: |
-        sudo apt-get update
-        sudo apt-get install -y libvips42 libmagickwand-dev imagemagick
+        bundle config set --local path 'vendor/bundle'
+        bundle config set --local deployment 'false'
+
+    - name: Setup Build Environment
+      run: |
         bundle install
+        bundle clean --force
 
     - name: Build Site
-      run: |
-        bundle exec jekyll build
-        
+      run: bundle exec jekyll build
+      env:
+        JEKYLL_ENV: production
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        path: _site
+        path: ./_site
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-
+    
     permissions:
       pages: write
       id-token: write
-
+    
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
+      
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
