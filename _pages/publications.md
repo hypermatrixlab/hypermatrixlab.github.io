@@ -4,7 +4,7 @@ permalink: /publications/
 title: Publications
 description: 
 nav: true
-nav_order: 6
+nav_order: 2
 ---
 <div class="publications">
 <h2 class="category">All Publications</h2>
