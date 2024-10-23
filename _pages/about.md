@@ -18,7 +18,7 @@ news: false # includes a list of news items
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 
-groups: [staff, support]
+groups: [staff, affiliated]
 staff:
   title: Research Staff
   people:
@@ -26,10 +26,6 @@ staff:
       description: Prof. Dr. and Head of HyperMatrix
       website: https://hsajjad.github.io/
       picture: hassan.png
-    - name: David Arps
-      description: PhD student
-      website: https://davidarps.github.io/
-      picture: david.jpeg
     - name: Domenic Rosati
       description: PhD student
       website: https://domenicrosati.github.io/
@@ -52,18 +48,16 @@ staff:
       picture: xuemin.png
     - name: Manpreet Singh
       description: Master student
-      website: https://www.linkedin.com/in/manpreet-singh-52b2271ab
+      website: https://msingh-cse.github.io/
       picture: manpreet.jpeg
 
-support:
-  title: Interns and Research Assistant
+affiliated:
+  title: Affiliated members (e.g. co-supervisors, co-supervised or mentored external PhD students, guest researchers and visitors)
   people:
-    - name: Intern name
-      description: Scientific programmer
-      picture: 
-    - name: Intern name
-      description: Scientific programmer
-      picture: 
+    - name: David Arps
+      description: PhD student
+      website: https://davidarps.github.io/
+      picture: david.jpeg
 
 sponsors:
   - name: Faculty of Computer Science, Dalhousie University
@@ -125,9 +119,6 @@ Our mission is to advance the field of AI by making models that are not only pow
     </div>
   {%- endfor -%}
 
-  <!-- <h2 class="category">Join Our Team</h2>
-  Join us! <a href="/jobs">→Open positions</a> -->
-
   <h2 class="category">Organizations</h2>
     Our research is supported by:
   <div class="sponsors">
@@ -140,25 +131,10 @@ Our mission is to advance the field of AI by making models that are not only pow
     {%- endfor -%}
   </div>
 
-  <h2 class="category">HyperMatrix resources and code</h2>
-  You can find resources (data, code, repositories) released by HyperMatrix lab members <a href="https://github.com/hypermatrixlab">on our github page</a>
-
-  <!-- <h2 class="category">Organizations</h2>
-  Our research is supported by:
-  <ul>
-    <li><a href="https://www.dal.ca/faculty/computerscience.html">Faculty of Computer Science, Dalhousie University</a></li>
-    <li><a href="https://www.innovation.ca/">Canada Foundation for Innovation (CFI)</a></li>
-    <li><a href="https://www.nserc-crsng.gc.ca/">Natural Sciences and Engineering Research Council of Canada (NSERC)</a></li>
-    <li><a href="https://researchns.ca/">Research Nova Scotia</a></li>
-    <li><a href="https://www.mitacs.ca/?hsLang=en">MITACS</a></li>
-  </ul> -->
-
- <!-- TODO <img src="MCML_Logo.jpg" alt="MCML logo"/> -->
 
   <h2 class="category">Find us</h2>
   We are located at 6050 University Ave, Halifax, NS B3H 1W5 (<a href="/contact">→ directions</a>).<br/>
 <a href="https://www.dal.ca/faculty/computerscience.html"><i class="fa fa-university" aria-hidden="true"></i> Faculty of Computer Science, Dalhousie University, Halifax, NS</a><br/>
-<a href="https://github.com/hypermatrixlab"><i class="fab fa-github"></i> HyperMatrix</a><br/>
 <a href="https://twitter.com/hassaan84s"><i class="fab fa-twitter"></i> Hassan Sajjad</a>
 
 </div>
