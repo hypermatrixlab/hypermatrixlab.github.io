@@ -31,6 +31,13 @@ jobs:
       - name: Build Site with Jekyll
         run: bundle exec jekyll build
 
+      - name: List installed gems
+        run: bundle exec gem list
+      
+    
+      - name: List installed gems
+        run: gem list
+
       - name: Deploy to GitHub Pages
         uses: actions/upload-pages-artifact@v1
         with:
