@@ -9,21 +9,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NOKOGIRI_USE_SYSTEM_LIBRARIES: true
+    
     steps:
     - uses: actions/checkout@v3
     
-    - name: Setup Ruby
+    - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.2'
-        bundler-cache: true
-        
-    - name: Install Dependencies
+        bundler-cache: false
+    
+    - name: Install system dependencies
       run: |
-        bundle install
+        sudo apt-get update
+        sudo apt-get install -y libvips42 libvips-dev libmagickwand-dev imagemagick
+    
+    - name: Configure Bundler
+      run: |
+        bundle config set --local path 'vendor/bundle'
+        bundle config set --local frozen 'false'
+        bundle config set --local without 'development test'
+    
+    - name: Install Ruby dependencies
+      run: |
+        bundle install --jobs 4 --retry 3
         
-    - name: Build Site
+    - name: Build site
       run: bundle exec jekyll build
+      env:
+        JEKYLL_ENV: production
       
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
