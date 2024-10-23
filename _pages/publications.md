@@ -8,12 +8,12 @@ nav_order: 2
 ---
 <div class="highlight-publications">
 <h2 class="category">Selected Publications</h2>
-  {% bibliography --file highlights --template highlight %}
+  {% bibliography --file "highlights" --template "highlight" %}
 </div>
 
 <div class="publications">
 <h2 class="category">All Publications</h2>
-  {% bibliography --file papers --template bib %}
+  {% bibliography --file "papers" --template "bib" %}
   <button class="show-more" id="show-more-btn">
       Show More
   </button>
