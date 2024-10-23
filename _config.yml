@@ -178,18 +178,29 @@ exclude:
   - Gemfile.lock
   - node_modules
   - README.md
+  - .jekyll-cache
+  - .sass-cache
 keep_files:
   - CNAME
   - .nojekyll
   - .git
 
+safe: false
+
 # Plug-ins
 plugins:
-  - jekyll-feed
-  - jekyll-sitemap
-  - jekyll-scholar
   - jekyll-archives
+  - jekyll-compress-images
+  - jekyll-diagrams
+  - jekyll-email-protect
+  - jekyll-feed
+  - jekyll-imagemagick
+  - jekyll-minifier
   - jekyll-paginate-v2
+  - jekyll/scholar
+  - jekyll-sitemap
+  - jekyll-target-blank
+  - jekyll-twitter-plugin
   - jemoji
 
 # Sitemap settings
@@ -231,12 +242,13 @@ display_tags: ["formatting", "images", "links", "math", "code"] # this tags will
 
 scholar:
   style: ieee
-  source: _bibliography
+  locale: en
+
+  source: /_bibliography/
   bibliography: papers.bib
-  bibliography_template: bib
-  sort_by: year,month
-  order: descending
-  group_by: none
+  bibliography_template:
+    - bib
+    - highlight
   # Note: if you have latex math in your bibtex, the latex filter
   # preprocessing may conflict with MathJAX if the latter is enabled.
   # See https://github.com/alshedivat/al-folio/issues/357.
