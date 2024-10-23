@@ -17,6 +17,9 @@ group :jekyll_plugins do
     gem 'faraday-retry', '>= 2.2.1'
     gem 'unicode_utils'
     gem 'webrick'
+    gem 'observer'
+    gem 'ostruct'
+
 
 end
 group :other_plugins do
