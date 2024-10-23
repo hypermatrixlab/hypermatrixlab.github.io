@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://hypermatrix.cs.dal.ca//sitemap.xml
