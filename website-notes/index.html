@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!-- Head -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
+    
+
+    <!-- Standard metadata -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Updating the website | HyperMatrix  Research Lab</title>
+    <meta name="author" content="HyperMatrix  Research Lab" />
+    <meta name="description" content="Dalhousie AI & NLP Lab
+" />
+
+
+    <!-- Bootstrap & MDB -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-DF7Zhf293AJxJNTmh5zhoYYIMs2oXitRfBjY+9L//AY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous" />
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha256-i1+4qU2G2860dGGIOJscdC30s9beBXjFfzjWLjBRsBg=" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
+
+    <!-- Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="none" id="highlight_theme_light" />
+
+    <!-- Styles -->
+    
+    <link rel="shortcut icon" href="/assets/img/hyper_matrix.png"/>
+    
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="http://localhost:4000/website-notes/">
+    
+    <!-- Dark Mode -->
+    
+
+  </head>
+
+  <!-- Body -->
+  <body class="fixed-top-nav sticky-bottom-footer">
+
+    <!-- Header --><header>
+
+  <!-- Nav Bar -->
+  <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
+    <div class="container">
+
+      <!-- Add Logo to the Left of the Navigation Menu -->
+      <div class="grid-item card">
+<a class="navbar-logo" href="/">
+          <figure>
+            <picture>
+              
+                <source class="responsive-img-srcset" media="(max-width: 480px)" srcset="/assets/img/hyper_matrix-480.webp"></source>
+                <source class="responsive-img-srcset" media="(max-width: 800px)" srcset="/assets/img/hyper_matrix-800.webp"></source>
+                <source class="responsive-img-srcset" media="(max-width: 1400px)" srcset="/assets/img/hyper_matrix-1400.webp"></source>
+                
+              
+              <!-- Fallback to the original logo file -->
+              <img src="/assets/img/hyper_matrix.png" alt="HyperMatrix Logo" class="avatar" width="auto" height="auto" style="max-height: 50px;" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
+            </picture>
+          </figure>
+        </a>
+      </div>
+
+      <!-- Always display the site title on all pages -->
+      <a class="navbar-brand title font-weight-lighter" href="/"><span class="font-weight-bold">HyperMatrix </span>Research Lab</a>
+
+      <!-- Social Icons if enabled -->
+      
+      
+      <!-- Navbar Toggle for mobile view -->
+      <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar top-bar"></span>
+        <span class="icon-bar middle-bar"></span>
+        <span class="icon-bar bottom-bar"></span>
+      </button>
+
+      <div class="collapse navbar-collapse text-right" id="navbarNav">
+        <ul class="navbar-nav ml-auto flex-nowrap">
+
+          <!-- About -->
+          <li class="nav-item ">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+
+          
+
+          <!-- Other pages -->
+          <li class="nav-item ">
+            <a class="nav-link" href="/publications/">Publications</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/contact/">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+    <!-- Content -->
+    <div class="container mt-5">
+      <!-- page.html -->
+        <div class="post">
+
+          <header class="post-header">
+            <h1 class="post-title">Updating the website</h1>
+            <p class="post-description"></p>
+          </header>
+
+          <article>
+            <h2 id="basic-info">Basic info</h2>
+
+<p>To make simple edits to the webpage, all you need to know is that most content is formatted using the <a href="https://kramdown.gettalong.org/quickref.html" target="_blank" rel="noopener noreferrer">Kramdown</a> flavour of Markdown, and that new pages require YAML headers, as explained below.</p>
+
+<p>Setting up Ruby and Jekyll to preview changes locally before pushing them is encouraged but not necessary, you can also make changes by directly editing the files in the repo and checking the changes once GitHub has updated the website.</p>
+
+<p>Table of contents:</p>
+<ul>
+  <li><a href="#previewing-changes-locally">Previewing changes locally</a></li>
+  <li><a href="#repo-set-up">Repo set-up</a></li>
+  <li><a href="#adding-lab-members">Adding lab members</a></li>
+  <li><a href="#adding-events">Adding events</a></li>
+  <li>
+<a href="#adding-publications">Adding Publications</a>
+    <ul>
+      <li><a href="#highlighted-publications">Highlighted Publications</a></li>
+    </ul>
+  </li>
+  <li><a href="#adding-a-new-page">Adding a new page</a></li>
+  <li><a href="#github-security-alerts">GitHub security alerts</a></li>
+  <li><a href="#adding-new-plug-ins">Adding new plug-ins</a></li>
+</ul>
+
+<h2 id="previewing-changes-locally">Previewing changes locally</h2>
+
+<p>(This is optional.)</p>
+
+<ol>
+  <li>Install <a href="https://jekyllrb.com/docs/installation/#guides" target="_blank" rel="noopener noreferrer">Ruby and Jekyll</a>.</li>
+  <li>Clone the rep: <code class="language-plaintext highlighter-rouge">git clone git@github.com:HyperMatrix/HyperMatrix.github.io.git</code> and navigate to the corresponding directory.</li>
+  <li>Run <code class="language-plaintext highlighter-rouge">bundle install</code> to install all dependencies.</li>
+  <li>To build the site locally, run <code class="language-plaintext highlighter-rouge">bundle exec jekyll serve</code> and open <a href="http://localhost:4000">http://localhost:4000</a>.</li>
+</ol>
+
+<p>If you make changes to the markdown, HTML, CSS, etc. files, you only need to refresh the page in your browser. For changes to the config or the Gemfile, you need to run the bundle command again.</p>
+
+<h2 id="repo-set-up">Repo set-up</h2>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">_bibliography/</code> – currently not used, but could be used to keep track of publications &amp; publication metadata via custom bibtex files</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">_data/</code> – currently not used, metadata for different formatting, e.g., publication lists</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">_events/</code> – see above</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">_includes/</code> and <code class="language-plaintext highlighter-rouge">_layouts/</code> – (Jekyll-ized) HTML files that dictate the site structure</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">_pages/</code> – markdown files for the homepage and subpages; PDFs are currently in the <code class="language-plaintext highlighter-rouge">content</code> subfolder</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">_plugins/</code> – currently not used</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">_sass/</code> – style files; the colors are set in <code class="language-plaintext highlighter-rouge">_variables.scss</code>
+</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">assets/</code> – where pictures live; we could also move the PDFs there</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">bin/</code> – deployment scripts, we probably won’t need to touch these</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">blog/</code> – currently unused</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">_config.yml</code> – all the important metadata</li>
+</ul>
+
+<h2 id="adding-lab-members">Adding lab members</h2>
+
+<p>Edit <a href="https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/_pages/about.md" target="_blank" rel="noopener noreferrer">_pages/about.md</a> and add the following to one of the staff sections:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    - name: The Name
+      description: job title, date
+      website: example.com [remove this line if there's no website]
+      picture: HyperMatrix-logo-150.png [or replace with name.jpg]
+</code></pre></div></div>
+
+<p>To include a picture name.jpg, add it to <a href="https://github.com/HyperMatrix/HyperMatrix.github.io/tree/main/assets/img" target="_blank" rel="noopener noreferrer">assets/img</a>.</p>
+
+<p>To add a new staff section, add its name to the groups list towards the top of the page (<code class="language-plaintext highlighter-rouge">groups: [staff, support, admin, affiliated]</code>), and then define the new section like, e.g., <code class="language-plaintext highlighter-rouge">staff</code> is defined:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>newgroup:
+  title: New Group
+  people:
+  - name: First Last
+    description: Job Title
+    picture: name.jpg
+</code></pre></div></div>
+
+<!-- ## Adding events
+
+Add a new markdown file `YYYY-MM-DD-short-description.md` to `_events`. This is done most easily by altering a copy of an existing event description. Event descriptions consist simply of YAML frontmatter:
+
+```
+---
+title: The title
+abstract: [optional, remove line if not required for event]
+speaker: [optional, remove line if not required for event]
+bio: [optional, remove line if not required for event]
+website: [optional, remove line if not required for event]
+time: Time and date
+location: [optional, remove line if not required for event]
+roomfinder: Location URL [optional, remove line if not required for event]
+img: Path to picture, starting with assets/img/ [optional, remove line if not required for event]
+imgalt: Image description [optional, remove line if not required for event]
+imgside: 'right' of 'left' (default: 'right')
+anchor: YYYY-MM-DD-short-description [same as in file name]
+---
+```
+
+The location link can be, for instance, to the relevant [LMU room finder](https://www.lmu.de/raumfinder/#/) page. -->
+
+<h2 id="adding-publications">Adding Publications</h2>
+
+<p>Copy the Bibtex reference of the publication and add the reference to _bibliography/papers.bib. Papers will be displayed in reverse chronological order. Make sure that the following fields in the Bibtex reference are populated, as these will be used to create the publication’s entry on the website:</p>
+<ul>
+  <li>year</li>
+  <li>month</li>
+  <li>author</li>
+  <li>url</li>
+  <li>booktitle</li>
+</ul>
+
+<h3 id="highlighted-publications">Highlighted Publications</h3>
+<p>You can add up to 2 highlighted publications which will be shown at the top of the page with a teaser image. For this, add the Bibtex reference of the respective paper to _bibliography/highlights.bib (only the top 2 will be shown, so make sure to delete previous highlighted publications from the file). Make sure the following fields in the Bibtex reference are populated:</p>
+<ul>
+  <li>year</li>
+  <li>month</li>
+  <li>url</li>
+  <li>author</li>
+  <li>booktitle</li>
+  <li>
+<strong>image</strong>: add the filename (just filename, not the full path) here of the image that should be displayed together with the publication. Place your images under <strong>/assets/img/publications/</strong>. You can use the HyperMatrix logo as a default by just adding image = “default.png”</li>
+</ul>
+
+<h2 id="adding-a-new-page">Adding a new page</h2>
+
+<p>Add a new markdown file to <a href="https://github.com/HyperMatrix/HyperMatrix.github.io/tree/main/_pages" target="_blank" rel="noopener noreferrer">_pages</a>.
+It needs to have a YAML header like so:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
+layout: page
+permalink: /slug-goes-here/
+title: New Title
+description: [optional]
+nav: true [if false, it's not in the navigation bar]
+nav_order: 6 [lower = more to the left; leave out if nav==false]
+---
+</code></pre></div></div>
+
+<p>And then the actual content can follow.</p>
+
+<h2 id="adding-new-plug-ins">Adding new plug-ins</h2>
+
+<ol>
+  <li>Add the plug-in to the <code class="language-plaintext highlighter-rouge">plugins</code> list in <a href="https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/_config.yml" target="_blank" rel="noopener noreferrer">_config.yml</a>.</li>
+  <li>Add it to the <a href="https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/Gemfile" target="_blank" rel="noopener noreferrer">Gemfile</a>.</li>
+  <li>Install it:
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>gem install gem-name-here
+bundle install
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="github-security-alerts">GitHub security alerts</h2>
+
+<p>GitHub might occasionally have security alerts concerning the dependencies (currently not a problem since we don’t specify the version numbers in our Gemfile at the moment – this might change in case we need to manually handle version conflicts). Usually, it will suggest a Dependabot PR that immediately solves the issue.
+If there’s no Dependabot PR, you can typically generate one via the repo’s <a href="https://github.com/HyperMatrix/HyperMatrix.github.io/security" target="_blank" rel="noopener noreferrer">security tab</a>. 
+You can also do this by hand: add the code suggested by the security alert (<code class="language-plaintext highlighter-rouge">gem "gem-name-here", "&gt;= version.number.here"</code>) to the <a href="https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/Gemfile" target="_blank" rel="noopener noreferrer">Gemfile</a> and update <code class="language-plaintext highlighter-rouge">Gemfile.lock</code> by running</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install gem-name-here
+gem update gem-name-here
+bundle update gem-name-here
+bundle install
+</code></pre></div></div>
+
+          </article>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->    <footer class="sticky-bottom mt-5">
+      <div class="container">
+        © Copyright 2024 HyperMatrix  Research Lab. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>. <a href="https://fontawesome.com/" target="_blank" rel="noopener noreferrer">Font Awesome</a> icons <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC-BY 4.0</a>.
+<a href="http://localhost:4000/contact">Impressum</a>.
+      </div>
+    </footer>
+
+    <!-- JavaScripts -->
+    <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootsrap & MDB scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha256-fgLAgv7fyCGopR/gBNq2iW3ZKIdqIcyshnUULC4vex8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script>
+
+    
+    
+  <!-- Medium Zoom JS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script defer src="/assets/js/zoom.js"></script><!-- Load Common JS -->
+  <script defer src="/assets/js/common.js"></script>
+
+    <!-- MathJax -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    
+  </body>
+</html>
