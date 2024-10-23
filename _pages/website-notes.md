@@ -132,8 +132,8 @@ And then the actual content can follow.
 
 ## Adding new plug-ins
 
-1. Add the plug-in to the `plugins` list in [_config.yml](https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/_config.yml).
-2. Add it to the [Gemfile](https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/Gemfile).
+1. Add the plug-in to the `plugins` list in [_config.yml](https://hypermatrixlab.github.io/blob/main/_config.yml).
+2. Add it to the [Gemfile](https://hypermatrixlab.github.io/blob/main/Gemfile).
 3. Install it:
 ```
 gem install gem-name-here
@@ -143,8 +143,8 @@ bundle install
 ## GitHub security alerts
 
 GitHub might occasionally have security alerts concerning the dependencies (currently not a problem since we don't specify the version numbers in our Gemfile at the moment -- this might change in case we need to manually handle version conflicts). Usually, it will suggest a Dependabot PR that immediately solves the issue.
-If there's no Dependabot PR, you can typically generate one via the repo's [security tab](https://github.com/HyperMatrix/HyperMatrix.github.io/security). 
-You can also do this by hand: add the code suggested by the security alert (`gem "gem-name-here", ">= version.number.here"`) to the [Gemfile](https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/Gemfile) and update `Gemfile.lock` by running
+If there's no Dependabot PR, you can typically generate one via the repo's [security tab](https://hypermatrixlab.github.io/security). 
+You can also do this by hand: add the code suggested by the security alert (`gem "gem-name-here", ">= version.number.here"`) to the [Gemfile](https://hypermatrixlab.github.io/blob/main/Gemfile) and update `Gemfile.lock` by running
 ```
 gem install gem-name-here
 gem update gem-name-here
