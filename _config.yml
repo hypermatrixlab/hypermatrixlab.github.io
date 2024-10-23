@@ -184,18 +184,19 @@ keep_files:
 # Plug-ins
 plugins:
   - jekyll-archives
-  - jekyll-compress-images
   - jekyll-diagrams
   - jekyll-email-protect
   - jekyll-feed
   - jekyll-imagemagick
   - jekyll-minifier
   - jekyll-paginate-v2
-  - jekyll/scholar
+  - jekyll-scholar
   - jekyll-sitemap
   - jekyll-target-blank
   - jekyll-twitter-plugin
+  - jekyll-compress-images
   - jemoji
+
 
 # Sitemap settings
 defaults:
@@ -238,9 +239,10 @@ display_tags: ["formatting", "images", "links", "math", "code"] # this tags will
 scholar:
   style: apa
   locale: en
-  source: /_bibliography/
-  bibliography: papers.bib
+  source: "./_bibliography"
+  bibliography: "papers.bib"
   bibliography_template: bib
+
 
     # - highlight
   # Note: if you have latex math in your bibtex, the latex filter

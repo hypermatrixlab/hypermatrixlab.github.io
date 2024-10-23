@@ -26,9 +26,12 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
+          ruby-version-file: '.ruby-version'
           bundler-cache: true
-          cache-version: 1 # Incremented to invalidate cache
+          cache-version: 1
+
+      - name: Install Dependencies
+        run: bundle install
 
       - name: Verify Installed Gems
         run: bundle list
