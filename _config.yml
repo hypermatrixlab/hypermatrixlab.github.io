@@ -183,6 +183,7 @@ keep_files:
 
 # Plug-ins
 plugins:
+  - jekyll-scholar
   - jekyll-archives
   - jekyll-compress-images
   - jekyll-diagrams
@@ -190,12 +191,14 @@ plugins:
   - jekyll-feed
   - jekyll-imagemagick
   - jekyll-minifier
-  - jekyll-paginate-v2
-  - jekyll-scholar 
+  - jekyll-paginate-v2 
   - jekyll-sitemap
   - jekyll-target-blank
   - jekyll-twitter-plugin
   - jemoji
+
+require:
+  - jekyll/scholar
 
 # Sitemap settings
 defaults:
