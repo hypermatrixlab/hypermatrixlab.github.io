@@ -56,7 +56,7 @@ Edit [_pages/about.md](https://github.com/HyperMatrix/HyperMatrix.github.io/blob
     - name: The Name
       description: job title, date
       website: example.com [remove this line if there's no website]
-      picture: HyperMatrix-logo-150.png [or replace with name.jpg]
+      picture: hyper_matrix.png [or replace with name.jpg]
 ```
 
 To include a picture name.jpg, add it to [assets/img](https://github.com/HyperMatrix/HyperMatrix.github.io/tree/main/assets/img).
