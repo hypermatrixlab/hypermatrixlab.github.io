@@ -1,18 +1,18 @@
 ---
 ---
-<a href="{{ entry.url | default:'#' }}" {% if entry.url %}target="_blank" rel="noreferrer"{% endif %}>
+<a href="{{ entry.url }}" target="_blank" rel="noreferrer">
     <div class="container">
-        <img src="/assets/img/publications/{% if entry.image %}{{ entry.image }}{% else %}default.png{% endif %}" alt="{{ entry.title }}">
-        <p class="date">
-            {%- if entry.month and entry.year -%}
-                {{ entry.month | capitalize }} {{ entry.year }}
-            {%- elsif entry.year -%}
-                {{ entry.year }}
-            {%- endif -%}
-        </p>
+        <img src="/assets/img/publications/{{ entry.image }}" alt="Publication Image">
+        <p class="date">{{ entry.month }} {{ entry.year }}</p>
         <h3 class="title">{{ entry.title }}</h3>
         <div class="author-container">
-            <p class="authors">{{ entry.author | join: ', ' }}</p>
+            <p class="authors">{{ entry.author }}</p>
         </div>
     </div>
 </a>
+
+<!--
+    <div class="overflow-y-auto h-42">
+    
+    </div>
+-->
