@@ -1,14 +1,24 @@
 source 'https://rubygems.org'
-gem 'jekyll', '3.10.0'
-gem 'jekyll-scholar' # For handling the bibliography
-gem 'webrick' # Needed to run Jekyll locally on Ruby 3.x
-
 group :jekyll_plugins do
-  gem 'jekyll-feed'
-  gem 'jekyll-sitemap'
-  gem 'jekyll-paginate-v2'
-  gem 'jekyll-compress-images'
+    gem 'jekyll'
+    gem 'jekyll-archives'
+    gem 'jekyll-diagrams'
+    gem 'jekyll-email-protect'
+    gem 'jekyll-feed'
+    gem 'jekyll-imagemagick'
+    gem 'jekyll-minifier'
+    gem 'jekyll-paginate-v2'
+    gem 'jekyll-scholar'
+    gem 'jekyll-sitemap'
+    gem 'jekyll-target-blank'
+    gem 'jekyll-twitter-plugin'
+    gem 'jekyll-compress-images'
+    gem 'jemoji'
+    # gem 'mini_racer'
+    gem 'unicode_utils'
+    gem 'webrick'
 end
-
-gem 'httparty'
-gem 'feedjira'
+group :other_plugins do
+    gem 'httparty'
+    gem 'feedjira'
+end

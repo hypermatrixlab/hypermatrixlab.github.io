@@ -7,7 +7,7 @@
   --global-code-bg-color: #{$code-bg-color-light};
   --global-code-fg-color: #{$hm-dark-blue};
   --global-text-color: #{$black-color};
-  --global-text-color-light: #{$grey-900};
+  --global-text-color-light: #{$grey-color-light};
   --global-theme-color: #{$blue-color};
   --global-hover-color: #{$hm-dark-blue};
   --global-footer-bg-color: #{$black-color};
@@ -38,7 +38,7 @@ html[data-theme='dark'] {
   --global-bg-color: #{$grey-color-dark};
   --global-code-bg-color: #{$code-bg-color-dark};
   --global-text-color: #{$grey-color-light};
-  --global-text-color-light: #{$grey-900};
+  --global-text-color-light: #{$grey-color-light};
   --global-theme-color: #{$cyan-color};
   --global-hover-color: #{$cyan-color};
   --global-footer-bg-color: #{$grey-color-light};
