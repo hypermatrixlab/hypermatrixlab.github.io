@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+
 group :jekyll_plugins do
     gem 'jekyll'
     gem 'jekyll-archives'
@@ -8,7 +9,7 @@ group :jekyll_plugins do
     gem 'jekyll-imagemagick'
     gem 'jekyll-minifier'
     gem 'jekyll-paginate-v2'
-    gem 'jekyll-scholar'
+    gem 'jekyll-scholar', '~> 7.1.0'  # Updated to latest version
     gem 'jekyll-sitemap'
     gem 'jekyll-target-blank'
     gem 'jekyll-twitter-plugin'
@@ -18,6 +19,7 @@ group :jekyll_plugins do
     gem 'unicode_utils'
     gem 'webrick'
 end
+
 group :other_plugins do
     gem 'httparty'
     gem 'feedjira'
