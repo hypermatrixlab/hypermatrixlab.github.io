@@ -5,20 +5,20 @@
 title: blank # the website title (if blank, full name will be used instead)
 first_name: HyperMatrix
 middle_name:
-last_name: Research Lab
+last_name: research lab
 email:
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Dalhousie AI & NLP lab
+  Munich AI & NLP lab
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
   <a href="https://fontawesome.com/">Font Awesome</a> icons <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>.
 keywords: # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon:  # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: mainlp-logo-50.png # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
-url: "https://hypermatrix.cs.dal.ca" # the base hostname & protocol for your site
-baseurl: "" # the subpath of your site, e.g. /blog/
+url: https://hypermatrix.cs.dal.ca # the base hostname & protocol for your site
+baseurl: / # the subpath of your site, e.g. /blog/
 last_updated: false # set to true if you want to display last updated in the footer
 impressum_path: /contact # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
 
@@ -184,19 +184,18 @@ keep_files:
 # Plug-ins
 plugins:
   - jekyll-archives
+  - jekyll-compress-images
   - jekyll-diagrams
   - jekyll-email-protect
   - jekyll-feed
   - jekyll-imagemagick
   - jekyll-minifier
   - jekyll-paginate-v2
-  - jekyll-scholar
+  - jekyll/scholar
   - jekyll-sitemap
   - jekyll-target-blank
   - jekyll-twitter-plugin
-  - jekyll-compress-images
   - jemoji
-
 
 # Sitemap settings
 defaults:
@@ -235,16 +234,15 @@ display_tags: ["formatting", "images", "links", "math", "code"] # this tags will
 # Jekyll Scholar
 # -----------------------------------------------------------------------------
 
-# Jekyll Scholar settings
 scholar:
-  style: apa
+  style: ieee
   locale: en
-  source: "./_bibliography"
-  bibliography: "papers.bib"
-  bibliography_template: bib
 
-
-    # - highlight
+  source: /_bibliography/
+  bibliography: papers.bib
+  bibliography_template:
+    - bib
+    - highlight
   # Note: if you have latex math in your bibtex, the latex filter
   # preprocessing may conflict with MathJAX if the latter is enabled.
   # See https://github.com/alshedivat/al-folio/issues/357.
