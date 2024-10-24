@@ -4,9 +4,9 @@ title: Home
 permalink: /
 subtitle: 
 
-# banner:
-#   image: cs_building.jpg 
-#   alt_text: "Dalhousie University, Faculty of Computer Science Building"
+banner:
+  image: cs_building.jpg 
+  alt_text: "Dalhousie University, Faculty of Computer Science Building"
 
 news_items:
   - date: 2024
