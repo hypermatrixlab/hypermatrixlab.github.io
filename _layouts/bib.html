@@ -5,22 +5,70 @@
     <div class="date">{{ entry.month }} {{ entry.year }}</div>
     <div class="content">
       {% if entry.url %}
-        <a href="{{ entry.url }}" class="title-link" target="_blank" rel="noreferrer">{{ entry.title }}</a>
+        <a href="{{ entry.url }}" class="title-link">{{ entry.title }}</a>
       {% else %}
         <p class="title">{{ entry.title }}</p>
       {% endif %}
-      <p class="author">{{ entry.author | join: ', ' }}</p>
+      <p class="author">{{ entry.author | join: ' and ' }}</p>
       <div class="details">
         <p class="journal">{{ entry.booktitle }}</p>
-        {% if entry.url %}
-          <a href="{{ entry.url }}" target="_blank" rel="noreferrer" class="chevron-container">
-            <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-              <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
-            </svg>
-          </a>
+      </div>
+      
+      <!-- Links section -->
+      <div class="links">
+        {% if entry.abstract %}
+          <button class="btn abstract-btn" onclick="toggleAbstract(this)">Abstract</button>
+        {% endif %}
+        
+        {% if entry.html %}
+          {% if entry.html contains '://' %}
+            <a href="{{ entry.html }}" class="btn" target="_blank" rel="noreferrer">HTML</a>
+          {% else %}
+            <a href="{{ entry.html | prepend: '/assets/html/' | relative_url }}" class="btn" target="_blank" rel="noreferrer">HTML</a>
+          {% endif %}
+        {% endif %}
+        
+        {% if entry.code %}
+          <a href="{{ entry.code }}" class="btn" target="_blank" rel="noreferrer">Code</a>
+        {% endif %}
+        
+        {% if entry.presentation %}
+          <a href="{% if entry.presentation contains '://' %}{{ entry.presentation }}{% else %}{{ entry.presentation | prepend: '/assets/pdf/' | relative_url }}{% endif %}" class="btn" target="_blank" rel="noreferrer">Presentation</a>
+        {% endif %}
+        
+        {% if entry.video %}
+          <a href="{{ entry.video }}" class="btn" target="_blank" rel="noreferrer">Video</a>
+        {% endif %}
+        
+        {% if entry.poster %}
+          <a href="{% if entry.poster contains '://' %}{{ entry.poster }}{% else %}{{ entry.poster | prepend: '/assets/pdf/' | relative_url }}{% endif %}" class="btn" target="_blank" rel="noreferrer">Poster</a>
         {% endif %}
       </div>
+
+      {% if entry.abstract %}
+      <div class="abstract hidden">
+        <p>{{ entry.abstract }}</p>
+      </div>
+      {% endif %}
     </div>
   </div>
   <hr class="separator">
 </div>
+
+<script>
+function toggleAbstract(button) {
+    const parent = button.closest('.content');
+    const abstract = parent.querySelector('.abstract');
+    if (abstract) {
+        if (abstract.classList.contains('hidden')) {
+            abstract.classList.remove('hidden');
+            button.textContent = 'Hide Abstract';
+            button.classList.add('active');
+        } else {
+            abstract.classList.add('hidden');
+            button.textContent = 'Abstract';
+            button.classList.remove('active');
+        }
+    }
+}
+</script>

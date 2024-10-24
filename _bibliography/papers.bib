@@ -1,6 +1,16 @@
 ---
 ---
 
+@misc{dumpala2024sugarcrepedatasetvisionlanguagemodel,
+      title={SUGARCREPE++ Dataset: Vision-Language Model Sensitivity to Semantic and Lexical Alterations}, 
+      author={Sri Harsha Dumpala and Aman Jaiswal and Chandramouli Sastry and Evangelos Milios and Sageev Oore and Hassan Sajjad},
+      year={2024},
+      eprint={2406.11171},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2406.11171}, 
+}
+
 @inproceedings{arp-etal-2024-noncetree,
     title = {{Multilingual Nonce Dependency Treebanks: Understanding how LLMs represent and process syntactic structure}},
     author = "David Arps and Younes Samih and Laura Kallmeyer and Hassan Sajjad",
@@ -9,6 +19,8 @@
     year = "2024",
     address = "Mexico City, Mexico",
     url={https://arxiv.org/pdf/2311.07497.pdf},
+    video={https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ},
+    code = {https://github.com/davidarps/spud},
 }
 
 @inproceedings{rosati-etal-2024-longform,
@@ -573,22 +585,15 @@ address = {Reykjavik, Iceland},
   address   = {Portland, OR, USA},
 }
 
-@article{10.5555/3648699.3649061,
-author = {Durrani, Nadir and Dalvi, Fahim and Sajjad, Hassan},
-title = {Discovering salient neurons in deep NLP models},
-year = {2024},
-issue_date = {January 2023},
-publisher = {JMLR.org},
-volume = {24},
-number = {1},
-issn = {1532-4435},
-abstract = {While a lot of work has been done in understanding representations learned within deep NLP models and what knowledge they capture, work done towards analyzing individual neurons is relatively sparse. We present a technique called Linguistic Correlation Analysis to extract salient neurons in the model, with respect to any extrinsic property, with the goal of understanding how such knowledge is preserved within neurons. We carry out a fine-grained analysis to answer the following questions: (i) can we identify subsets of neurons in the network that learn a specific linguistic property? (ii) is a certain linguistic phenomenon in a given model localized (encoded in few individual neurons) or distributed across many neurons? (iii) how redundantly is the information preserved? (iv) how does fine-tuning pre-trained models towards downstream NLP tasks impact the learned linguistic knowledge? (v) how do models vary in learning different linguistic properties? Our data-driven, quantitative analysis illuminates interesting findings: (i) we found small subsets of neurons that can predict different linguistic tasks; (ii) neurons capturing basic lexical information, such as suffixation, are localized in the lowermost layers; (iii) neurons learning complex concepts, such as syntactic role, are predominantly found in middle and higher layers; (iv) salient linguistic neurons are relocated from higher to lower layers during transfer learning, as the network preserves the higher layers for task-specific information; (v) we found interesting differences across pre-trained models regarding how linguistic information is preserved within them; and (vi) we found that concepts exhibit similar neuron distribution across different languages in the multilingual transformer models. Our code is publicly available as part of the NeuroX toolkit (Dalvi et al., 2023). https://github.com/fdalvi/NeuroX},
-journal = {J. Mach. Learn. Res.},
-month = mar,
-articleno = {362},
-numpages = {40},
-url = {https://www.jmlr.org/papers/volume24/23-0074/23-0074.pdf},
-keywords = {neuron analysis, representation analysis, interpretability, explainable AI}
+@article{JMLR:v24:23-0074,
+  author  = {Nadir Durrani and Fahim Dalvi and Hassan Sajjad},
+  title   = {Discovering Salient Neurons in deep NLP models},
+  journal = {Journal of Machine Learning Research},
+  year    = {2023},
+  volume  = {24},
+  number  = {362},
+  pages   = {1--40},
+  url     = {http://jmlr.org/papers/v24/23-0074.html}
 }
 
 @article{SUWAILEH2022103107,
