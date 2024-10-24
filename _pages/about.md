@@ -38,7 +38,7 @@ staff:
       description: PhD student
       website: https://jinkunchen.com/
       picture: jinkun.jpeg
-    - name: Sher Badshah
+    - name: Sher Khan
       description: PhD student
       website: https://web.cs.dal.ca/~badshah/
       picture: sher.jpeg
