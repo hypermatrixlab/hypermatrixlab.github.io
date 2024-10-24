@@ -177,21 +177,4 @@ ul.network-icon {
       }
     }
   }
-
-  .abstract.hidden {
-    display: none;
-  }
-  
-  .abstract {
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: var(--global-bg-color);
-    border: 1px solid var(--global-divider-color);
-    border-radius: 4px;
-  }
-  
-  .btn.active {
-    color: var(--global-theme-color);
-    border-color: var(--global-theme-color);
-  }
 }

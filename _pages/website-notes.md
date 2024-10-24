@@ -1,153 +1,148 @@
+
 ---
 layout: page
 permalink: /website-notes/
-title: Updating the website
-description: 
+title: Updating the Website
+description:
 nav: false
 ---
 
-## Basic info
+## Overview
 
-To make simple edits to the webpage, all you need to know is that most content is formatted using the [Kramdown](https://kramdown.gettalong.org/quickref.html) flavour of Markdown, and that new pages require YAML headers, as explained below.
+This guide will help you update and maintain our lab's website. Most content edits require Markdown knowledge (using [Kramdown](https://kramdown.gettalong.org/quickref.html)). For significant changes, you might want to preview them locally with Jekyll, though it isn't required.
 
-Setting up Ruby and Jekyll to preview changes locally before pushing them is encouraged but not necessary, you can also make changes by directly editing the files in the repo and checking the changes once GitHub has updated the website.
-
-Table of contents:
-- [Previewing changes locally](#previewing-changes-locally)
-- [Repo set-up](#repo-set-up)
-- [Adding lab members](#adding-lab-members)
-- [Adding events](#adding-events)
+Here's what you'll find in this guide:
+- [Previewing Changes Locally](#previewing-changes-locally)
+- [Repository Structure](#repository-structure)
+- [Adding Lab Members](#adding-lab-members)
 - [Adding Publications](#adding-publications)
-   + [Highlighted Publications](#highlighted-publications)
-- [Adding a new page](#adding-a-new-page)
-- [GitHub security alerts](#github-security-alerts)
-- [Adding new plug-ins](#adding-new-plug-ins)
+- [Adding News](#adding-news)
+- [Creating a New Page](#creating-a-new-page)
+- [Managing GitHub Security Alerts](#managing-github-security-alerts)
+- [Adding New Plugins](#adding-new-plugins)
 
-## Previewing changes locally
+## Previewing Changes Locally (Optional)
 
-(This is optional.)
+If you'd like to preview your changes before pushing them to GitHub, follow these steps:
 
 1. Install [Ruby and Jekyll](https://jekyllrb.com/docs/installation/#guides).
-2. Clone the rep: `git clone git@github.com:HyperMatrix/HyperMatrix.github.io.git` and navigate to the corresponding directory.
-3. Run `bundle install` to install all dependencies.
-4. To build the site locally, run `bundle exec jekyll serve` and open [http://localhost:4000](http://localhost:4000).
+2. Clone the repository:
+   ```
+   git clone git@github.com:HyperMatrix/HyperMatrix.github.io.git
+   ```
+3. Navigate to the project folder and run:
+   ```
+   bundle install
+   ```
+4. Build and preview the site locally:
+   ```
+   bundle exec jekyll serve
+   ```
+   Then open [http://localhost:4000](http://localhost:4000) in your browser.
 
-If you make changes to the markdown, HTML, CSS, etc. files, you only need to refresh the page in your browser. For changes to the config or the Gemfile, you need to run the bundle command again.
+Refreshing the page will show your edits instantly. If you change configuration files (e.g., `_config.yml`), you'll need to restart the server.
 
-## Repo set-up
+## Repository Structure
 
-- `_bibliography/` -- currently not used, but could be used to keep track of publications & publication metadata via custom bibtex files
-- `_data/` -- currently not used, metadata for different formatting, e.g., publication lists
-- `_events/` -- see above
-- `_includes/` and `_layouts/` -- (Jekyll-ized) HTML files that dictate the site structure
-- `_pages/` -- markdown files for the homepage and subpages; PDFs are currently in the `content` subfolder
-- `_plugins/` -- currently not used
-- `_sass/` -- style files; the colors are set in `_variables.scss`
-- `assets/` -- where pictures live; we could also move the PDFs there
-- `bin/` -- deployment scripts, we probably won't need to touch these
-- `blog/` -- currently unused
-- `_config.yml` -- all the important metadata
+Understanding the repo structure will make it easier to find what you need:
 
-## Adding lab members
+- **`_pages/`**: Markdown files for pages (e.g., homepage, about). PDFs are in the `content` subfolder.
+- **`assets/`**: Images and other media files.
+- **`_sass/`**: CSS styles. Colors are set in `_variables.scss`.
+- **`_includes/`, `_layouts/`**: HTML files that control page structure.
+- **`_config.yml`**: Site configuration and metadata.
+- **Other folders** (`_bibliography/`, `_data/`, `_plugins/`): Not currently used, but may be useful in the future.
 
-Edit [_pages/about.md](https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/_pages/about.md) and add the following to one of the staff sections:
+## Adding Lab Members
 
-```
-    - name: The Name
-      description: job title, date
-      website: example.com [remove this line if there's no website]
-      picture: hyper_matrix.png [or replace with name.jpg]
-```
+To add a new member to the website:
 
-To include a picture name.jpg, add it to [assets/img](https://github.com/HyperMatrix/HyperMatrix.github.io/tree/main/assets/img).
+1. Open [_pages/about.md](https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/_pages/about.md).
+2. Add the following to the relevant section:
+   ```
+   - name: "The Name"
+     description: "Job title, date"
+     website: "example.com"  # Remove if not applicable
+     picture: "hyper_matrix.png"  # Replace with name.jpg if adding a new photo
+   ```
+3. If you are adding a new picture, upload it to [assets/img](https://github.com/HyperMatrix/HyperMatrix.github.io/tree/main/assets/img).
 
-To add a new staff section, add its name to the groups list towards the top of the page (`groups: [staff, support, admin, affiliated]`), and then define the new section like, e.g., `staff` is defined:
-
-```
+To add a new section for members, define it in `groups` at the top of the file, and create the section as shown below:
+```yaml
 newgroup:
-  title: New Group
+  title: "New Group"
   people:
-  - name: First Last
-    description: Job Title
-    picture: name.jpg
+    - name: "First Last"
+      description: "Job Title"
+      picture: "name.jpg"
 ```
-
-<!-- ## Adding events
-
-Add a new markdown file `YYYY-MM-DD-short-description.md` to `_events`. This is done most easily by altering a copy of an existing event description. Event descriptions consist simply of YAML frontmatter:
-
-```
----
-title: The title
-abstract: [optional, remove line if not required for event]
-speaker: [optional, remove line if not required for event]
-bio: [optional, remove line if not required for event]
-website: [optional, remove line if not required for event]
-time: Time and date
-location: [optional, remove line if not required for event]
-roomfinder: Location URL [optional, remove line if not required for event]
-img: Path to picture, starting with assets/img/ [optional, remove line if not required for event]
-imgalt: Image description [optional, remove line if not required for event]
-imgside: 'right' of 'left' (default: 'right')
-anchor: YYYY-MM-DD-short-description [same as in file name]
----
-```
-
-The location link can be, for instance, to the relevant [LMU room finder](https://www.lmu.de/raumfinder/#/) page. -->
 
 ## Adding Publications
 
-Copy the Bibtex reference of the publication and add the reference to _bibliography/papers.bib. Papers will be displayed in reverse chronological order. Make sure that the following fields in the Bibtex reference are populated, as these will be used to create the publication's entry on the website:
- - year
- - month
- - author
- - url
- - booktitle
+To add a publication:
 
-### Highlighted Publications
-You can add up to 2 highlighted publications which will be shown at the top of the page with a teaser image. For this, add the Bibtex reference of the respective paper to _bibliography/highlights.bib (only the top 2 will be shown, so make sure to delete previous highlighted publications from the file). Make sure the following fields in the Bibtex reference are populated:
- - year
- - month
- - url
- - author
- - booktitle
- - **image**: add the filename (just filename, not the full path) here of the image that should be displayed together with the publication. Place your images under **/assets/img/publications/**. You can use the HyperMatrix logo as a default by just adding image = "default.png"
+1. Copy the BibTeX reference of the paper.
+2. Add it to `_bibliography/papers.bib`.
 
-## Adding a new page
+Make sure the following fields are filled out:
+- **year**
+- **month**
+- **author**
+- **url**
+- **booktitle**
 
-Add a new markdown file to [_pages](https://github.com/HyperMatrix/HyperMatrix.github.io/tree/main/_pages).
-It needs to have a YAML header like so:
-```
----
-layout: page
-permalink: /slug-goes-here/
-title: New Title
-description: [optional]
-nav: true [if false, it's not in the navigation bar]
-nav_order: 6 [lower = more to the left; leave out if nav==false]
----
-```
+Papers are displayed in reverse chronological order.
 
-And then the actual content can follow.
+## Adding News
 
-## Adding new plug-ins
+1. Open [_pages/about.md](https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/_pages/about.md).
+2. Edit the `news_items` section:
+   ```yaml
+   news_items:
+     - date: 2024
+       title: "Accepted Papers 2024"
+       content: "2 papers (NeurIPS), 2 papers (NAACL), 2 papers (EMNLP)"
+   ```
 
-1. Add the plug-in to the `plugins` list in [_config.yml](https://hypermatrixlab.github.io/blob/main/_config.yml).
+Add new items at the top to keep the news updated.
+
+## Creating a New Page
+
+1. Create a new markdown file in [_pages](https://github.com/HyperMatrix/HyperMatrix.github.io/tree/main/_pages).
+2. Include a YAML header:
+   ```yaml
+   ---
+   layout: page
+   permalink: /new-page-slug/
+   title: "New Page Title"
+   description: "Optional description"
+   nav: true  # Set to false if not in the navigation bar
+   nav_order: 4  # Lower numbers appear further left
+   ---
+   ```
+3. Add the content below the header.
+
+## Managing GitHub Security Alerts
+
+GitHub might issue security alerts for dependencies. If this happens:
+
+1. Check for a Dependabot pull request and merge it if available.
+2. If there is no automatic PR, you can generate one via the [security tab](https://hypermatrixlab.github.io/security).
+3. Alternatively, update manually by editing the [Gemfile](https://hypermatrixlab.github.io/blob/main/Gemfile) and running:
+   ```
+   gem install gem-name-here
+   gem update gem-name-here
+   bundle update gem-name-here
+   bundle install
+   ```
+
+## Adding New Plugins
+
+1. Add the plugin to `_config.yml` under the `plugins` list.
 2. Add it to the [Gemfile](https://hypermatrixlab.github.io/blob/main/Gemfile).
-3. Install it:
-```
-gem install gem-name-here
-bundle install
-```
+3. Install the plugin:
+   ```
+   gem install gem-name-here
+   bundle install
+   ```
 
-## GitHub security alerts
-
-GitHub might occasionally have security alerts concerning the dependencies (currently not a problem since we don't specify the version numbers in our Gemfile at the moment -- this might change in case we need to manually handle version conflicts). Usually, it will suggest a Dependabot PR that immediately solves the issue.
-If there's no Dependabot PR, you can typically generate one via the repo's [security tab](https://hypermatrixlab.github.io/security). 
-You can also do this by hand: add the code suggested by the security alert (`gem "gem-name-here", ">= version.number.here"`) to the [Gemfile](https://hypermatrixlab.github.io/blob/main/Gemfile) and update `Gemfile.lock` by running
-```
-gem install gem-name-here
-gem update gem-name-here
-bundle update gem-name-here
-bundle install
-```

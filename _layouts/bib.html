@@ -16,10 +16,6 @@
       
       <!-- Links section -->
       <div class="links">
-        {% if entry.abstract %}
-          <button class="btn abstract-btn" onclick="toggleAbstract(this)">Abstract</button>
-        {% endif %}
-        
         {% if entry.html %}
           {% if entry.html contains '://' %}
             <a href="{{ entry.html }}" class="btn" target="_blank" rel="noreferrer">HTML</a>
@@ -44,31 +40,7 @@
           <a href="{% if entry.poster contains '://' %}{{ entry.poster }}{% else %}{{ entry.poster | prepend: '/assets/pdf/' | relative_url }}{% endif %}" class="btn" target="_blank" rel="noreferrer">Poster</a>
         {% endif %}
       </div>
-
-      {% if entry.abstract %}
-      <div class="abstract hidden">
-        <p>{{ entry.abstract }}</p>
-      </div>
-      {% endif %}
     </div>
   </div>
   <hr class="separator">
 </div>
-
-<script>
-function toggleAbstract(button) {
-    const parent = button.closest('.content');
-    const abstract = parent.querySelector('.abstract');
-    if (abstract) {
-        if (abstract.classList.contains('hidden')) {
-            abstract.classList.remove('hidden');
-            button.textContent = 'Hide Abstract';
-            button.classList.add('active');
-        } else {
-            abstract.classList.add('hidden');
-            button.textContent = 'Abstract';
-            button.classList.remove('active');
-        }
-    }
-}
-</script>

@@ -2,19 +2,17 @@
 layout: default
 ---
 
-<!-- about.html -->
 <div class="post">
+    {% if page.banner %}
+    <div class="banner-container">
+        {%- assign banner_image_path = page.banner.image | prepend: 'assets/img/' -%}
+        <img class="banner-image img-fluid" src="{{ banner_image_path }}" alt="{{ page.banner.alt_text }}">
+        <div class="banner-title">
+            <!-- Welcome to HyperMatrix  -->
+        </div>
+    </div>
+    {% endif %}
 
-      {% if page.banner %}
-      <div class="banner-container">
-          {%- assign banner_image_path = page.banner.image | prepend: 'assets/img/' -%}
-          <img class="banner-image img-fluid" src="{{ banner_image_path }}" alt="{{ page.banner.alt_text }}">
-          <div class="banner-title">
-              <!-- Wecome to HyperMatrix  -->
-          </div>
-      </div>
-      {% endif %}
-  
     <article>
         {% if page.profile -%}
         <div class="profile float-{%- if page.profile.align == 'left' -%}left{%- else -%}right{%- endif -%}">
@@ -47,28 +45,22 @@ layout: default
         <div class="clearfix">
             {{ content }}
         </div>
-
-        {% if page.news -%}
-        <!-- News -->
-        {%- include news.html %}
-        {%- endif %}
-        {% if page.selected_papers -%}
+        
+        {% if page.selected_papers %}
         <!-- Selected papers -->
-        {%- include selected_papers.html %}
-        {%- endif %}
-        {%- if page.social %}
+        {% include selected_papers.html %}
+        {% endif %}
+        
+        {% if page.social %}
         <!-- Social -->
         <div class="social">
             <div class="contact-icons">
                 {% include social.html %}
             </div>
-
             <div class="contact-note">
                 {{ site.contact_note }}
             </div>
-
         </div>
-        {%- endif %}
+        {% endif %}
     </article>
-
 </div>
