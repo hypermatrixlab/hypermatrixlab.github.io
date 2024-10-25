@@ -2,10 +2,11 @@
 ---
 layout: page
 permalink: /website-notes/
-title: Updating the Website
-description:
+title: Updating the website
+description: 
 nav: false
 ---
+
 
 ## Overview
 
@@ -117,7 +118,7 @@ Add new items at the top to keep the news updated.
    title: "New Page Title"
    description: "Optional description"
    nav: true  # Set to false if not in the navigation bar
-   nav_order: 4  # Lower numbers appear further left
+   nav_order: 6  # Lower numbers appear further left
    ---
    ```
 3. Add the content below the header.

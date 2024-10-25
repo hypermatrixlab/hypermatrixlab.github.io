@@ -8,7 +8,7 @@ nav_order: 2
 ---
 <div class="publications">
 <h2 class="category">All Publications</h2>
-  {% bibliography --file papers --template bib %}
+  {% bibliography -f papers -q @* %}
   <button class="show-more" id="show-more-btn">
       Show More
   </button>
