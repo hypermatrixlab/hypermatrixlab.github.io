@@ -1,4 +1,3 @@
-
 ---
 layout: page
 permalink: /website-notes/
@@ -6,7 +5,6 @@ title: Updating the website
 description: 
 nav: false
 ---
-
 
 ## Overview
 
