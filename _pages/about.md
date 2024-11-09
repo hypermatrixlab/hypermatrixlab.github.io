@@ -47,7 +47,7 @@ staff:
       picture: domenic.jpg
     - name: Paolo Gajo
       description: PhD student
-      website: 
+      website: https://scholar.google.com/citations?user=ryn1awMAAAAJ&hl=en
       picture: 
     - name: Hamad Rizwan
       description: PhD student
