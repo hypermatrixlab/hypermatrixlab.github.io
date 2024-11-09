@@ -48,7 +48,7 @@ staff:
     - name: Paolo Gajo
       description: PhD student
       website: https://scholar.google.com/citations?user=ryn1awMAAAAJ&hl=en
-      picture: 
+      picture: paolo.jpeg
     - name: Hamad Rizwan
       description: PhD student
       website: https://scholar.google.com/citations?user=vERBCLMAAAAJ&hl=en
