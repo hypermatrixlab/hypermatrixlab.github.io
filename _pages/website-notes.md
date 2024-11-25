@@ -57,13 +57,12 @@ To add a new member to the website:
 
 1. Open the file [_pages/about.md](https://github.com/hypermatrixlab/hypermatrixlab.github.io/blob/main/_pages/about.md).
 2. Add the following to the relevant section:
-```yaml
+   ```yaml
    - name: "The Name"
      description: "Job title, date"
      website: "example.com"  # Remove this line if not applicable
      picture: "hyper_matrix.png"  # Replace with the actual image file name (e.g., name.jpg) if adding a new photo
-
-```
+   ```
 3. If you are adding a new picture, upload it to [assets/img](https://github.com/hypermatrixlab/hypermatrixlab.github.io/tree/main/assets/img).
 
 To add a new section for members, define it in `groups` at the top of the file, and create the section as shown below:
