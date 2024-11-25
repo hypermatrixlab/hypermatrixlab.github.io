@@ -27,7 +27,7 @@ If you'd like to preview your changes before pushing them to GitHub, follow thes
 1. Install [Ruby and Jekyll](https://jekyllrb.com/docs/installation/#guides).
 2. Clone the repository:
    ```
-   git clone git@github.com:HyperMatrix/HyperMatrix.github.io.git
+   git clone https://github.com/hypermatrixlab/hypermatrixlab.github.io.git
    ```
 3. Navigate to the project folder and run:
    ```
@@ -56,15 +56,15 @@ Understanding the repo structure will make it easier to find what you need:
 
 To add a new member to the website:
 
-1. Open [_pages/about.md](https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/_pages/about.md).
+1. Open the file [_pages/about.md](https://github.com/hypermatrixlab/hypermatrixlab.github.io/blob/main/_pages/about.md).
 2. Add the following to the relevant section:
-   ```
+   ```yaml
    - name: "The Name"
      description: "Job title, date"
-     website: "example.com"  # Remove if not applicable
-     picture: "hyper_matrix.png"  # Replace with name.jpg if adding a new photo
-   ```
-3. If you are adding a new picture, upload it to [assets/img](https://github.com/HyperMatrix/HyperMatrix.github.io/tree/main/assets/img).
+     website: "example.com"  # Remove this line if not applicable
+     picture: "hyper_matrix.png"  # Replace with the actual image file name (e.g., name.jpg) if adding a new photo
+
+3. If you are adding a new picture, upload it to [assets/img](https://github.com/hypermatrixlab/hypermatrixlab.github.io/tree/main/assets/img).
 
 To add a new section for members, define it in `groups` at the top of the file, and create the section as shown below:
 ```yaml
@@ -88,13 +88,13 @@ Make sure the following fields are filled out:
 - **month**
 - **author**
 - **url**
-- **booktitle**
+- **booktitle(this can be title for any manuscript**
 
 Papers are displayed in reverse chronological order.
 
 ## Adding News
 
-1. Open [_pages/about.md](https://github.com/HyperMatrix/HyperMatrix.github.io/blob/main/_pages/about.md).
+1. Open [_pages/about.md](https://github.com/hypermatrixlab/hypermatrixlab.github.io/blob/main/_pages/about.md).
 2. Edit the `news_items` section:
    ```yaml
    news_items:
@@ -107,7 +107,7 @@ Add new items at the top to keep the news updated.
 
 ## Creating a New Page
 
-1. Create a new markdown file in [_pages](https://github.com/HyperMatrix/HyperMatrix.github.io/tree/main/_pages).
+1. Create a new markdown file in [_pages](https://github.com/hypermatrixlab/hypermatrixlab.github.io/blob/main/_pages).
 2. Include a YAML header:
    ```yaml
    ---
@@ -121,19 +121,6 @@ Add new items at the top to keep the news updated.
    ```
 3. Add the content below the header.
 
-## Managing GitHub Security Alerts
-
-GitHub might issue security alerts for dependencies. If this happens:
-
-1. Check for a Dependabot pull request and merge it if available.
-2. If there is no automatic PR, you can generate one via the [security tab](https://hypermatrixlab.github.io/security).
-3. Alternatively, update manually by editing the [Gemfile](https://hypermatrixlab.github.io/blob/main/Gemfile) and running:
-   ```
-   gem install gem-name-here
-   gem update gem-name-here
-   bundle update gem-name-here
-   bundle install
-   ```
 
 ## Adding New Plugins
 
