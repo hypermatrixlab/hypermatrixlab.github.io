@@ -63,6 +63,7 @@ To add a new member to the website:
      website: "example.com"  # Remove this line if not applicable
      picture: "hyper_matrix.png"  # Replace with the actual image file name (e.g., name.jpg) if adding a new photo
 
+   ```
 3. If you are adding a new picture, upload it to [assets/img](https://github.com/hypermatrixlab/hypermatrixlab.github.io/tree/main/assets/img).
 
 To add a new section for members, define it in `groups` at the top of the file, and create the section as shown below:
