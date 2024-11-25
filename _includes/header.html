@@ -1,12 +1,11 @@
 <header>
-
   <!-- Nav Bar -->
   <nav id="navbar" class="navbar navbar-light navbar-expand-sm {% if site.navbar_fixed %}fixed-top{% else %}sticky-top{% endif %}">
     <div class="container">
 
       <!-- Add Logo to the Left of the Navigation Menu -->
       <div class="grid-item card">
-        {%- assign img_path = "/assets/img/hyper_matrix" | remove: ".jpg" | remove: ".jpeg" | remove: ".png" | remove: ".tiff" -%}
+        {%- assign img_path = "/assets/img/hyper_matrix" -%}
         <a class="navbar-logo" href="{{ site.baseurl }}/">
           <figure>
             <picture>
@@ -26,7 +25,7 @@
                 class="avatar"
                 width="auto" 
                 height="auto" 
-                style="max-height: 50px;"
+                style="max-height: 50px; max-width: auto; object-fit: contain;"
                 onerror="this.onerror=null; $('.responsive-img-srcset').remove();"
               />
             </picture>
