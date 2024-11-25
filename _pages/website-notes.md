@@ -17,7 +17,6 @@ Here's what you'll find in this guide:
 - [Adding Publications](#adding-publications)
 - [Adding News](#adding-news)
 - [Creating a New Page](#creating-a-new-page)
-- [Managing GitHub Security Alerts](#managing-github-security-alerts)
 - [Adding New Plugins](#adding-new-plugins)
 
 ## Previewing Changes Locally (Optional)
