@@ -29,7 +29,7 @@ news_items:
 selected_papers: false
 social: false
 
-groups: [staff, affiliated]
+groups: [staff, affiliated, alumni]
 staff:
   title: Research Staff
   people:
@@ -53,10 +53,6 @@ staff:
       description: PhD student
       website: https://scholar.google.com/citations?user=vERBCLMAAAAJ&hl=en
       picture: hamad.jpeg
-    - name: Jinkun Chen
-      description: PhD student
-      website: https://jinkunchen.com/
-      picture: jinkun.jpeg
     - name: Sher Badshah
       description: PhD student
       website: https://web.cs.dal.ca/~badshah/
@@ -80,7 +76,19 @@ affiliated:
     - name: Nouri Marzia
       description: Undergraduate student
       website: 
-      picture: 
+      picture:
+      
+alumni:
+  title: Alumni
+  people:
+  - name: Manpreet Singh
+    description: Master student
+    website: https://msingh-cse.github.io/
+    picture: manpreet.jpeg
+- name: Magen Cao
+  description: Bachelor student
+  website:
+  picture: 
 
 sponsors:
   - name: Faculty of Computer Science, Dalhousie University
