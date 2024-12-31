@@ -65,10 +65,6 @@ staff:
       description: PhD student
       website: https://xueminyu.com/
       picture: xuemin.png
-    - name: Manpreet Singh
-      description: Master student
-      website: https://msingh-cse.github.io/
-      picture: manpreet.jpeg
 
 affiliated:
   title: Research Collaborators
