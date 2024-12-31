@@ -76,11 +76,11 @@ affiliated:
     - name: Enyu Ye
       description: Undergraduate student
       website: ""
-      picture: ""
+      picture: hyper_matrix.png
     - name: Nouri Marzia
       description: Undergraduate student
       website: ""
-      picture: ""
+      picture: hyper_matrix.png
       
 alumni:
   title: Alumni
@@ -92,7 +92,7 @@ alumni:
     - name: Magen Cao
       description: Bachelor student
       website: ""
-      picture: ""
+      picture: hyper_matrix.png
 
 sponsors:
   - name: Faculty of Computer Science, Dalhousie University
