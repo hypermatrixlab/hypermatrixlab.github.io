@@ -2,7 +2,7 @@
 layout: about
 title: Home
 permalink: /
-subtitle: 
+subtitle: ""  # Empty string instead of null
 
 banner:
   image: cs_building.jpg 
@@ -29,7 +29,11 @@ news_items:
 selected_papers: false
 social: false
 
-groups: [staff, affiliated, alumni]
+groups:
+  - staff
+  - affiliated 
+  - alumni
+
 staff:
   title: Research Staff
   people:
@@ -71,24 +75,24 @@ affiliated:
   people:
     - name: Enyu Ye
       description: Undergraduate student
-      website: 
-      picture: 
+      website: ""
+      picture: ""
     - name: Nouri Marzia
       description: Undergraduate student
-      website: 
-      picture:
+      website: ""
+      picture: ""
       
 alumni:
   title: Alumni
   people:
-  - name: Manpreet Singh
-    description: Master student
-    website: https://msingh-cse.github.io/
-    picture: manpreet.jpeg
-- name: Magen Cao
-  description: Bachelor student
-  website:
-  picture: 
+    - name: Manpreet Singh
+      description: Master student
+      website: https://msingh-cse.github.io/
+      picture: manpreet.jpeg
+    - name: Magen Cao
+      description: Bachelor student
+      website: ""
+      picture: ""
 
 sponsors:
   - name: Faculty of Computer Science, Dalhousie University
