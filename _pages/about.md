@@ -73,7 +73,7 @@ affiliated:
       description: Undergraduate student
       website: ""
       picture: hyper_matrix.png
-    - name: Nouri Marzia
+    - name: Marzia Nouri
       description: Undergraduate student
       website: ""
       picture: hyper_matrix.png
