@@ -37,25 +37,15 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
-
+      
       - name: Build with Jekyll
         run: |
           bundle exec jekyll build --trace
         env:
           JEKYLL_ENV: production
-
-      # Ensure upload-artifact is available for the next step
-      - name: Ensure upload-artifact is available
-        uses: actions/upload-artifact@v3
-        with:
-          name: dummy
-          path: README.md
-          retention-days: 1
       
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2.0.0
-        with:
-          path: ./_site
+        uses: actions/upload-pages-artifact@v2
 
   deploy:
     environment:
@@ -66,4 +56,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3.0.0
+        uses: actions/deploy-pages@v2
