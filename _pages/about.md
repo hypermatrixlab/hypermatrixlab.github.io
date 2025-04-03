@@ -65,10 +65,6 @@ staff:
       description: PhD student
       website: https://xueminyu.com/
       picture: xuemin.png
-
-affiliated:
-  title: Research Collaborators
-  people:
     - name: Enyu Ye
       description: Undergraduate student
       website: ""
@@ -77,6 +73,14 @@ affiliated:
       description: Undergraduate student
       website: ""
       picture: hyper_matrix.png
+    - name: Sebastian Dionicio
+    - description: Undergraduate student
+      website: ""
+      picture: hyper_matrix.png
+    - name: Sasidhar Kunapuli
+    - description: Research intern
+      website: ""
+      picture: ""
       
 alumni:
   title: Alumni
