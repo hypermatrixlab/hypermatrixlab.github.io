@@ -79,7 +79,7 @@ staff:
     - name: Sasidhar Kunapuli
       description: Research intern
       website: ""
-      picture: ""
+      picture: hyper_matrix.png
       
 alumni:
   title: Alumni
@@ -139,7 +139,7 @@ sponsors:
             <img class="avatar" src="/assets/img/{{person.picture}}" alt="Portrait ({{person.name}})" width="auto" height="auto">
           {%- else -%}
             <img class="avatar" src="/assets/img/hyper_matrix.png" alt="Portrait ({{person.name}})" width="auto" height="auto">
-          {%- endif -%}
+          {%- endif -%}fco
           <div class="card-body">
             <h2 class="card-title">
               {% if person.website -%}
