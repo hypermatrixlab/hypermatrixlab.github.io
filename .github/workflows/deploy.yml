@@ -16,36 +16,38 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Use stable runner to avoid download bug
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: false
-      
+
       - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y imagemagick
           rm -f Gemfile.lock
           bundle install
-      
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
-      
+
       - name: Build with Jekyll
         run: |
           bundle exec jekyll build --trace
         env:
           JEKYLL_ENV: production
-      
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v2.0.0  # Use this, not generic upload-artifact
+        with:
+          path: ./_site
 
   deploy:
     environment:
@@ -56,4 +58,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v3.0.0
