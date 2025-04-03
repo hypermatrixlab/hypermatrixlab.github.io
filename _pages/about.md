@@ -73,11 +73,11 @@ staff:
       website: ""
       picture: hyper_matrix.png
     - name: Sebastian Dionicio
-    - description: Undergraduate student
+      description: Undergraduate student
       website: ""
       picture: hyper_matrix.png
     - name: Sasidhar Kunapuli
-    - description: Research intern
+      description: Research intern
       website: ""
       picture: ""
       
