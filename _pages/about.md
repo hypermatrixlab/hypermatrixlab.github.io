@@ -31,7 +31,6 @@ social: false
 
 groups:
   - staff
-  - affiliated 
   - alumni
 
 staff:
