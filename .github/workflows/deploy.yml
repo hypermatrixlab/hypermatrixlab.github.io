@@ -16,44 +16,46 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04  # 👈 The *key* fix
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      
+        uses: actions/checkout@v4.1.1
+
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@v1.173.0
         with:
           ruby-version: '3.2'
           bundler-cache: false
-      
+
       - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y imagemagick
           rm -f Gemfile.lock
           bundle install
-      
+
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v4
-      
+        uses: actions/configure-pages@v4.0.0
+
       - name: Build with Jekyll
         run: |
           bundle exec jekyll build --trace
         env:
           JEKYLL_ENV: production
-      
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v1.0.8  # latest stable working version
+        with:
+          path: ./_site
 
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04  # 👈 Same here
     needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v3.0.0
