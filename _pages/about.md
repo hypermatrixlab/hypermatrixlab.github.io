@@ -70,19 +70,23 @@ staff:
     - name: Enyu Ye
       description: Undergraduate student
       website: ""
-      picture: hyper_matrix.png
+      picture: enyu.jpeg
     - name: Marzia Nouri
       description: Undergraduate student
       website: ""
-      picture: hyper_matrix.png
+      picture: marzia.jpeg
     - name: Sebastian Dionicio
       description: Undergraduate student
       website: ""
-      picture: hyper_matrix.png
+      picture: sebastian.jpeg
     - name: Sasidhar Kunapuli
       description: Research intern
       website: ""
       picture: hyper_matrix.png
+    - name: Moamen Moustafa 
+      description: Research intern
+      website: ""
+      picture: momen.jpeg
       
 alumni:
   title: Alumni
