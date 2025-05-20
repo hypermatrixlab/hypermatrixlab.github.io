@@ -9,6 +9,9 @@ banner:
   alt_text: "Dalhousie University, Faculty of Computer Science Building"
 
 news_items:
+  - date: 2025
+    title: "Accepted papers 2025"
+    content: "2 papers (ICML), 1 paper (ICLR), 1 (IJMIR)"
   - date: 2024
     title: "Accepted Papers 2024"
     content: "2 papers (NeurIPS), 2 papers (NAACL), 2 papers (EMNLP)"
