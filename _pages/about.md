@@ -38,68 +38,58 @@ selected_papers: false
 social: false
 
 groups:
-  - faculty
-  - phd_students
-  - students_interns
+  - staff
   - alumni
 
-faculty:
-  title: Principal Investigator
+staff:
+  title: Research Staff
   people:
     - name: Hassan Sajjad
-      description: Assistant Professor and Lab Director
+      description: Prof. Dr. and Head of HyperMatrix
       website: https://hsajjad.github.io/
       picture: hassan.png
-
-phd_students:
-  title: PhD Students
-  people:
     - name: David Arps
-      description: PhD Student
+      description: PhD student
       website: https://davidarps.github.io/
       picture: david.jpeg
     - name: Domenic Rosati
-      description: PhD Student
+      description: PhD student
       website: https://domenicrosati.github.io/
       picture: domenic.jpg
     - name: Paolo Gajo
-      description: PhD Student
+      description: PhD student
       website: https://scholar.google.com/citations?user=ryn1awMAAAAJ&hl=en
       picture: paolo.jpeg
     - name: Hamad Rizwan
-      description: PhD Student
+      description: PhD student
       website: https://scholar.google.com/citations?user=vERBCLMAAAAJ&hl=en
       picture: hamad.jpeg
     - name: Sher Badshah
-      description: PhD Student
+      description: PhD student
       website: https://web.cs.dal.ca/~badshah/
       picture: sher.jpeg
     - name: Xuemin Yu
-      description: PhD Student
+      description: PhD student
       website: https://xueminyu.com/
       picture: xuemin.png
-
-students_interns:
-  title: Students & Research Interns
-  people:
     - name: Enyu Ye
-      description: Undergraduate Student
+      description: Undergraduate student
       website: ""
       picture: enyu.jpeg
     - name: Marzia Nouri
-      description: Undergraduate Student
+      description: Undergraduate student
       website: ""
       picture: marzia.jpeg
     - name: Sebastian Dionicio
-      description: Undergraduate Student
+      description: Undergraduate student
       website: ""
       picture: sebastian.jpeg
     - name: Sasidhar Kunapuli
-      description: Research Intern
+      description: Research intern
       website: ""
       picture: hyper_matrix.png
     - name: Moamen Moustafa 
-      description: Research Intern
+      description: Research intern
       website: ""
       picture: momen.jpeg
       
@@ -107,11 +97,11 @@ alumni:
   title: Alumni
   people:
     - name: Manpreet Singh
-      description: MSc Graduate
+      description: Master student
       website: https://msingh-cse.github.io/
       picture: manpreet.jpeg
     - name: Magen Cao
-      description: BSc Graduate
+      description: Bachelor student
       website: ""
       picture: hyper_matrix.png
 
@@ -133,9 +123,9 @@ sponsors:
 <div class="projects">
   <h2 class="category">About Us</h2>
   <div class="about-content">
-    <p>Welcome! We are the HyperMatrix research lab at Dalhousie University, Halifax, Canada, directed by <a href="https://hsajjad.github.io/">Prof. Hassan Sajjad</a>. We conduct cutting-edge research in Artificial Intelligence, focusing on Natural Language Processing, Deep Learning, and Safe and Trustworthy AI.</p>
+    Welcome! We are the HyperMatrix research lab at Dalhousie University, Halifax, Canada, directed by <a href="https://hsajjad.github.io/">Prof. Hassan Sajjad</a>. We conduct cutting-edge research in Artificial Intelligence, focusing on Natural Language Processing, Deep Learning, and Safe and Trustworthy AI.
     
-    <p>Our mission is to advance the field of AI by developing models that are not only powerful but also transparent, safe, and aligned with social needs. Our research interests include language generation, interpretability, explainability, generalization, robustness, and model editing—all with the aim of building trustworthy AI systems.</p>
+    <p style="margin-top: 1rem;">Our mission is to advance the field of AI by making models that are not only powerful but also transparent, safe, and aligned with social needs. Our research interests include language generation, interpretability, explainability, generalization, robustness, and model editing—all with the aim of developing trustworthy AI systems.</p>
   </div>
 
   <h2 class="category">News</h2>
@@ -143,9 +133,6 @@ sponsors:
     <ul>
       {% for item in page.news_items %}
       <li class="news-item">
-        {% if item.date %}
-          <span class="news-date">{{ item.date }}:</span>
-        {% endif %}
         {% if item.title %}
           <strong>{{ item.title }}:</strong>
         {% endif %}
@@ -156,25 +143,25 @@ sponsors:
   </div>
 
   {%- for group in page.groups -%}
-    <h2 class="category">{{ page[group].title }}</h2>
+    <h2 class="category">{{page.[group].title}}</h2>
     <div class="grid">
-      {%- for person in page[group].people -%}
+      {%- for person in page.[group].people -%}
         <article class="grid-item card">
           {% if person.picture -%}
-            <img class="avatar" src="/assets/img/{{ person.picture }}" alt="Photo of {{ person.name }}" width="auto" height="auto">
+            <img class="avatar" src="/assets/img/{{person.picture}}" alt="Portrait ({{person.name}})" width="auto" height="auto">
           {%- else -%}
-            <img class="avatar" src="/assets/img/hyper_matrix.png" alt="Photo of {{ person.name }}" width="auto" height="auto">
+            <img class="avatar" src="/assets/img/hyper_matrix.png" alt="Portrait ({{person.name}})" width="auto" height="auto">
           {%- endif -%}
           <div class="card-body">
             <h2 class="card-title">
-              {% if person.website and person.website != "" -%}
-                <a href="{{ person.website }}">{{ person.name }}</a>
+              {% if person.website -%}
+                <a href="{{person.website}}">{{person.name}}</a>
               {%- else -%}
-                {{ person.name }}
+                {{person.name}}
               {%- endif -%}
             </h2>
             <div class="card-text">
-              {{ person.description }}
+              {{person.description}}
             </div>
           </div>
         </article>
@@ -187,15 +174,15 @@ sponsors:
   <div class="sponsors">
     {%- for sponsor in page.sponsors -%}
       <div class="sponsor-item">
-        <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer">
+        <a href="{{ sponsor.website }}" target="_blank">
           <img src="/assets/img/{{ sponsor.logo }}" alt="{{ sponsor.name }} Logo">
         </a>
       </div>
     {%- endfor -%}
   </div>
 
-  <h2 class="category">Find Us</h2>
+  <h2 class="category">Find us</h2>
   <p>We are located at 6050 University Ave, Halifax, NS B3H 1W5 (<a href="/contact">→ directions</a>).</p>
   <p><a href="https://www.dal.ca/faculty/computerscience.html"><i class="fa fa-university" aria-hidden="true"></i> Faculty of Computer Science, Dalhousie University, Halifax, NS</a></p>
-  <p><a href="https://twitter.com/hassaan84s" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i> Hassan Sajjad</a></p>
+  <p><a href="https://twitter.com/hassaan84s"><i class="fab fa-twitter"></i> Hassan Sajjad</a></p>
 </div>
