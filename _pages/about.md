@@ -72,18 +72,14 @@ staff:
       description: PhD student
       website: https://xueminyu.com/
       picture: xuemin.png
-    - name: Enyu Ye
-      description: Undergraduate student
-      website: ""
-      picture: enyu.jpeg
-    - name: Marzia Nouri
-      description: Undergraduate student
-      website: ""
-      picture: marzia.jpeg
-    - name: Sebastian Dionicio
-      description: Undergraduate student
-      website: ""
-      picture: sebastian.jpeg
+    - name: Biruk Abere
+      description: PhD student
+      website: https://www.linkedin.com/in/biruk-abere-479aba215/
+      picture: hyper_matrix.png
+    - name: Naihe Feng
+      description: PhD student
+      website: https://n4feng.github.io/
+      picture: hyper_matrix.png
     - name: Sasidhar Kunapuli
       description: Research intern
       website: ""
@@ -104,6 +100,18 @@ alumni:
       description: Bachelor student
       website: ""
       picture: hyper_matrix.png
+    - name: Enyu Ye
+      description: Undergraduate student
+      website: ""
+      picture: enyu.jpeg
+    - name: Marzia Nouri
+      description: Undergraduate student
+      website: ""
+      picture: marzia.jpeg
+    - name: Sebastian Dionicio
+      description: Undergraduate student
+      website: ""
+      picture: sebastian.jpeg
 
 sponsors:
   - name: Faculty of Computer Science, Dalhousie University
