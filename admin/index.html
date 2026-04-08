@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HyperMatrix Lab - Dashboard</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --primary-light: #2a4a7f;
+      --accent: #3182ce;
+      --bg: #f7fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #2d3748;
+      --text-light: #718096;
+      --success: #38a169;
+      --danger: #e53e3e;
+      --warning: #d69e2e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .header h1 { font-size: 1.3rem; font-weight: 600; }
+    .header .status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .header .status .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+    .header .status .dot.disconnected { background: var(--danger); }
+
+    /* Auth Screen */
+    .auth-screen {
+      max-width: 500px;
+      margin: 80px auto;
+      padding: 2rem;
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+    }
+    .auth-screen h2 { margin-bottom: 0.5rem; }
+    .auth-screen p { color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.9rem; }
+    .auth-screen .steps {
+      background: #f0f4f8;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+    }
+    .auth-screen .steps ol { padding-left: 1.2rem; }
+    .auth-screen .steps li { margin-bottom: 0.3rem; }
+    .auth-screen .steps code {
+      background: #e2e8f0;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.8rem;
+    }
+
+    /* Layout */
+    .app { display: none; }
+    .app.active { display: block; }
+
+    .nav {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      gap: 0;
+    }
+    .nav button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav button:hover { color: var(--text); }
+    .nav button.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .content { max-width: 960px; margin: 2rem auto; padding: 0 1.5rem; }
+
+    /* Forms & Inputs */
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+    .card h3 { margin-bottom: 1rem; font-size: 1.1rem; }
+
+    .form-group { margin-bottom: 1rem; }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    .form-group label .hint {
+      font-weight: 400;
+      color: var(--text-light);
+      font-size: 0.8rem;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(49,130,206,0.1);
+    }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.5rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: #2b6cb0; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { background: #2f855a; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #c53030; }
+    .btn-outline {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { background: #f7fafc; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; }
+
+    /* Table / List */
+    .item-list { list-style: none; }
+    .item-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .item-list li:last-child { border-bottom: none; }
+    .item-info h4 { font-size: 0.95rem; margin-bottom: 0.15rem; }
+    .item-info p { font-size: 0.8rem; color: var(--text-light); }
+    .item-actions { display: flex; gap: 0.4rem; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      color: white;
+      font-size: 0.9rem;
+      z-index: 1000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--danger); }
+
+    /* Loading */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+    .loading-overlay.show { display: flex; }
+    .loading-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .loading-box .spinner {
+      width: 30px; height: 30px;
+      border-color: rgba(49,130,206,0.2);
+      border-top-color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 998;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 80px;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .modal h3 { margin-bottom: 1rem; }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Section header */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .section-header h2 { font-size: 1.2rem; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .header { flex-direction: column; gap: 0.5rem; }
+      .nav { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Auth Screen -->
+  <div id="auth-screen" class="auth-screen">
+    <h2>HyperMatrix Lab Dashboard</h2>
+    <p>Manage publications, team members, and news for the lab website.</p>
+    <div class="steps">
+      <strong>Setup (one-time) &mdash; choose one option:</strong>
+      <p style="margin:0.5rem 0 0.3rem;font-weight:600;">Option A: Classic Token (easiest)</p>
+      <ol>
+        <li>Go to <a href="https://github.com/settings/tokens/new" target="_blank">GitHub &rarr; Settings &rarr; Tokens (classic)</a></li>
+        <li>Name it <code>Lab Dashboard</code>, set expiry as you wish</li>
+        <li>Check the <strong><code>repo</code></strong> scope (full control of private repositories)</li>
+        <li>Click <strong>Generate token</strong> and paste it below</li>
+      </ol>
+      <p style="margin:0.8rem 0 0.3rem;font-weight:600;">Option B: Fine-grained Token (more secure)</p>
+      <ol>
+        <li>Go to <a href="https://github.com/settings/tokens?type=beta" target="_blank">GitHub &rarr; Settings &rarr; Fine-grained tokens</a></li>
+        <li>Click <strong>"Generate new token"</strong></li>
+        <li>Name it <code>Lab Dashboard</code>, set expiry as you wish</li>
+        <li>Under <strong>Repository access</strong>, select <strong>"Only select repositories"</strong> and choose <code>hypermatrixlab.github.io</code></li>
+        <li>Under <strong>Permissions &rarr; Repository permissions</strong>, find <strong>"Contents"</strong> in the list and change the dropdown from "No access" to <strong>"Read and write"</strong></li>
+        <li>Click <strong>Generate token</strong> and paste it below</li>
+      </ol>
+    </div>
+    <div class="form-group">
+      <label>GitHub Personal Access Token</label>
+      <input type="password" id="token-input" placeholder="github_pat_...">
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="authenticate()">Connect</button>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="app" class="app">
+    <div class="header">
+      <h1>HyperMatrix Lab Dashboard</h1>
+      <div class="status">
+        <div class="dot" id="status-dot"></div>
+        <span id="status-text">Connected</span>
+        <button class="btn btn-outline" style="margin-left:1rem;padding:0.3rem 0.8rem;font-size:0.8rem;" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="active" onclick="switchTab('publications', this)">Publications</button>
+      <button onclick="switchTab('members', this)">Team Members</button>
+      <button onclick="switchTab('news', this)">News</button>
+    </div>
+
+    <div class="content">
+      <!-- Publications Tab -->
+      <div id="tab-publications" class="tab-content">
+        <div class="card">
+          <h3>Publications Page Header</h3>
+          <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.8rem;">This text appears at the top of the publications page. URLs will become clickable links.</p>
+          <div class="form-group">
+            <textarea id="pub-page-header" rows="3" placeholder="e.g., For an updated list, visit our Google Scholar page: https://..."></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="savePubPageHeader()">Save Header</button>
+        </div>
+        <div class="section-header" style="margin-top:1.5rem;">
+          <h2>Publications</h2>
+          <button class="btn btn-primary" onclick="showAddPublication()">+ Add Publication</button>
+        </div>
+        <div class="card">
+          <div id="publications-list"><em>Loading...</em></div>
+        </div>
+      </div>
+
+      <!-- Members Tab -->
+      <div id="tab-members" class="tab-content" style="display:none;">
+        <div class="section-header">
+          <h2>Team Members</h2>
+          <button class="btn btn-primary" onclick="showAddMember()">+ Add Member</button>
+        </div>
+        <div class="card">
+          <h3>Research Staff</h3>
+          <ul class="item-list" id="staff-list"><li><em>Loading...</em></li></ul>
+        </div>
+        <div class="card">
+          <h3>Alumni</h3>
+          <ul class="item-list" id="alumni-list"><li><em>Loading...</em></li></ul>
+        </div>
+      </div>
+
+      <!-- News Tab -->
+      <div id="tab-news" class="tab-content" style="display:none;">
+        <div class="section-header">
+          <h2>News</h2>
+          <button class="btn btn-primary" onclick="showAddNews()">+ Add News Item</button>
+        </div>
+        <div class="card">
+          <ul class="item-list" id="news-list"><li><em>Loading...</em></li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal" id="modal"></div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loading">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <div id="loading-text">Saving changes...</div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// Config
+// ============================================================
+const REPO_OWNER = 'hypermatrixlab';
+const REPO_NAME = 'hypermatrixlab.github.io';
+const BRANCH = 'main';
+const API_BASE = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`;
+
+let TOKEN = '';
+let aboutMdContent = '';
+let aboutMdSha = '';
+let bibContent = '';
+let bibSha = '';
+let parsedMembers = { staff: [], alumni: [] };
+let parsedNews = [];
+let parsedPubs = [];
+let pubPageContent = '';
+let pubPageSha = '';
+
+// ============================================================
+// Auth
+// ============================================================
+function authenticate() {
+  const token = document.getElementById('token-input').value.trim();
+  if (!token) return showToast('Please enter a token', 'error');
+  TOKEN = token;
+  showLoading('Connecting to GitHub...');
+
+  ghAPI('/contents/_config.yml').then(res => {
+    localStorage.setItem('gh_token', token);
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app').classList.add('active');
+    hideLoading();
+    loadAll();
+  }).catch(err => {
+    hideLoading();
+    showToast('Invalid token or no access to repo', 'error');
+  });
+}
+
+function logout() {
+  localStorage.removeItem('gh_token');
+  TOKEN = '';
+  document.getElementById('app').classList.remove('active');
+  document.getElementById('auth-screen').style.display = 'block';
+  document.getElementById('token-input').value = '';
+}
+
+// Auto-login
+(function() {
+  const saved = localStorage.getItem('gh_token');
+  if (saved) {
+    TOKEN = saved;
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app').classList.add('active');
+    loadAll();
+  }
+})();
+
+// ============================================================
+// GitHub API
+// ============================================================
+async function ghAPI(path, options = {}) {
+  const res = await fetch(API_BASE + path, {
+    ...options,
+    headers: {
+      'Authorization': `Bearer ${TOKEN}`,
+      'Accept': 'application/vnd.github.v3+json',
+      ...(options.headers || {}),
+      ...(options.body ? {'Content-Type': 'application/json'} : {})
+    }
+  });
+  if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+  return res.json();
+}
+
+async function getFile(path) {
+  const data = await ghAPI(`/contents/${path}?ref=${BRANCH}`);
+  return { content: atob(data.content.replace(/\n/g, '')), sha: data.sha };
+}
+
+async function updateFile(path, content, sha, message) {
+  return ghAPI(`/contents/${path}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      message,
+      content: btoa(unescape(encodeURIComponent(content))),
+      sha,
+      branch: BRANCH
+    })
+  });
+}
+
+async function uploadImage(path, base64Data, message) {
+  // Check if file exists first
+  let sha;
+  try {
+    const existing = await ghAPI(`/contents/${path}?ref=${BRANCH}`);
+    sha = existing.sha;
+  } catch(e) { /* new file */ }
+
+  const body = { message, content: base64Data, branch: BRANCH };
+  if (sha) body.sha = sha;
+
+  return ghAPI(`/contents/${path}`, {
+    method: 'PUT',
+    body: JSON.stringify(body)
+  });
+}
+
+// ============================================================
+// Load All Data
+// ============================================================
+async function loadAll() {
+  try {
+    showLoading('Loading website data...');
+    const [aboutFile, bibFile, pubPageFile] = await Promise.all([
+      getFile('_pages/about.md'),
+      getFile('_bibliography/papers.bib'),
+      getFile('_pages/publications.md')
+    ]);
+
+    aboutMdContent = aboutFile.content;
+    aboutMdSha = aboutFile.sha;
+    bibContent = bibFile.content;
+    bibSha = bibFile.sha;
+    pubPageContent = pubPageFile.content;
+    pubPageSha = pubPageFile.sha;
+
+    parseAboutMd();
+    parseBib();
+    renderAll();
+    hideLoading();
+  } catch(e) {
+    hideLoading();
+    showToast('Failed to load data: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+// Parse about.md YAML front matter
+// ============================================================
+function parseAboutMd() {
+  const fmMatch = aboutMdContent.match(/^---\n([\s\S]*?)\n---/);
+  if (!fmMatch) return;
+  const yaml = fmMatch[1];
+
+  // Parse news items
+  parsedNews = [];
+  const newsBlock = yaml.match(/news_items:\n((?:\s+-[\s\S]*?)(?=\n\w|\n$))/);
+  if (newsBlock) {
+    const items = newsBlock[1].split(/\n  - /).filter(Boolean);
+    items.forEach(item => {
+      const date = (item.match(/date:\s*"?([^"\n]*)"?/) || [])[1] || '';
+      const title = (item.match(/title:\s*"?([^"\n]*)"?/) || [])[1] || '';
+      const content = (item.match(/content:\s*"?([^"\n]*)"?/) || [])[1] || '';
+      parsedNews.push({ date: date.trim(), title: title.trim(), content: content.trim() });
+    });
+  }
+
+  // Parse staff
+  parsedMembers.staff = parseGroup(yaml, 'staff');
+  parsedMembers.alumni = parseGroup(yaml, 'alumni');
+}
+
+function parseGroup(yaml, groupName) {
+  const people = [];
+  const groupRegex = new RegExp(groupName + ':\\n\\s+title:[^\\n]*\\n\\s+people:\\n([\\s\\S]*?)(?=\\n\\w|$)');
+  const match = yaml.match(groupRegex);
+  if (!match) return people;
+
+  const entries = match[1].split(/\n    - /).filter(Boolean);
+  entries.forEach(entry => {
+    const name = (entry.match(/name:\s*(.+)/) || [])[1] || '';
+    const desc = (entry.match(/description:\s*(.+)/) || [])[1] || '';
+    const website = (entry.match(/website:\s*(.+)/) || [])[1] || '';
+    const picture = (entry.match(/picture:\s*(.+)/) || [])[1] || '';
+    people.push({
+      name: name.trim(),
+      description: desc.trim(),
+      website: website.trim().replace(/^"|"$/g, ''),
+      picture: picture.trim()
+    });
+  });
+  return people;
+}
+
+// ============================================================
+// Parse BibTeX
+// ============================================================
+function parseBib() {
+  parsedPubs = [];
+  // Remove YAML front matter if present
+  let bib = bibContent.replace(/^---\n---\n?/, '');
+
+  // Split into entries
+  const entryRegex = /@(\w+)\s*\{([^,]*),\s*([\s\S]*?)(?=\n@|\n*$)/g;
+  let match;
+  while ((match = entryRegex.exec(bib)) !== null) {
+    const type = match[1];
+    const key = match[2].trim();
+    const body = match[3];
+
+    const fields = {};
+    // Parse fields — handle braced values and quoted values
+    const fieldRegex = /(\w+)\s*=\s*(?:\{((?:[^{}]|\{[^{}]*\})*)\}|"([^"]*)")/g;
+    let fm;
+    while ((fm = fieldRegex.exec(body)) !== null) {
+      fields[fm[1].toLowerCase()] = (fm[2] !== undefined ? fm[2] : fm[3]).trim();
+    }
+
+    parsedPubs.push({ type, key, fields, raw: match[0] });
+  }
+}
+
+// ============================================================
+// Render
+// ============================================================
+function renderAll() {
+  renderPublications();
+  renderMembers();
+  renderNews();
+  renderPubPageHeader();
+}
+
+function renderPubPageHeader() {
+  // Extract any text between the front matter closing --- and the bibliography div
+  const fmEnd = pubPageContent.indexOf('\n---', 4);
+  if (fmEnd < 0) return;
+  const body = pubPageContent.substring(fmEnd + 4).trim();
+  // Get text before the first {% or <div or <script — that's the header
+  const headerMatch = body.match(/^([\s\S]*?)(?=\{%|<div|<script|$)/);
+  const header = headerMatch ? headerMatch[1].trim() : '';
+  document.getElementById('pub-page-header').value = header;
+}
+
+async function savePubPageHeader() {
+  const headerText = document.getElementById('pub-page-header').value.trim();
+  const linkedText = autoLinkUrls(headerText);
+
+  showLoading('Updating publications page...');
+  try {
+    // Replace the body between front matter and bibliography section
+    const fmEnd = pubPageContent.indexOf('\n---', 4);
+    const frontMatter = pubPageContent.substring(0, fmEnd + 4);
+    // Find the bibliography/div/script part
+    const body = pubPageContent.substring(fmEnd + 4);
+    const dynamicStart = body.search(/\{%|<div|<script/);
+    const dynamicPart = dynamicStart >= 0 ? body.substring(dynamicStart) : '';
+
+    const updated = frontMatter + '\n\n' + linkedText + '\n\n' + dynamicPart;
+    const res = await updateFile('_pages/publications.md', updated, pubPageSha, 'Update publications page header');
+    pubPageSha = res.content.sha;
+    pubPageContent = updated;
+    hideLoading();
+    showToast('Publications header updated!', 'success');
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+function renderPublications() {
+  const el = document.getElementById('publications-list');
+  if (parsedPubs.length === 0) {
+    el.innerHTML = '<em>No publications found</em>';
+    return;
+  }
+
+  // Sort by year descending
+  const sorted = [...parsedPubs].sort((a, b) => {
+    const ya = parseInt(a.fields.year) || 0;
+    const yb = parseInt(b.fields.year) || 0;
+    return yb - ya;
+  });
+
+  let html = '<ul class="item-list">';
+  sorted.forEach((pub, i) => {
+    const title = pub.fields.title || 'Untitled';
+    const authors = pub.fields.author || 'Unknown';
+    const venue = pub.fields.booktitle || pub.fields.journal || pub.fields.archiveprefix || '';
+    const year = pub.fields.year || '';
+    // Truncate authors for display
+    const shortAuthors = authors.length > 80 ? authors.substring(0, 80) + '...' : authors;
+    html += `
+      <li>
+        <div class="item-info">
+          <h4>${escHtml(title.replace(/[{}]/g, ''))}</h4>
+          <p>${escHtml(shortAuthors.replace(/[{}]/g, ''))} ${year ? '(' + year + ')' : ''} ${venue ? '&mdash; ' + escHtml(venue.replace(/[{}]/g, '')) : ''}</p>
+        </div>
+        <div class="item-actions">
+          <button class="btn btn-outline" onclick="showEditPublication(${i})">Edit</button>
+          <button class="btn btn-danger" onclick="deletePublication('${escAttr(pub.key)}')">Delete</button>
+        </div>
+      </li>`;
+  });
+  html += '</ul>';
+  el.innerHTML = html;
+}
+
+function renderMembers() {
+  renderMemberList('staff-list', parsedMembers.staff, 'staff');
+  renderMemberList('alumni-list', parsedMembers.alumni, 'alumni');
+}
+
+function renderMemberList(elId, members, group) {
+  const el = document.getElementById(elId);
+  if (members.length === 0) {
+    el.innerHTML = '<li><em>No members</em></li>';
+    return;
+  }
+  el.innerHTML = members.map((m, i) => `
+    <li>
+      <div class="item-info">
+        <h4>${escHtml(m.name)}</h4>
+        <p>${escHtml(m.description)}${m.website ? ' &mdash; <a href="' + escAttr(m.website) + '" target="_blank">website</a>' : ''}</p>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-outline" onclick="showEditMember('${group}', ${i})">Edit</button>
+        <button class="btn btn-danger" onclick="deleteMember('${group}', ${i})">Delete</button>
+      </div>
+    </li>
+  `).join('');
+}
+
+function renderNews() {
+  const el = document.getElementById('news-list');
+  if (parsedNews.length === 0) {
+    el.innerHTML = '<li><em>No news items</em></li>';
+    return;
+  }
+  el.innerHTML = parsedNews.map((n, i) => `
+    <li>
+      <div class="item-info">
+        <h4>${escHtml(n.title)}</h4>
+        <p>${escHtml(n.date)} &mdash; ${escHtml(n.content)}</p>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-outline" onclick="showEditNews(${i})">Edit</button>
+        <button class="btn btn-danger" onclick="deleteNews(${i})">Delete</button>
+      </div>
+    </li>
+  `).join('');
+}
+
+// ============================================================
+// Tab Switching
+// ============================================================
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).style.display = 'block';
+  btn.classList.add('active');
+}
+
+// ============================================================
+// Publications CRUD
+// ============================================================
+function showAddPublication() {
+  openModal(`
+    <h3>Add Publication</h3>
+    <div class="form-group">
+      <label>Entry Type</label>
+      <select id="pub-type">
+        <option value="inproceedings">Conference Paper (inproceedings)</option>
+        <option value="article">Journal Article (article)</option>
+        <option value="misc">Preprint / Other (misc)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Citation Key <span class="hint">e.g., smith_title_venue2024</span></label>
+      <input id="pub-key" placeholder="lastname_shorttitle_venue2024">
+    </div>
+    <div class="form-group">
+      <label>Title</label>
+      <input id="pub-title" placeholder="Paper title">
+    </div>
+    <div class="form-group">
+      <label>Authors <span class="hint">separated by "and"</span></label>
+      <textarea id="pub-authors" rows="2" placeholder="First Last and First Last and First Last"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Year</label>
+        <input id="pub-year" type="number" placeholder="2025">
+      </div>
+      <div class="form-group">
+        <label>Month <span class="hint">number 1-12</span></label>
+        <input id="pub-month" type="number" min="1" max="12" placeholder="6">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Venue <span class="hint">conference or journal name</span></label>
+      <input id="pub-venue" placeholder="NeurIPS 2025">
+    </div>
+    <div class="form-group">
+      <label>URL <span class="hint">optional</span></label>
+      <input id="pub-url" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label>Code URL <span class="hint">optional</span></label>
+      <input id="pub-code" placeholder="https://github.com/...">
+    </div>
+    <div class="form-group">
+      <label>Abstract <span class="hint">optional</span></label>
+      <textarea id="pub-abstract" rows="3" placeholder="Paper abstract..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Or paste raw BibTeX <span class="hint">leave above fields empty if pasting</span></label>
+      <textarea id="pub-raw" rows="6" placeholder="@inproceedings{key, ...}"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="saveNewPublication()">Save &amp; Commit</button>
+    </div>
+  `);
+}
+
+function showEditPublication(sortedIndex) {
+  const sorted = [...parsedPubs].sort((a, b) => (parseInt(b.fields.year)||0) - (parseInt(a.fields.year)||0));
+  const pub = sorted[sortedIndex];
+  if (!pub) return;
+
+  const f = pub.fields;
+  openModal(`
+    <h3>Edit Publication</h3>
+    <input type="hidden" id="pub-edit-origkey" value="${escAttr(pub.key)}">
+    <div class="form-group">
+      <label>Entry Type</label>
+      <select id="pub-type">
+        <option value="inproceedings" ${pub.type.toLowerCase()==='inproceedings'?'selected':''}>Conference Paper</option>
+        <option value="article" ${pub.type.toLowerCase()==='article'?'selected':''}>Journal Article</option>
+        <option value="misc" ${pub.type.toLowerCase()==='misc'?'selected':''}>Preprint / Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Citation Key</label>
+      <input id="pub-key" value="${escAttr(pub.key)}">
+    </div>
+    <div class="form-group">
+      <label>Title</label>
+      <input id="pub-title" value="${escAttr((f.title||'').replace(/[{}]/g,''))}">
+    </div>
+    <div class="form-group">
+      <label>Authors</label>
+      <textarea id="pub-authors" rows="2">${escHtml(f.author||'')}</textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Year</label>
+        <input id="pub-year" type="number" value="${escAttr(f.year||'')}">
+      </div>
+      <div class="form-group">
+        <label>Month</label>
+        <input id="pub-month" type="number" value="${escAttr(f.month||'')}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Venue</label>
+      <input id="pub-venue" value="${escAttr((f.booktitle||f.journal||'').replace(/[{}]/g,''))}">
+    </div>
+    <div class="form-group">
+      <label>URL</label>
+      <input id="pub-url" value="${escAttr(f.url||'')}">
+    </div>
+    <div class="form-group">
+      <label>Code URL</label>
+      <input id="pub-code" value="${escAttr(f.code||'')}">
+    </div>
+    <div class="form-group">
+      <label>Abstract</label>
+      <textarea id="pub-abstract" rows="3">${escHtml(f.abstract||'')}</textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="saveEditPublication()">Save &amp; Commit</button>
+    </div>
+  `);
+}
+
+async function saveNewPublication() {
+  const raw = document.getElementById('pub-raw').value.trim();
+  let newEntry;
+  if (raw) {
+    newEntry = '\n' + raw + '\n';
+  } else {
+    newEntry = buildBibEntry();
+    if (!newEntry) return;
+  }
+
+  showLoading('Committing publication...');
+  try {
+    // Append to bib file
+    const updated = bibContent.trimEnd() + '\n\n' + newEntry.trim() + '\n';
+    const res = await updateFile('_bibliography/papers.bib', updated, bibSha, 'Add publication via dashboard');
+    bibSha = res.content.sha;
+    bibContent = updated;
+    parseBib();
+    renderPublications();
+    closeModal();
+    hideLoading();
+    showToast('Publication added successfully!', 'success');
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function saveEditPublication() {
+  const origKey = document.getElementById('pub-edit-origkey').value;
+  const newEntry = buildBibEntry();
+  if (!newEntry) return;
+
+  showLoading('Updating publication...');
+  try {
+    // Find and replace the entry in bib content
+    const updated = replaceBibEntry(bibContent, origKey, newEntry);
+    const res = await updateFile('_bibliography/papers.bib', updated, bibSha, `Update publication: ${origKey}`);
+    bibSha = res.content.sha;
+    bibContent = updated;
+    parseBib();
+    renderPublications();
+    closeModal();
+    hideLoading();
+    showToast('Publication updated!', 'success');
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function deletePublication(key) {
+  if (!confirm('Delete this publication?')) return;
+  showLoading('Deleting publication...');
+  try {
+    const updated = replaceBibEntry(bibContent, key, '');
+    const res = await updateFile('_bibliography/papers.bib', updated, bibSha, `Delete publication: ${key}`);
+    bibSha = res.content.sha;
+    bibContent = updated;
+    parseBib();
+    renderPublications();
+    hideLoading();
+    showToast('Publication deleted', 'success');
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+function buildBibEntry() {
+  const type = document.getElementById('pub-type').value;
+  const key = document.getElementById('pub-key').value.trim();
+  const title = document.getElementById('pub-title').value.trim();
+  const authors = document.getElementById('pub-authors').value.trim();
+  const year = document.getElementById('pub-year').value.trim();
+  const month = document.getElementById('pub-month').value.trim();
+  const venue = document.getElementById('pub-venue').value.trim();
+  const url = document.getElementById('pub-url').value.trim();
+  const code = document.getElementById('pub-code').value.trim();
+  const abstract = document.getElementById('pub-abstract').value.trim();
+
+  if (!key || !title || !authors || !year) {
+    showToast('Key, title, authors, and year are required', 'error');
+    return null;
+  }
+
+  const venueField = type === 'article' ? 'journal' : 'booktitle';
+  let entry = `@${type}{${key},\n`;
+  entry += `  title = {${title}},\n`;
+  entry += `  author = {${authors}},\n`;
+  entry += `  year = {${year}},\n`;
+  if (month) entry += `  month = {${month}},\n`;
+  if (venue) entry += `  ${venueField} = {${venue}},\n`;
+  if (url) entry += `  url = {${url}},\n`;
+  if (code) entry += `  code = {${code}},\n`;
+  if (abstract) entry += `  abstract = {${abstract}},\n`;
+  entry += `}`;
+  return entry;
+}
+
+function replaceBibEntry(bib, key, replacement) {
+  // Find the entry by key and replace it
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`@\\w+\\s*\\{\\s*${escapedKey}\\s*,[\\s\\S]*?\\n\\}`, 'g');
+  let result = bib.replace(regex, replacement);
+  // Clean up double blank lines
+  result = result.replace(/\n{3,}/g, '\n\n');
+  return result;
+}
+
+// ============================================================
+// Members CRUD
+// ============================================================
+function showAddMember() {
+  openModal(`
+    <h3>Add Team Member</h3>
+    <div class="form-group">
+      <label>Group</label>
+      <select id="member-group">
+        <option value="staff">Research Staff</option>
+        <option value="alumni">Alumni</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input id="member-name" placeholder="First Last">
+    </div>
+    <div class="form-group">
+      <label>Role / Description</label>
+      <input id="member-desc" placeholder="PhD student">
+    </div>
+    <div class="form-group">
+      <label>Website URL <span class="hint">optional</span></label>
+      <input id="member-website" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label>Photo <span class="hint">recommended 400x400px, JPG/PNG</span></label>
+      <input type="file" id="member-photo" accept="image/*">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="saveNewMember()">Save &amp; Commit</button>
+    </div>
+  `);
+}
+
+function showEditMember(group, index) {
+  const m = parsedMembers[group][index];
+  openModal(`
+    <h3>Edit Team Member</h3>
+    <input type="hidden" id="member-edit-group" value="${group}">
+    <input type="hidden" id="member-edit-index" value="${index}">
+    <div class="form-group">
+      <label>Group</label>
+      <select id="member-group">
+        <option value="staff" ${group==='staff'?'selected':''}>Research Staff</option>
+        <option value="alumni" ${group==='alumni'?'selected':''}>Alumni</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input id="member-name" value="${escAttr(m.name)}">
+    </div>
+    <div class="form-group">
+      <label>Role / Description</label>
+      <input id="member-desc" value="${escAttr(m.description)}">
+    </div>
+    <div class="form-group">
+      <label>Website URL</label>
+      <input id="member-website" value="${escAttr(m.website)}">
+    </div>
+    <div class="form-group">
+      <label>Photo <span class="hint">leave empty to keep current (${escHtml(m.picture)})</span></label>
+      <input type="file" id="member-photo" accept="image/*">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="saveEditMember()">Save &amp; Commit</button>
+    </div>
+  `);
+}
+
+async function saveNewMember() {
+  const group = document.getElementById('member-group').value;
+  const name = document.getElementById('member-name').value.trim();
+  const desc = document.getElementById('member-desc').value.trim();
+  const website = document.getElementById('member-website').value.trim();
+  const photoFile = document.getElementById('member-photo').files[0];
+
+  if (!name || !desc) {
+    showToast('Name and description are required', 'error');
+    return;
+  }
+
+  showLoading('Saving member...');
+  try {
+    let pictureName = 'hyper_matrix.png';
+    if (photoFile) {
+      const ext = photoFile.name.split('.').pop().toLowerCase();
+      pictureName = name.toLowerCase().replace(/\s+/g, '_') + '.' + ext;
+      const base64 = await fileToBase64(photoFile);
+      await uploadImage(`assets/img/${pictureName}`, base64, `Add photo: ${pictureName}`);
+    }
+
+    const newMember = { name, description: desc, website: website || '', picture: pictureName };
+    parsedMembers[group].push(newMember);
+    await commitAboutMd(`Add team member: ${name}`);
+    renderMembers();
+    closeModal();
+    hideLoading();
+    showToast('Member added!', 'success');
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function saveEditMember() {
+  const origGroup = document.getElementById('member-edit-group').value;
+  const origIndex = parseInt(document.getElementById('member-edit-index').value);
+  const newGroup = document.getElementById('member-group').value;
+  const name = document.getElementById('member-name').value.trim();
+  const desc = document.getElementById('member-desc').value.trim();
+  const website = document.getElementById('member-website').value.trim();
+  const photoFile = document.getElementById('member-photo').files[0];
+
+  if (!name || !desc) {
+    showToast('Name and description are required', 'error');
+    return;
+  }
+
+  showLoading('Updating member...');
+  try {
+    let pictureName = parsedMembers[origGroup][origIndex].picture;
+    if (photoFile) {
+      const ext = photoFile.name.split('.').pop().toLowerCase();
+      pictureName = name.toLowerCase().replace(/\s+/g, '_') + '.' + ext;
+      const base64 = await fileToBase64(photoFile);
+      await uploadImage(`assets/img/${pictureName}`, base64, `Update photo: ${pictureName}`);
+    }
+
+    // Remove from old group
+    parsedMembers[origGroup].splice(origIndex, 1);
+    // Add to new group
+    parsedMembers[newGroup].push({ name, description: desc, website: website || '', picture: pictureName });
+
+    await commitAboutMd(`Update team member: ${name}`);
+    renderMembers();
+    closeModal();
+    hideLoading();
+    showToast('Member updated!', 'success');
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function deleteMember(group, index) {
+  const m = parsedMembers[group][index];
+  if (!confirm(`Delete ${m.name}?`)) return;
+  showLoading('Deleting member...');
+  try {
+    parsedMembers[group].splice(index, 1);
+    await commitAboutMd(`Remove team member: ${m.name}`);
+    renderMembers();
+    hideLoading();
+    showToast('Member removed', 'success');
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+// News CRUD
+// ============================================================
+function showAddNews() {
+  openModal(`
+    <h3>Add News Item</h3>
+    <div class="form-group">
+      <label>Date <span class="hint">e.g., 2025 or 2025-03</span></label>
+      <input id="news-date" placeholder="2025">
+    </div>
+    <div class="form-group">
+      <label>Title</label>
+      <input id="news-title" placeholder="Accepted Papers 2025">
+    </div>
+    <div class="form-group">
+      <label>Content <span class="hint">URLs will automatically become clickable links on the website</span></label>
+      <textarea id="news-content" rows="3" placeholder="Details about the news..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="saveNewNews()">Save &amp; Commit</button>
+    </div>
+  `);
+}
+
+function showEditNews(index) {
+  const n = parsedNews[index];
+  openModal(`
+    <h3>Edit News Item</h3>
+    <input type="hidden" id="news-edit-index" value="${index}">
+    <div class="form-group">
+      <label>Date</label>
+      <input id="news-date" value="${escAttr(n.date)}">
+    </div>
+    <div class="form-group">
+      <label>Title</label>
+      <input id="news-title" value="${escAttr(n.title)}">
+    </div>
+    <div class="form-group">
+      <label>Content</label>
+      <textarea id="news-content" rows="3">${escHtml(n.content)}</textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="saveEditNews()">Save &amp; Commit</button>
+    </div>
+  `);
+}
+
+async function saveNewNews() {
+  const date = document.getElementById('news-date').value.trim();
+  const title = document.getElementById('news-title').value.trim();
+  const content = document.getElementById('news-content').value.trim();
+  if (!date || !title || !content) {
+    showToast('All fields are required', 'error');
+    return;
+  }
+
+  showLoading('Committing news...');
+  try {
+    parsedNews.unshift({ date, title, content: autoLinkUrls(content) });
+    await commitAboutMd(`Add news: ${title}`);
+    renderNews();
+    closeModal();
+    hideLoading();
+    showToast('News added!', 'success');
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function saveEditNews() {
+  const index = parseInt(document.getElementById('news-edit-index').value);
+  const date = document.getElementById('news-date').value.trim();
+  const title = document.getElementById('news-title').value.trim();
+  const content = document.getElementById('news-content').value.trim();
+  if (!date || !title || !content) {
+    showToast('All fields are required', 'error');
+    return;
+  }
+
+  showLoading('Updating news...');
+  try {
+    parsedNews[index] = { date, title, content: autoLinkUrls(content) };
+    await commitAboutMd(`Update news: ${title}`);
+    renderNews();
+    closeModal();
+    hideLoading();
+    showToast('News updated!', 'success');
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function deleteNews(index) {
+  if (!confirm('Delete this news item?')) return;
+  showLoading('Deleting news...');
+  try {
+    parsedNews.splice(index, 1);
+    await commitAboutMd(`Delete news item`);
+    renderNews();
+    hideLoading();
+    showToast('News deleted', 'success');
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+// Rebuild and commit about.md
+// ============================================================
+async function commitAboutMd(message) {
+  const updated = rebuildAboutMd();
+  const res = await updateFile('_pages/about.md', updated, aboutMdSha, message);
+  aboutMdSha = res.content.sha;
+  aboutMdContent = updated;
+}
+
+function rebuildAboutMd() {
+  // Get the body content (after front matter)
+  const fmEnd = aboutMdContent.indexOf('\n---', 4);
+  const body = fmEnd >= 0 ? aboutMdContent.substring(fmEnd + 4) : '';
+
+  let yaml = `---
+layout: about
+title: Home
+permalink: /
+subtitle: ""
+
+banner:
+  image: cs_building.jpg
+  alt_text: "Dalhousie University, Faculty of Computer Science Building"
+
+news_items:
+`;
+
+  parsedNews.forEach(n => {
+    yaml += `  - date: "${n.date}"\n`;
+    yaml += `    title: "${yamlEscape(n.title)}"\n`;
+    yaml += `    content: "${yamlEscape(n.content)}"\n`;
+  });
+
+  yaml += `
+selected_papers: false
+social: false
+
+groups:
+  - staff
+  - alumni
+
+staff:
+  title: Research Staff
+  people:
+`;
+
+  parsedMembers.staff.forEach(m => {
+    yaml += `    - name: ${m.name}\n`;
+    yaml += `      description: ${m.description}\n`;
+    yaml += `      website: ${m.website || '""'}\n`;
+    yaml += `      picture: ${m.picture}\n`;
+  });
+
+  yaml += `\nalumni:\n  title: Alumni\n  people:\n`;
+
+  parsedMembers.alumni.forEach(m => {
+    yaml += `    - name: ${m.name}\n`;
+    yaml += `      description: ${m.description}\n`;
+    yaml += `      website: ${m.website || '""'}\n`;
+    yaml += `      picture: ${m.picture}\n`;
+  });
+
+  // Preserve sponsors section
+  const sponsorsMatch = aboutMdContent.match(/\nsponsors:\n[\s\S]*?(?=\n---)/);
+  if (sponsorsMatch) {
+    yaml += sponsorsMatch[0];
+  }
+
+  yaml += '\n---';
+  yaml += body;
+  return yaml;
+}
+
+// ============================================================
+// Utilities
+// ============================================================
+function yamlEscape(s) {
+  // Escape double quotes inside YAML double-quoted strings
+  return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
+function autoLinkUrls(text) {
+  // Convert plain URLs to <a> tags, but skip URLs already inside href="..."
+  return text.replace(/(https?:\/\/[^\s<>"]+)/g, '<a href="$1">$1</a>');
+}
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+function escAttr(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function openModal(html) {
+  document.getElementById('modal').innerHTML = html;
+  document.getElementById('modal-backdrop').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.remove('show');
+}
+
+function showLoading(text) {
+  document.getElementById('loading-text').textContent = text || 'Saving...';
+  document.getElementById('loading').classList.add('show');
+}
+function hideLoading() {
+  document.getElementById('loading').classList.remove('show');
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// Close modal on backdrop click
+document.getElementById('modal-backdrop').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
