@@ -3,47 +3,42 @@ layout: about
 title: Home
 permalink: /
 subtitle: ""
-
 banner:
-  image: cs_building.jpg 
-  alt_text: "Dalhousie University, Faculty of Computer Science Building"
-
+  image: cs_building.jpg
+  alt_text: Dalhousie University, Faculty of Computer Science Building
 news_items:
   - date: "2026"
-    title: "Accepted Papers 2026"
-    content: "1 paper (TMLR), 2 papers (ACL), 1 paper (ACL findings)"
+    title: Accepted Papers 2026
+    content: 1 paper (TMLR), 2 papers (ACL), 1 paper (ACL findings)
   - date: "2025"
-    title: "Accepted Papers 2025"
-    content: "2 papers (ICML), 1 paper (ICLR), 1 paper (IJMIR)"
+    title: Accepted Papers 2025
+    content: 2 papers (ICML), 1 paper (ICLR), 1 paper (IJMIR)
   - date: "2024"
-    title: "Accepted Papers 2024"
-    content: "2 papers (NeurIPS), 2 papers (NAACL), 2 papers (EMNLP)"
+    title: Accepted Papers 2024
+    content: 2 papers (NeurIPS), 2 papers (NAACL), 2 papers (EMNLP)
   - date: "2023"
-    title: "Accepted Papers 2023"
-    content: "3 conference papers (NeurIPS, ICLR, ACL), 1 journal paper (JMLR), 3 demo papers (AAAI, ACL, EACL)"
+    title: Accepted Papers 2023
+    content: 3 conference papers (NeurIPS, ICLR, ACL), 1 journal paper (JMLR), 3 demo papers (AAAI, ACL, EACL)
   - date: "2023"
-    title: "NeurIPS 2023"
-    content: "Evaluating Neuron Interpretation Methods of NLP Models"
+    title: NeurIPS 2023
+    content: Evaluating Neuron Interpretation Methods of NLP Models
   - date: "2023"
-    title: "ICLR 2023"
-    content: "Learning Uncertainty for Unknown Domains with Zero-Target-Assumption"
+    title: ICLR 2023
+    content: Learning Uncertainty for Unknown Domains with Zero-Target-Assumption
   - date: "2023"
-    title: "JMLR 2023"
-    content: "Discovering Salient Neurons in Deep NLP Models"
+    title: JMLR 2023
+    content: Discovering Salient Neurons in Deep NLP Models
   - date: "2023"
-    title: "ACL Demo 2023"
-    content: "NeuroX 2.0 Library for Neuron Analysis of Deep NLP Models"
+    title: ACL Demo 2023
+    content: NeuroX 2.0 Library for Neuron Analysis of Deep NLP Models
   - date: "2023"
-    title: "ACL Findings 2023"
-    content: "Impact of Adversarial Training on Robustness and Generalizability of Language Models"
-
+    title: ACL Findings 2023
+    content: Impact of Adversarial Training on Robustness and Generalizability of Language Models
 selected_papers: false
 social: false
-
 groups:
   - staff
   - alumni
-
 staff:
   title: Research Staff
   people:
@@ -87,11 +82,10 @@ staff:
       description: Research intern
       website: ""
       picture: hyper_matrix.png
-    - name: Moamen Moustafa 
+    - name: Moamen Moustafa
       description: Research intern
       website: ""
       picture: momen.jpeg
-      
 alumni:
   title: Alumni
   people:
@@ -115,7 +109,10 @@ alumni:
       description: Undergraduate student
       website: ""
       picture: sebastian.jpeg
-
+    - name: Shuqiang Zhang
+      description: Undergraduate student
+      website: ""
+      picture: hyper_matrix.png
 sponsors:
   - name: Faculty of Computer Science, Dalhousie University
     website: https://www.dal.ca/faculty/computerscience.html
