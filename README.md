@@ -4,4 +4,4 @@ All of these themes are available as open source under the terms of the [MIT Lic
 
 Visit the main website by clicking [here](https://hypermatrixlab.github.io/).
 
-For a guide on how to update this website, click [here](https://hypermatrixlab.github.io/website-notes/).
+<!-- For a guide on how to update this website, click [here](https://hypermatrixlab.github.io/website-notes/). -->
