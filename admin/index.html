@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HyperMatrix Lab - Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
   <style>
     :root {
       --primary: #1a365d;
@@ -562,51 +563,48 @@ async function loadAll() {
 }
 
 // ============================================================
-// Parse about.md YAML front matter
+// Parse about.md YAML front matter (using js-yaml)
 // ============================================================
+let aboutFrontMatter = {}; // full parsed YAML object
+let aboutBody = '';        // everything after closing ---
+
 function parseAboutMd() {
   const fmMatch = aboutMdContent.match(/^---\n([\s\S]*?)\n---/);
   if (!fmMatch) return;
-  const yaml = fmMatch[1];
 
-  // Parse news items
-  parsedNews = [];
-  const newsBlock = yaml.match(/news_items:\n((?:\s+-[\s\S]*?)(?=\n\w|\n$))/);
-  if (newsBlock) {
-    const items = newsBlock[1].split(/\n  - /).filter(Boolean);
-    items.forEach(item => {
-      const date = (item.match(/date:\s*"?([^"\n]*)"?/) || [])[1] || '';
-      const title = (item.match(/title:\s*"?([^"\n]*)"?/) || [])[1] || '';
-      const content = (item.match(/content:\s*"?([^"\n]*)"?/) || [])[1] || '';
-      parsedNews.push({ date: date.trim(), title: title.trim(), content: content.trim() });
-    });
+  // Store body (template code after front matter) — MUST be preserved
+  const fmEnd = aboutMdContent.indexOf('\n---', 4);
+  aboutBody = fmEnd >= 0 ? aboutMdContent.substring(fmEnd + 4) : '';
+
+  // Parse YAML with js-yaml
+  try {
+    aboutFrontMatter = jsyaml.load(fmMatch[1]) || {};
+  } catch(e) {
+    console.error('YAML parse error:', e);
+    return;
   }
 
-  // Parse staff
-  parsedMembers.staff = parseGroup(yaml, 'staff');
-  parsedMembers.alumni = parseGroup(yaml, 'alumni');
-}
+  // Extract news
+  parsedNews = (aboutFrontMatter.news_items || []).map(item => ({
+    date: String(item.date || ''),
+    title: String(item.title || ''),
+    content: String(item.content || '')
+  }));
 
-function parseGroup(yaml, groupName) {
-  const people = [];
-  const groupRegex = new RegExp(groupName + ':\\n\\s+title:[^\\n]*\\n\\s+people:\\n([\\s\\S]*?)(?=\\n\\w|$)');
-  const match = yaml.match(groupRegex);
-  if (!match) return people;
+  // Extract members
+  parsedMembers.staff = ((aboutFrontMatter.staff && aboutFrontMatter.staff.people) || []).map(p => ({
+    name: String(p.name || ''),
+    description: String(p.description || ''),
+    website: String(p.website || ''),
+    picture: String(p.picture || '')
+  }));
 
-  const entries = match[1].split(/\n    - /).filter(Boolean);
-  entries.forEach(entry => {
-    const name = (entry.match(/name:\s*(.+)/) || [])[1] || '';
-    const desc = (entry.match(/description:\s*(.+)/) || [])[1] || '';
-    const website = (entry.match(/website:\s*(.+)/) || [])[1] || '';
-    const picture = (entry.match(/picture:\s*(.+)/) || [])[1] || '';
-    people.push({
-      name: name.trim(),
-      description: desc.trim(),
-      website: website.trim().replace(/^"|"$/g, ''),
-      picture: picture.trim()
-    });
-  });
-  return people;
+  parsedMembers.alumni = ((aboutFrontMatter.alumni && aboutFrontMatter.alumni.people) || []).map(p => ({
+    name: String(p.name || ''),
+    description: String(p.description || ''),
+    website: String(p.website || ''),
+    picture: String(p.picture || '')
+  }));
 }
 
 // ============================================================
@@ -1297,67 +1295,42 @@ async function commitAboutMd(message) {
 }
 
 function rebuildAboutMd() {
-  // Get the body content (after front matter)
-  const fmEnd = aboutMdContent.indexOf('\n---', 4);
-  const body = fmEnd >= 0 ? aboutMdContent.substring(fmEnd + 4) : '';
+  // Update the front matter object with current data
+  aboutFrontMatter.news_items = parsedNews.map(n => ({
+    date: n.date,
+    title: n.title,
+    content: n.content
+  }));
 
-  let yaml = `---
-layout: about
-title: Home
-permalink: /
-subtitle: ""
+  aboutFrontMatter.staff = {
+    title: (aboutFrontMatter.staff && aboutFrontMatter.staff.title) || 'Research Staff',
+    people: parsedMembers.staff.map(m => ({
+      name: m.name,
+      description: m.description,
+      website: m.website || '',
+      picture: m.picture
+    }))
+  };
 
-banner:
-  image: cs_building.jpg
-  alt_text: "Dalhousie University, Faculty of Computer Science Building"
+  aboutFrontMatter.alumni = {
+    title: (aboutFrontMatter.alumni && aboutFrontMatter.alumni.title) || 'Alumni',
+    people: parsedMembers.alumni.map(m => ({
+      name: m.name,
+      description: m.description,
+      website: m.website || '',
+      picture: m.picture
+    }))
+  };
 
-news_items:
-`;
-
-  parsedNews.forEach(n => {
-    yaml += `  - date: "${n.date}"\n`;
-    yaml += `    title: "${yamlEscape(n.title)}"\n`;
-    yaml += `    content: "${yamlEscape(n.content)}"\n`;
+  // Serialize YAML and reconstruct the file, preserving the body template
+  const yamlStr = jsyaml.dump(aboutFrontMatter, {
+    lineWidth: -1,      // no line wrapping
+    quotingType: '"',    // use double quotes
+    forceQuotes: false,  // only quote when needed
+    noRefs: true
   });
 
-  yaml += `
-selected_papers: false
-social: false
-
-groups:
-  - staff
-  - alumni
-
-staff:
-  title: Research Staff
-  people:
-`;
-
-  parsedMembers.staff.forEach(m => {
-    yaml += `    - name: ${m.name}\n`;
-    yaml += `      description: ${m.description}\n`;
-    yaml += `      website: ${m.website || '""'}\n`;
-    yaml += `      picture: ${m.picture}\n`;
-  });
-
-  yaml += `\nalumni:\n  title: Alumni\n  people:\n`;
-
-  parsedMembers.alumni.forEach(m => {
-    yaml += `    - name: ${m.name}\n`;
-    yaml += `      description: ${m.description}\n`;
-    yaml += `      website: ${m.website || '""'}\n`;
-    yaml += `      picture: ${m.picture}\n`;
-  });
-
-  // Preserve sponsors section
-  const sponsorsMatch = aboutMdContent.match(/\nsponsors:\n[\s\S]*?(?=\n---)/);
-  if (sponsorsMatch) {
-    yaml += sponsorsMatch[0];
-  }
-
-  yaml += '\n---';
-  yaml += body;
-  return yaml;
+  return '---\n' + yamlStr + '---' + aboutBody;
 }
 
 // ============================================================
