@@ -342,7 +342,7 @@
       <div class="status">
         <div class="dot" id="status-dot"></div>
         <span id="status-text">Connected</span>
-        <button class="btn btn-outline" style="margin-left:1rem;padding:0.3rem 0.8rem;font-size:0.8rem;color:#fff;border-color:rgba(255,255,255,0.3);" onclick="logout()">Logout</button>
+        <button class="btn" style="margin-left:1rem;padding:0.3rem 0.8rem;font-size:0.8rem;color:var(--primary);background:#fff;border:1px solid #fff;" onclick="logout()">Logout</button>
       </div>
     </div>
 
@@ -400,12 +400,13 @@
       <!-- ==================== PUBLICATIONS TAB ==================== -->
       <div id="tab-publications" class="tab-content" style="display:none;">
         <div class="card">
-          <h3>Import from Google Scholar</h3>
+          <h3>Import Publications</h3>
           <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.8rem;">
-            Fetch publications from Prof. Hassan Sajjad's Google Scholar profile and import new ones.
+            Fetch publications automatically or paste BibTeX manually.
           </p>
           <div class="btn-group" style="margin-top:0;">
-            <button class="btn btn-primary" onclick="fetchGoogleScholar()">Fetch from Google Scholar</button>
+            <button class="btn btn-primary" onclick="fetchDBLP()">Fetch from DBLP</button>
+            <button class="btn btn-outline" onclick="fetchGoogleScholar()">Fetch from Google Scholar</button>
             <button class="btn btn-outline" onclick="showPasteBibtex()">Paste BibTeX</button>
           </div>
           <div id="scholar-results" style="margin-top:1rem;display:none;">
@@ -482,6 +483,7 @@ const REPO_NAME = 'hypermatrixlab.github.io';
 const BRANCH = 'main';
 const API_BASE = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`;
 const SCHOLAR_ID = 't3BH6NkAAAAJ';
+const DBLP_AUTHOR_PID = '73/5938'; // Hassan Sajjad 0001
 
 let TOKEN = '';
 let scholarPapers = [];
@@ -1387,7 +1389,7 @@ document.getElementById('modal-backdrop').addEventListener('click', function (e)
 });
 
 // ============================================================
-// Google Scholar Import
+// CORS Proxies (shared by DBLP and Google Scholar)
 // ============================================================
 const CORS_PROXIES = [
   url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
@@ -1395,6 +1397,90 @@ const CORS_PROXIES = [
   url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
 ];
 
+// ============================================================
+// DBLP Import (primary — complete BibTeX with full metadata)
+// ============================================================
+async function fetchDBLP() {
+  showLoading('Fetching from DBLP...');
+  const dblpUrl = `https://dblp.org/pid/${DBLP_AUTHOR_PID}.bib`;
+
+  let bibText = null;
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const res = await fetch(proxy(dblpUrl), { signal: AbortSignal.timeout(15000) });
+      if (res.ok) {
+        bibText = await res.text();
+        if (bibText.includes('@')) break;
+        bibText = null;
+      }
+    } catch (e) { continue; }
+  }
+
+  if (!bibText || !bibText.includes('@')) {
+    hideLoading();
+    showToast('Could not fetch from DBLP. Try Google Scholar or Paste BibTeX.', 'error');
+    return;
+  }
+
+  // Parse the fetched BibTeX entries
+  scholarPapers = [];
+  const entryRegex = /@(\w+)\s*\{([^,]*),\s*([\s\S]*?)(?=\n@|\n*$)/g;
+  let match;
+  const dblpEntries = [];
+  while ((match = entryRegex.exec(bibText)) !== null) {
+    const type = match[1];
+    const key = match[2].trim();
+    const body = match[3];
+    const fields = {};
+    const fieldRegex = /(\w+)\s*=\s*(?:\{((?:[^{}]|\{[^{}]*\})*)\}|"([^"]*)")/g;
+    let fm;
+    while ((fm = fieldRegex.exec(body)) !== null) {
+      fields[fm[1].toLowerCase()] = (fm[2] !== undefined ? fm[2] : fm[3]).trim();
+    }
+    const title = (fields.title || '').replace(/[{}]/g, '');
+    const authors = (fields.author || '').replace(/\n/g, ' ').replace(/\s+/g, ' ');
+    const venue = fields.booktitle || fields.journal || '';
+    const year = fields.year || '';
+    // Store the full raw BibTeX for clean import
+    const rawEntry = match[0].trim() + '\n}';
+    dblpEntries.push({ title, authors, venue, year, key, rawBib: '@' + rawEntry });
+    scholarPapers.push({ title, authors, venue: venue.replace(/[{}]/g, ''), year, rawBib: '@' + rawEntry });
+  }
+
+  // Check which already exist
+  const existingTitles = new Set(
+    parsedPubs.map(p => (p.fields.title || '').replace(/[{}]/g, '').toLowerCase().trim())
+  );
+
+  const resultsEl = document.getElementById('scholar-results');
+  const listEl = document.getElementById('scholar-list');
+  const countEl = document.getElementById('scholar-count');
+
+  const newPapers = scholarPapers.filter(p => !existingTitles.has(p.title.toLowerCase().trim()));
+  countEl.textContent = `Found ${scholarPapers.length} papers on DBLP (${newPapers.length} new)`;
+
+  listEl.innerHTML = scholarPapers.map((p, i) => {
+    const isExisting = existingTitles.has(p.title.toLowerCase().trim());
+    return `
+      <li>
+        <div class="scholar-item ${isExisting ? 'existing' : ''}">
+          <input type="checkbox" id="scholar-cb-${i}" ${isExisting ? 'disabled' : 'checked'} data-index="${i}">
+          <div class="item-info">
+            <h4>${escHtml(p.title)}${isExisting ? '<span class="badge">already added</span>' : ''}</h4>
+            <p>${escHtml(p.authors)} ${p.year ? '(' + p.year + ')' : ''} ${p.venue ? '&mdash; ' + escHtml(p.venue) : ''}</p>
+          </div>
+        </div>
+      </li>`;
+  }).join('');
+
+  resultsEl.style.display = 'block';
+  hideLoading();
+  showToast(`Found ${newPapers.length} new papers on DBLP`, 'success');
+}
+
+// ============================================================
+// Google Scholar Import (fallback — may have truncated data)
+// ============================================================
 async function fetchGoogleScholar() {
   showLoading('Fetching from Google Scholar...');
   const scholarUrl = `https://scholar.google.com/citations?user=${SCHOLAR_ID}&hl=en&cstart=0&pagesize=100`;
@@ -1497,30 +1583,31 @@ async function importSelectedScholar() {
   try {
     let newEntries = '';
     selected.forEach(p => {
-      // Generate a citation key
-      const firstAuthor = p.authors.split(',')[0].trim().split(' ').pop().toLowerCase().replace(/[^a-z]/g, '');
-      const titleWord = p.title.split(/\s+/)[0].toLowerCase().replace(/[^a-z]/g, '');
-      const key = `${firstAuthor}_${titleWord}_${p.year || 'nd'}`;
+      if (p.rawBib) {
+        // Use the complete BibTeX from DBLP
+        newEntries += '\n' + p.rawBib + '\n';
+      } else {
+        // Generate BibTeX from Scholar data (fallback)
+        const firstAuthor = p.authors.split(',')[0].trim().split(' ').pop().toLowerCase().replace(/[^a-z]/g, '');
+        const titleWord = p.title.split(/\s+/)[0].toLowerCase().replace(/[^a-z]/g, '');
+        const key = `${firstAuthor}_${titleWord}_${p.year || 'nd'}`;
 
-      // Determine entry type
-      const type = p.venue.toLowerCase().includes('journal') || p.venue.toLowerCase().includes('transactions')
-        ? 'article' : 'inproceedings';
-      const venueField = type === 'article' ? 'journal' : 'booktitle';
+        const type = p.venue.toLowerCase().includes('journal') || p.venue.toLowerCase().includes('transactions')
+          ? 'article' : 'inproceedings';
+        const venueField = type === 'article' ? 'journal' : 'booktitle';
 
-      // Clean up truncated markers
-      const cleanAuthors = p.authors.replace(/,?\s*\.{3}\s*$/, '').replace(/,?\s*\u2026\s*$/, '');
-      const cleanVenue = p.venue.replace(/\u2026.*$/, '').replace(/\.{3}.*$/, '').trim();
+        const cleanAuthors = p.authors.replace(/,?\s*\.{3}\s*$/, '').replace(/,?\s*\u2026\s*$/, '');
+        const cleanVenue = p.venue.replace(/\u2026.*$/, '').replace(/\.{3}.*$/, '').trim();
+        const bibAuthors = cleanAuthors.split(',').map(a => a.trim()).filter(Boolean).join(' and ');
 
-      // Convert authors: "Y Belinkov, N Durrani, H Sajjad" => "Y Belinkov and N Durrani and H Sajjad"
-      const bibAuthors = cleanAuthors.split(',').map(a => a.trim()).filter(Boolean).join(' and ');
-
-      let entry = `@${type}{${key},\n`;
-      entry += `  title = {${p.title}},\n`;
-      entry += `  author = {${bibAuthors}},\n`;
-      entry += `  year = {${p.year}},\n`;
-      if (cleanVenue) entry += `  ${venueField} = {${cleanVenue}},\n`;
-      entry += `}\n`;
-      newEntries += '\n' + entry;
+        let entry = `@${type}{${key},\n`;
+        entry += `  title = {${p.title}},\n`;
+        entry += `  author = {${bibAuthors}},\n`;
+        entry += `  year = {${p.year}},\n`;
+        if (cleanVenue) entry += `  ${venueField} = {${cleanVenue}},\n`;
+        entry += `}\n`;
+        newEntries += '\n' + entry;
+      }
     });
 
     const updated = bibContent.trimEnd() + '\n' + newEntries;
