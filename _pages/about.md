@@ -78,10 +78,6 @@ staff:
       description: PhD student
       website: https://n4feng.github.io/
       picture: hyper_matrix.png
-    - name: Sasidhar Kunapuli
-      description: Research intern
-      website: ""
-      picture: hyper_matrix.png
     - name: Moamen Moustafa
       description: Research intern
       website: ""
@@ -115,6 +111,10 @@ alumni:
       picture: sebastian.jpeg
     - name: Shuqiang Zhang
       description: Undergraduate student
+      website: ""
+      picture: hyper_matrix.png
+    - name: Sasidhar Kunapuli
+      description: Research intern
       website: ""
       picture: hyper_matrix.png
 sponsors:
