@@ -19,9 +19,7 @@
       --danger: #e53e3e;
       --warning: #d69e2e;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg);
@@ -83,7 +81,6 @@
     /* Layout */
     .app { display: none; }
     .app.active { display: block; }
-
     .nav {
       background: var(--card);
       border-bottom: 1px solid var(--border);
@@ -107,10 +104,9 @@
       border-bottom-color: var(--accent);
       font-weight: 600;
     }
-
     .content { max-width: 960px; margin: 2rem auto; padding: 0 1.5rem; }
 
-    /* Forms & Inputs */
+    /* Cards & Forms */
     .card {
       background: var(--card);
       border-radius: 10px;
@@ -120,14 +116,12 @@
       border: 1px solid var(--border);
     }
     .card h3 { margin-bottom: 1rem; font-size: 1.1rem; }
-
     .form-group { margin-bottom: 1rem; }
     .form-group label {
       display: block;
       margin-bottom: 0.3rem;
       font-weight: 500;
       font-size: 0.85rem;
-      color: var(--text);
     }
     .form-group label .hint {
       font-weight: 400;
@@ -149,15 +143,9 @@
       box-shadow: 0 0 0 3px rgba(49,130,206,0.1);
     }
     .form-group textarea { min-height: 80px; resize: vertical; }
-
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-    .form-row-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
       gap: 1rem;
     }
 
@@ -180,17 +168,12 @@
     .btn-success:hover { background: #2f855a; }
     .btn-danger { background: var(--danger); color: white; }
     .btn-danger:hover { background: #c53030; }
-    .btn-outline {
-      background: white;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
+    .btn-outline { background: white; color: var(--text); border: 1px solid var(--border); }
     .btn-outline:hover { background: #f7fafc; }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
     .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; }
 
-    /* Table / List */
+    /* Item List */
     .item-list { list-style: none; }
     .item-list li {
       display: flex;
@@ -202,7 +185,7 @@
     .item-list li:last-child { border-bottom: none; }
     .item-info h4 { font-size: 0.95rem; margin-bottom: 0.15rem; }
     .item-info p { font-size: 0.8rem; color: var(--text-light); }
-    .item-actions { display: flex; gap: 0.4rem; }
+    .item-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
 
     /* Toast */
     .toast {
@@ -232,7 +215,6 @@
       animation: spin 0.6s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .loading-overlay {
       display: none;
       position: fixed;
@@ -298,9 +280,22 @@
     }
     .section-header h2 { font-size: 1.2rem; }
 
-    /* Responsive */
+    /* Scholar import */
+    .scholar-item { display: flex; align-items: flex-start; gap: 0.75rem; }
+    .scholar-item input[type="checkbox"] { margin-top: 0.3rem; flex-shrink: 0; }
+    .scholar-item .item-info { flex: 1; }
+    .scholar-item.existing { opacity: 0.5; }
+    .scholar-item.existing .badge {
+      font-size: 0.7rem;
+      background: var(--text-light);
+      color: white;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      margin-left: 0.5rem;
+    }
+
     @media (max-width: 600px) {
-      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
       .header { flex-direction: column; gap: 0.5rem; }
       .nav { overflow-x: auto; }
     }
@@ -311,9 +306,9 @@
   <!-- Auth Screen -->
   <div id="auth-screen" class="auth-screen">
     <h2>HyperMatrix Lab Dashboard</h2>
-    <p>Manage publications, team members, and news for the lab website.</p>
+    <p>Manage the lab website — update About Us, news, team members, and publications.</p>
     <div class="steps">
-      <strong>Setup (one-time) &mdash; choose one option:</strong>
+      <strong>Setup (one-time) — choose one option:</strong>
       <p style="margin:0.5rem 0 0.3rem;font-weight:600;">Option A: Classic Token (easiest)</p>
       <ol>
         <li>Go to <a href="https://github.com/settings/tokens/new" target="_blank">GitHub &rarr; Settings &rarr; Tokens (classic)</a></li>
@@ -333,7 +328,7 @@
     </div>
     <div class="form-group">
       <label>GitHub Personal Access Token</label>
-      <input type="password" id="token-input" placeholder="github_pat_...">
+      <input type="password" id="token-input" placeholder="ghp_... or github_pat_...">
     </div>
     <div class="btn-group">
       <button class="btn btn-primary" onclick="authenticate()">Connect</button>
@@ -347,62 +342,118 @@
       <div class="status">
         <div class="dot" id="status-dot"></div>
         <span id="status-text">Connected</span>
-        <button class="btn btn-outline" style="margin-left:1rem;padding:0.3rem 0.8rem;font-size:0.8rem;" onclick="logout()">Logout</button>
+        <button class="btn btn-outline" style="margin-left:1rem;padding:0.3rem 0.8rem;font-size:0.8rem;color:#fff;border-color:rgba(255,255,255,0.3);" onclick="logout()">Logout</button>
       </div>
     </div>
 
     <div class="nav">
-      <button class="active" onclick="switchTab('publications', this)">Publications</button>
-      <button onclick="switchTab('members', this)">Team Members</button>
-      <button onclick="switchTab('news', this)">News</button>
+      <button class="active" onclick="switchTab('homepage', this)">Homepage</button>
+      <button onclick="switchTab('publications', this)">Publications</button>
+      <button onclick="switchTab('admin', this)">Admin</button>
     </div>
 
     <div class="content">
-      <!-- Publications Tab -->
-      <div id="tab-publications" class="tab-content">
+
+      <!-- ==================== HOMEPAGE TAB ==================== -->
+      <div id="tab-homepage" class="tab-content">
+
+        <!-- About Us -->
         <div class="card">
-          <h3>Publications Page Header</h3>
-          <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.8rem;">This text appears at the top of the publications page. URLs will become clickable links.</p>
+          <h3>About Us</h3>
+          <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.8rem;">
+            This is the welcome text shown at the top of the homepage.
+          </p>
           <div class="form-group">
-            <textarea id="pub-page-header" rows="3" placeholder="e.g., For an updated list, visit our Google Scholar page: https://..."></textarea>
+            <textarea id="about-text" rows="5"></textarea>
           </div>
-          <button class="btn btn-primary" onclick="savePubPageHeader()">Save Header</button>
+          <button class="btn btn-primary" onclick="saveAboutText()">Save About Us</button>
         </div>
+
+        <!-- News -->
+        <div class="section-header">
+          <h2>News</h2>
+          <button class="btn btn-primary" onclick="showAddNews()">+ Add News</button>
+        </div>
+        <div class="card">
+          <ul class="item-list" id="news-list"><li><em>Loading...</em></li></ul>
+        </div>
+
+        <!-- Research Staff -->
+        <div class="section-header">
+          <h2>Research Staff</h2>
+          <button class="btn btn-primary" onclick="showAddMember('staff')">+ Add Staff</button>
+        </div>
+        <div class="card">
+          <ul class="item-list" id="staff-list"><li><em>Loading...</em></li></ul>
+        </div>
+
+        <!-- Alumni -->
+        <div class="section-header">
+          <h2>Alumni</h2>
+          <button class="btn btn-primary" onclick="showAddMember('alumni')">+ Add Alumni</button>
+        </div>
+        <div class="card">
+          <ul class="item-list" id="alumni-list"><li><em>Loading...</em></li></ul>
+        </div>
+      </div>
+
+      <!-- ==================== PUBLICATIONS TAB ==================== -->
+      <div id="tab-publications" class="tab-content" style="display:none;">
+        <div class="card">
+          <h3>Import from Google Scholar</h3>
+          <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.8rem;">
+            Fetch publications from Prof. Hassan Sajjad's Google Scholar profile and import new ones.
+          </p>
+          <div class="btn-group" style="margin-top:0;">
+            <button class="btn btn-primary" onclick="fetchGoogleScholar()">Fetch from Google Scholar</button>
+            <button class="btn btn-outline" onclick="showPasteBibtex()">Paste BibTeX</button>
+          </div>
+          <div id="scholar-results" style="margin-top:1rem;display:none;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+              <strong id="scholar-count"></strong>
+              <button class="btn btn-success" onclick="importSelectedScholar()">Import Selected</button>
+            </div>
+            <ul class="item-list" id="scholar-list"></ul>
+          </div>
+        </div>
+
         <div class="section-header" style="margin-top:1.5rem;">
           <h2>Publications</h2>
-          <button class="btn btn-primary" onclick="showAddPublication()">+ Add Publication</button>
+          <button class="btn btn-primary" onclick="showAddPublication()">+ Add Manually</button>
         </div>
         <div class="card">
           <div id="publications-list"><em>Loading...</em></div>
         </div>
       </div>
 
-      <!-- Members Tab -->
-      <div id="tab-members" class="tab-content" style="display:none;">
-        <div class="section-header">
-          <h2>Team Members</h2>
-          <button class="btn btn-primary" onclick="showAddMember()">+ Add Member</button>
+      <!-- ==================== ADMIN TAB ==================== -->
+      <div id="tab-admin" class="tab-content" style="display:none;">
+        <div class="card">
+          <h3>Invite Admin</h3>
+          <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.8rem;">
+            Invite a GitHub user as a collaborator so they can use this dashboard.
+          </p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>GitHub Username</label>
+              <input id="invite-username" placeholder="e.g., john-doe">
+            </div>
+            <div class="form-group">
+              <label>Permission</label>
+              <select id="invite-permission">
+                <option value="push">Write (can edit)</option>
+                <option value="admin">Admin (full control)</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="inviteCollaborator()">Send Invitation</button>
         </div>
         <div class="card">
-          <h3>Research Staff</h3>
-          <ul class="item-list" id="staff-list"><li><em>Loading...</em></li></ul>
-        </div>
-        <div class="card">
-          <h3>Alumni</h3>
-          <ul class="item-list" id="alumni-list"><li><em>Loading...</em></li></ul>
+          <h3>Current Collaborators</h3>
+          <ul class="item-list" id="collaborators-list"><li><em>Loading...</em></li></ul>
         </div>
       </div>
 
-      <!-- News Tab -->
-      <div id="tab-news" class="tab-content" style="display:none;">
-        <div class="section-header">
-          <h2>News</h2>
-          <button class="btn btn-primary" onclick="showAddNews()">+ Add News Item</button>
-        </div>
-        <div class="card">
-          <ul class="item-list" id="news-list"><li><em>Loading...</em></li></ul>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -430,17 +481,24 @@ const REPO_OWNER = 'hypermatrixlab';
 const REPO_NAME = 'hypermatrixlab.github.io';
 const BRANCH = 'main';
 const API_BASE = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`;
+const SCHOLAR_ID = 't3BH6NkAAAAJ';
 
 let TOKEN = '';
+let scholarPapers = [];
+
+// about.md state
 let aboutMdContent = '';
 let aboutMdSha = '';
-let bibContent = '';
-let bibSha = '';
+let aboutFrontMatter = {};
+let aboutBody = '';
 let parsedMembers = { staff: [], alumni: [] };
 let parsedNews = [];
+let aboutText = '';
+
+// papers.bib state
+let bibContent = '';
+let bibSha = '';
 let parsedPubs = [];
-let pubPageContent = '';
-let pubPageSha = '';
 
 // ============================================================
 // Auth
@@ -450,14 +508,13 @@ function authenticate() {
   if (!token) return showToast('Please enter a token', 'error');
   TOKEN = token;
   showLoading('Connecting to GitHub...');
-
-  ghAPI('/contents/_config.yml').then(res => {
+  ghAPI('/contents/_config.yml').then(() => {
     localStorage.setItem('gh_token', token);
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('app').classList.add('active');
     hideLoading();
     loadAll();
-  }).catch(err => {
+  }).catch(() => {
     hideLoading();
     showToast('Invalid token or no access to repo', 'error');
   });
@@ -483,7 +540,7 @@ function logout() {
 })();
 
 // ============================================================
-// GitHub API
+// GitHub API helpers
 // ============================================================
 async function ghAPI(path, options = {}) {
   const res = await fetch(API_BASE + path, {
@@ -492,7 +549,7 @@ async function ghAPI(path, options = {}) {
       'Authorization': `Bearer ${TOKEN}`,
       'Accept': 'application/vnd.github.v3+json',
       ...(options.headers || {}),
-      ...(options.body ? {'Content-Type': 'application/json'} : {})
+      ...(options.body ? { 'Content-Type': 'application/json' } : {})
     }
   });
   if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
@@ -501,7 +558,12 @@ async function ghAPI(path, options = {}) {
 
 async function getFile(path) {
   const data = await ghAPI(`/contents/${path}?ref=${BRANCH}`);
-  return { content: atob(data.content.replace(/\n/g, '')), sha: data.sha };
+  // Proper UTF-8 decoding
+  const binary = atob(data.content.replace(/\n/g, ''));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  const content = new TextDecoder('utf-8').decode(bytes);
+  return { content, sha: data.sha };
 }
 
 async function updateFile(path, content, sha, message) {
@@ -517,89 +579,77 @@ async function updateFile(path, content, sha, message) {
 }
 
 async function uploadImage(path, base64Data, message) {
-  // Check if file exists first
   let sha;
   try {
     const existing = await ghAPI(`/contents/${path}?ref=${BRANCH}`);
     sha = existing.sha;
-  } catch(e) { /* new file */ }
-
+  } catch (e) { /* new file */ }
   const body = { message, content: base64Data, branch: BRANCH };
   if (sha) body.sha = sha;
-
-  return ghAPI(`/contents/${path}`, {
-    method: 'PUT',
-    body: JSON.stringify(body)
-  });
+  return ghAPI(`/contents/${path}`, { method: 'PUT', body: JSON.stringify(body) });
 }
 
 // ============================================================
-// Load All Data
+// Load all data
 // ============================================================
 async function loadAll() {
   try {
     showLoading('Loading website data...');
-    const [aboutFile, bibFile, pubPageFile] = await Promise.all([
+    const [aboutFile, bibFile] = await Promise.all([
       getFile('_pages/about.md'),
-      getFile('_bibliography/papers.bib'),
-      getFile('_pages/publications.md')
+      getFile('_bibliography/papers.bib')
     ]);
 
     aboutMdContent = aboutFile.content;
     aboutMdSha = aboutFile.sha;
     bibContent = bibFile.content;
     bibSha = bibFile.sha;
-    pubPageContent = pubPageFile.content;
-    pubPageSha = pubPageFile.sha;
 
     parseAboutMd();
     parseBib();
     renderAll();
     hideLoading();
-  } catch(e) {
+  } catch (e) {
     hideLoading();
     showToast('Failed to load data: ' + e.message, 'error');
   }
 }
 
 // ============================================================
-// Parse about.md YAML front matter (using js-yaml)
+// Parse about.md (js-yaml)
 // ============================================================
-let aboutFrontMatter = {}; // full parsed YAML object
-let aboutBody = '';        // everything after closing ---
-
 function parseAboutMd() {
   const fmMatch = aboutMdContent.match(/^---\n([\s\S]*?)\n---/);
   if (!fmMatch) return;
 
-  // Store body (template code after front matter) — MUST be preserved
   const fmEnd = aboutMdContent.indexOf('\n---', 4);
   aboutBody = fmEnd >= 0 ? aboutMdContent.substring(fmEnd + 4) : '';
 
-  // Parse YAML with js-yaml
   try {
     aboutFrontMatter = jsyaml.load(fmMatch[1]) || {};
-  } catch(e) {
+  } catch (e) {
     console.error('YAML parse error:', e);
     return;
   }
 
-  // Extract news
+  // News
   parsedNews = (aboutFrontMatter.news_items || []).map(item => ({
     date: String(item.date || ''),
     title: String(item.title || ''),
     content: String(item.content || '')
   }));
 
-  // Extract members
-  parsedMembers.staff = ((aboutFrontMatter.staff && aboutFrontMatter.staff.people) || []).map(p => ({
-    name: String(p.name || ''),
-    description: String(p.description || ''),
-    website: String(p.website || ''),
-    picture: String(p.picture || '')
-  }));
+  // Members
+  parsedMembers.staff = extractPeople(aboutFrontMatter.staff);
+  parsedMembers.alumni = extractPeople(aboutFrontMatter.alumni);
 
-  parsedMembers.alumni = ((aboutFrontMatter.alumni && aboutFrontMatter.alumni.people) || []).map(p => ({
+  // About Us text — extract from the body HTML
+  const aboutMatch = aboutBody.match(/<div class="about-content">\s*([\s\S]*?)\s*<\/div>/);
+  aboutText = aboutMatch ? aboutMatch[1].trim() : '';
+}
+
+function extractPeople(group) {
+  return ((group && group.people) || []).map(p => ({
     name: String(p.name || ''),
     description: String(p.description || ''),
     website: String(p.website || ''),
@@ -612,112 +662,55 @@ function parseAboutMd() {
 // ============================================================
 function parseBib() {
   parsedPubs = [];
-  // Remove YAML front matter if present
   let bib = bibContent.replace(/^---\n---\n?/, '');
-
-  // Split into entries
   const entryRegex = /@(\w+)\s*\{([^,]*),\s*([\s\S]*?)(?=\n@|\n*$)/g;
   let match;
   while ((match = entryRegex.exec(bib)) !== null) {
     const type = match[1];
     const key = match[2].trim();
     const body = match[3];
-
     const fields = {};
-    // Parse fields — handle braced values and quoted values
     const fieldRegex = /(\w+)\s*=\s*(?:\{((?:[^{}]|\{[^{}]*\})*)\}|"([^"]*)")/g;
     let fm;
     while ((fm = fieldRegex.exec(body)) !== null) {
       fields[fm[1].toLowerCase()] = (fm[2] !== undefined ? fm[2] : fm[3]).trim();
     }
-
     parsedPubs.push({ type, key, fields, raw: match[0] });
   }
 }
 
 // ============================================================
-// Render
+// Render everything
 // ============================================================
 function renderAll() {
-  renderPublications();
-  renderMembers();
+  renderAboutText();
   renderNews();
-  renderPubPageHeader();
+  renderMembers();
+  renderPublications();
+  loadCollaborators();
 }
 
-function renderPubPageHeader() {
-  // Extract any text between the front matter closing --- and the bibliography div
-  const fmEnd = pubPageContent.indexOf('\n---', 4);
-  if (fmEnd < 0) return;
-  const body = pubPageContent.substring(fmEnd + 4).trim();
-  // Get text before the first {% or <div or <script — that's the header
-  const headerMatch = body.match(/^([\s\S]*?)(?=\{%|<div|<script|$)/);
-  const header = headerMatch ? headerMatch[1].trim() : '';
-  document.getElementById('pub-page-header').value = header;
+function renderAboutText() {
+  document.getElementById('about-text').value = aboutText;
 }
 
-async function savePubPageHeader() {
-  const headerText = document.getElementById('pub-page-header').value.trim();
-  const linkedText = autoLinkUrls(headerText);
-
-  showLoading('Updating publications page...');
-  try {
-    // Replace the body between front matter and bibliography section
-    const fmEnd = pubPageContent.indexOf('\n---', 4);
-    const frontMatter = pubPageContent.substring(0, fmEnd + 4);
-    // Find the bibliography/div/script part
-    const body = pubPageContent.substring(fmEnd + 4);
-    const dynamicStart = body.search(/\{%|<div|<script/);
-    const dynamicPart = dynamicStart >= 0 ? body.substring(dynamicStart) : '';
-
-    const updated = frontMatter + '\n\n' + linkedText + '\n\n' + dynamicPart;
-    const res = await updateFile('_pages/publications.md', updated, pubPageSha, 'Update publications page header');
-    pubPageSha = res.content.sha;
-    pubPageContent = updated;
-    hideLoading();
-    showToast('Publications header updated!', 'success');
-  } catch(e) {
-    hideLoading();
-    showToast('Error: ' + e.message, 'error');
-  }
-}
-
-function renderPublications() {
-  const el = document.getElementById('publications-list');
-  if (parsedPubs.length === 0) {
-    el.innerHTML = '<em>No publications found</em>';
+function renderNews() {
+  const el = document.getElementById('news-list');
+  if (parsedNews.length === 0) {
+    el.innerHTML = '<li><em>No news items</em></li>';
     return;
   }
-
-  // Sort by year descending
-  const sorted = [...parsedPubs].sort((a, b) => {
-    const ya = parseInt(a.fields.year) || 0;
-    const yb = parseInt(b.fields.year) || 0;
-    return yb - ya;
-  });
-
-  let html = '<ul class="item-list">';
-  sorted.forEach((pub, i) => {
-    const title = pub.fields.title || 'Untitled';
-    const authors = pub.fields.author || 'Unknown';
-    const venue = pub.fields.booktitle || pub.fields.journal || pub.fields.archiveprefix || '';
-    const year = pub.fields.year || '';
-    // Truncate authors for display
-    const shortAuthors = authors.length > 80 ? authors.substring(0, 80) + '...' : authors;
-    html += `
-      <li>
-        <div class="item-info">
-          <h4>${escHtml(title.replace(/[{}]/g, ''))}</h4>
-          <p>${escHtml(shortAuthors.replace(/[{}]/g, ''))} ${year ? '(' + year + ')' : ''} ${venue ? '&mdash; ' + escHtml(venue.replace(/[{}]/g, '')) : ''}</p>
-        </div>
-        <div class="item-actions">
-          <button class="btn btn-outline" onclick="showEditPublication(${i})">Edit</button>
-          <button class="btn btn-danger" onclick="deletePublication('${escAttr(pub.key)}')">Delete</button>
-        </div>
-      </li>`;
-  });
-  html += '</ul>';
-  el.innerHTML = html;
+  el.innerHTML = parsedNews.map((n, i) => `
+    <li>
+      <div class="item-info">
+        <h4>${escHtml(n.title)}</h4>
+        <p>${escHtml(n.date)} &mdash; ${escHtml(n.content)}</p>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-outline" onclick="showEditNews(${i})">Edit</button>
+        <button class="btn btn-danger" onclick="deleteNews(${i})">Delete</button>
+      </div>
+    </li>`).join('');
 }
 
 function renderMembers() {
@@ -741,38 +734,320 @@ function renderMemberList(elId, members, group) {
         <button class="btn btn-outline" onclick="showEditMember('${group}', ${i})">Edit</button>
         <button class="btn btn-danger" onclick="deleteMember('${group}', ${i})">Delete</button>
       </div>
-    </li>
-  `).join('');
+    </li>`).join('');
 }
 
-function renderNews() {
-  const el = document.getElementById('news-list');
-  if (parsedNews.length === 0) {
-    el.innerHTML = '<li><em>No news items</em></li>';
+function renderPublications() {
+  const el = document.getElementById('publications-list');
+  if (parsedPubs.length === 0) {
+    el.innerHTML = '<em>No publications found</em>';
     return;
   }
-  el.innerHTML = parsedNews.map((n, i) => `
-    <li>
-      <div class="item-info">
-        <h4>${escHtml(n.title)}</h4>
-        <p>${escHtml(n.date)} &mdash; ${escHtml(n.content)}</p>
-      </div>
-      <div class="item-actions">
-        <button class="btn btn-outline" onclick="showEditNews(${i})">Edit</button>
-        <button class="btn btn-danger" onclick="deleteNews(${i})">Delete</button>
-      </div>
-    </li>
-  `).join('');
+  const sorted = [...parsedPubs].sort((a, b) => (parseInt(b.fields.year) || 0) - (parseInt(a.fields.year) || 0));
+  let html = '<ul class="item-list">';
+  sorted.forEach((pub, i) => {
+    const title = (pub.fields.title || 'Untitled').replace(/[{}]/g, '');
+    const authors = (pub.fields.author || 'Unknown').replace(/[{}]/g, '');
+    const venue = (pub.fields.booktitle || pub.fields.journal || '').replace(/[{}]/g, '');
+    const year = pub.fields.year || '';
+    const shortAuthors = authors.length > 80 ? authors.substring(0, 80) + '...' : authors;
+    html += `
+      <li>
+        <div class="item-info">
+          <h4>${escHtml(title)}</h4>
+          <p>${escHtml(shortAuthors)} ${year ? '(' + year + ')' : ''} ${venue ? '&mdash; ' + escHtml(venue) : ''}</p>
+        </div>
+        <div class="item-actions">
+          <button class="btn btn-outline" onclick="showEditPublication(${i})">Edit</button>
+          <button class="btn btn-danger" onclick="deletePublication('${escAttr(pub.key)}')">Delete</button>
+        </div>
+      </li>`;
+  });
+  html += '</ul>';
+  el.innerHTML = html;
 }
 
 // ============================================================
-// Tab Switching
+// Tab switching
 // ============================================================
 function switchTab(tab, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
   document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + tab).style.display = 'block';
   btn.classList.add('active');
+}
+
+// ============================================================
+// About Us CRUD
+// ============================================================
+async function saveAboutText() {
+  const newText = document.getElementById('about-text').value.trim();
+  if (!newText) return showToast('About text cannot be empty', 'error');
+
+  showLoading('Saving About Us...');
+  try {
+    aboutText = newText;
+    // Replace the about-content div in the body
+    aboutBody = aboutBody.replace(
+      /(<div class="about-content">)\s*[\s\S]*?\s*(<\/div>)/,
+      '$1\n    ' + newText + '\n  $2'
+    );
+    await commitAboutMd('Update About Us text');
+    hideLoading();
+    showToast('About Us updated!', 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+// News CRUD
+// ============================================================
+function showAddNews() {
+  openModal(`
+    <h3>Add News Item</h3>
+    <div class="form-group">
+      <label>Date <span class="hint">e.g., 2025 or 2025-03</span></label>
+      <input id="news-date" placeholder="2026">
+    </div>
+    <div class="form-group">
+      <label>Title</label>
+      <input id="news-title" placeholder="Accepted Papers 2026">
+    </div>
+    <div class="form-group">
+      <label>Content <span class="hint">URLs will automatically become clickable links on the website</span></label>
+      <textarea id="news-content" rows="3" placeholder="Details about the news..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="saveNewNews()">Save</button>
+    </div>
+  `);
+}
+
+function showEditNews(index) {
+  const n = parsedNews[index];
+  openModal(`
+    <h3>Edit News Item</h3>
+    <input type="hidden" id="news-edit-index" value="${index}">
+    <div class="form-group">
+      <label>Date</label>
+      <input id="news-date" value="${escAttr(n.date)}">
+    </div>
+    <div class="form-group">
+      <label>Title</label>
+      <input id="news-title" value="${escAttr(n.title)}">
+    </div>
+    <div class="form-group">
+      <label>Content <span class="hint">URLs will automatically become clickable links</span></label>
+      <textarea id="news-content" rows="3">${escHtml(n.content)}</textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="saveEditNews()">Save</button>
+    </div>
+  `);
+}
+
+async function saveNewNews() {
+  const date = document.getElementById('news-date').value.trim();
+  const title = document.getElementById('news-title').value.trim();
+  const content = document.getElementById('news-content').value.trim();
+  if (!date || !title || !content) return showToast('All fields are required', 'error');
+
+  showLoading('Saving news...');
+  try {
+    parsedNews.unshift({ date, title, content: autoLinkUrls(content) });
+    await commitAboutMd(`Add news: ${title}`);
+    renderNews();
+    closeModal();
+    hideLoading();
+    showToast('News added!', 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function saveEditNews() {
+  const index = parseInt(document.getElementById('news-edit-index').value);
+  const date = document.getElementById('news-date').value.trim();
+  const title = document.getElementById('news-title').value.trim();
+  const content = document.getElementById('news-content').value.trim();
+  if (!date || !title || !content) return showToast('All fields are required', 'error');
+
+  showLoading('Updating news...');
+  try {
+    parsedNews[index] = { date, title, content: autoLinkUrls(content) };
+    await commitAboutMd(`Update news: ${title}`);
+    renderNews();
+    closeModal();
+    hideLoading();
+    showToast('News updated!', 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function deleteNews(index) {
+  if (!confirm('Delete this news item?')) return;
+  showLoading('Deleting news...');
+  try {
+    parsedNews.splice(index, 1);
+    await commitAboutMd('Delete news item');
+    renderNews();
+    hideLoading();
+    showToast('News deleted', 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+// Members CRUD
+// ============================================================
+function showAddMember(group) {
+  const groupLabel = group === 'staff' ? 'Research Staff' : 'Alumni';
+  openModal(`
+    <h3>Add ${groupLabel}</h3>
+    <input type="hidden" id="member-group" value="${group}">
+    <div class="form-group">
+      <label>Full Name</label>
+      <input id="member-name" placeholder="First Last">
+    </div>
+    <div class="form-group">
+      <label>Role / Description</label>
+      <input id="member-desc" placeholder="${group === 'staff' ? 'PhD student' : 'Master student'}">
+    </div>
+    <div class="form-group">
+      <label>Website URL <span class="hint">optional</span></label>
+      <input id="member-website" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label>Photo <span class="hint">recommended 400x400px, JPG/PNG</span></label>
+      <input type="file" id="member-photo" accept="image/*">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="saveNewMember()">Save</button>
+    </div>
+  `);
+}
+
+function showEditMember(group, index) {
+  const m = parsedMembers[group][index];
+  openModal(`
+    <h3>Edit Member</h3>
+    <input type="hidden" id="member-edit-group" value="${group}">
+    <input type="hidden" id="member-edit-index" value="${index}">
+    <div class="form-group">
+      <label>Group</label>
+      <select id="member-group">
+        <option value="staff" ${group === 'staff' ? 'selected' : ''}>Research Staff</option>
+        <option value="alumni" ${group === 'alumni' ? 'selected' : ''}>Alumni</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input id="member-name" value="${escAttr(m.name)}">
+    </div>
+    <div class="form-group">
+      <label>Role / Description</label>
+      <input id="member-desc" value="${escAttr(m.description)}">
+    </div>
+    <div class="form-group">
+      <label>Website URL</label>
+      <input id="member-website" value="${escAttr(m.website)}">
+    </div>
+    <div class="form-group">
+      <label>Photo <span class="hint">leave empty to keep current (${escHtml(m.picture)})</span></label>
+      <input type="file" id="member-photo" accept="image/*">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="saveEditMember()">Save</button>
+    </div>
+  `);
+}
+
+async function saveNewMember() {
+  const group = document.getElementById('member-group').value;
+  const name = document.getElementById('member-name').value.trim();
+  const desc = document.getElementById('member-desc').value.trim();
+  const website = document.getElementById('member-website').value.trim();
+  const photoFile = document.getElementById('member-photo').files[0];
+  if (!name || !desc) return showToast('Name and description are required', 'error');
+
+  showLoading('Saving member...');
+  try {
+    let pictureName = 'hyper_matrix.png';
+    if (photoFile) {
+      const ext = photoFile.name.split('.').pop().toLowerCase();
+      pictureName = name.toLowerCase().replace(/\s+/g, '_') + '.' + ext;
+      const base64 = await fileToBase64(photoFile);
+      await uploadImage(`assets/img/${pictureName}`, base64, `Add photo: ${pictureName}`);
+    }
+    parsedMembers[group].push({ name, description: desc, website: website || '', picture: pictureName });
+    await commitAboutMd(`Add team member: ${name}`);
+    renderMembers();
+    closeModal();
+    hideLoading();
+    showToast('Member added!', 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function saveEditMember() {
+  const origGroup = document.getElementById('member-edit-group').value;
+  const origIndex = parseInt(document.getElementById('member-edit-index').value);
+  const newGroup = document.getElementById('member-group').value;
+  const name = document.getElementById('member-name').value.trim();
+  const desc = document.getElementById('member-desc').value.trim();
+  const website = document.getElementById('member-website').value.trim();
+  const photoFile = document.getElementById('member-photo').files[0];
+  if (!name || !desc) return showToast('Name and description are required', 'error');
+
+  showLoading('Updating member...');
+  try {
+    let pictureName = parsedMembers[origGroup][origIndex].picture;
+    if (photoFile) {
+      const ext = photoFile.name.split('.').pop().toLowerCase();
+      pictureName = name.toLowerCase().replace(/\s+/g, '_') + '.' + ext;
+      const base64 = await fileToBase64(photoFile);
+      await uploadImage(`assets/img/${pictureName}`, base64, `Update photo: ${pictureName}`);
+    }
+    parsedMembers[origGroup].splice(origIndex, 1);
+    parsedMembers[newGroup].push({ name, description: desc, website: website || '', picture: pictureName });
+    await commitAboutMd(`Update team member: ${name}`);
+    renderMembers();
+    closeModal();
+    hideLoading();
+    showToast('Member updated!', 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function deleteMember(group, index) {
+  const m = parsedMembers[group][index];
+  if (!confirm(`Delete ${m.name}?`)) return;
+  showLoading('Deleting member...');
+  try {
+    parsedMembers[group].splice(index, 1);
+    await commitAboutMd(`Remove team member: ${m.name}`);
+    renderMembers();
+    hideLoading();
+    showToast('Member removed', 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
 }
 
 // ============================================================
@@ -827,22 +1102,22 @@ function showAddPublication() {
       <label>Abstract <span class="hint">optional</span></label>
       <textarea id="pub-abstract" rows="3" placeholder="Paper abstract..."></textarea>
     </div>
+    <hr style="margin:1rem 0;border:none;border-top:1px solid var(--border);">
     <div class="form-group">
       <label>Or paste raw BibTeX <span class="hint">leave above fields empty if pasting</span></label>
       <textarea id="pub-raw" rows="6" placeholder="@inproceedings{key, ...}"></textarea>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-success" onclick="saveNewPublication()">Save &amp; Commit</button>
+      <button class="btn btn-success" onclick="saveNewPublication()">Save</button>
     </div>
   `);
 }
 
 function showEditPublication(sortedIndex) {
-  const sorted = [...parsedPubs].sort((a, b) => (parseInt(b.fields.year)||0) - (parseInt(a.fields.year)||0));
+  const sorted = [...parsedPubs].sort((a, b) => (parseInt(b.fields.year) || 0) - (parseInt(a.fields.year) || 0));
   const pub = sorted[sortedIndex];
   if (!pub) return;
-
   const f = pub.fields;
   openModal(`
     <h3>Edit Publication</h3>
@@ -850,9 +1125,9 @@ function showEditPublication(sortedIndex) {
     <div class="form-group">
       <label>Entry Type</label>
       <select id="pub-type">
-        <option value="inproceedings" ${pub.type.toLowerCase()==='inproceedings'?'selected':''}>Conference Paper</option>
-        <option value="article" ${pub.type.toLowerCase()==='article'?'selected':''}>Journal Article</option>
-        <option value="misc" ${pub.type.toLowerCase()==='misc'?'selected':''}>Preprint / Other</option>
+        <option value="inproceedings" ${pub.type.toLowerCase() === 'inproceedings' ? 'selected' : ''}>Conference Paper</option>
+        <option value="article" ${pub.type.toLowerCase() === 'article' ? 'selected' : ''}>Journal Article</option>
+        <option value="misc" ${pub.type.toLowerCase() === 'misc' ? 'selected' : ''}>Preprint / Other</option>
       </select>
     </div>
     <div class="form-group">
@@ -861,41 +1136,41 @@ function showEditPublication(sortedIndex) {
     </div>
     <div class="form-group">
       <label>Title</label>
-      <input id="pub-title" value="${escAttr((f.title||'').replace(/[{}]/g,''))}">
+      <input id="pub-title" value="${escAttr((f.title || '').replace(/[{}]/g, ''))}">
     </div>
     <div class="form-group">
       <label>Authors</label>
-      <textarea id="pub-authors" rows="2">${escHtml(f.author||'')}</textarea>
+      <textarea id="pub-authors" rows="2">${escHtml(f.author || '')}</textarea>
     </div>
     <div class="form-row">
       <div class="form-group">
         <label>Year</label>
-        <input id="pub-year" type="number" value="${escAttr(f.year||'')}">
+        <input id="pub-year" type="number" value="${escAttr(f.year || '')}">
       </div>
       <div class="form-group">
         <label>Month</label>
-        <input id="pub-month" type="number" value="${escAttr(f.month||'')}">
+        <input id="pub-month" type="number" value="${escAttr(f.month || '')}">
       </div>
     </div>
     <div class="form-group">
       <label>Venue</label>
-      <input id="pub-venue" value="${escAttr((f.booktitle||f.journal||'').replace(/[{}]/g,''))}">
+      <input id="pub-venue" value="${escAttr((f.booktitle || f.journal || '').replace(/[{}]/g, ''))}">
     </div>
     <div class="form-group">
       <label>URL</label>
-      <input id="pub-url" value="${escAttr(f.url||'')}">
+      <input id="pub-url" value="${escAttr(f.url || '')}">
     </div>
     <div class="form-group">
       <label>Code URL</label>
-      <input id="pub-code" value="${escAttr(f.code||'')}">
+      <input id="pub-code" value="${escAttr(f.code || '')}">
     </div>
     <div class="form-group">
       <label>Abstract</label>
-      <textarea id="pub-abstract" rows="3">${escHtml(f.abstract||'')}</textarea>
+      <textarea id="pub-abstract" rows="3">${escHtml(f.abstract || '')}</textarea>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-success" onclick="saveEditPublication()">Save &amp; Commit</button>
+      <button class="btn btn-success" onclick="saveEditPublication()">Save</button>
     </div>
   `);
 }
@@ -909,10 +1184,8 @@ async function saveNewPublication() {
     newEntry = buildBibEntry();
     if (!newEntry) return;
   }
-
-  showLoading('Committing publication...');
+  showLoading('Saving publication...');
   try {
-    // Append to bib file
     const updated = bibContent.trimEnd() + '\n\n' + newEntry.trim() + '\n';
     const res = await updateFile('_bibliography/papers.bib', updated, bibSha, 'Add publication via dashboard');
     bibSha = res.content.sha;
@@ -921,8 +1194,8 @@ async function saveNewPublication() {
     renderPublications();
     closeModal();
     hideLoading();
-    showToast('Publication added successfully!', 'success');
-  } catch(e) {
+    showToast('Publication added!', 'success');
+  } catch (e) {
     hideLoading();
     showToast('Error: ' + e.message, 'error');
   }
@@ -932,10 +1205,8 @@ async function saveEditPublication() {
   const origKey = document.getElementById('pub-edit-origkey').value;
   const newEntry = buildBibEntry();
   if (!newEntry) return;
-
   showLoading('Updating publication...');
   try {
-    // Find and replace the entry in bib content
     const updated = replaceBibEntry(bibContent, origKey, newEntry);
     const res = await updateFile('_bibliography/papers.bib', updated, bibSha, `Update publication: ${origKey}`);
     bibSha = res.content.sha;
@@ -945,7 +1216,7 @@ async function saveEditPublication() {
     closeModal();
     hideLoading();
     showToast('Publication updated!', 'success');
-  } catch(e) {
+  } catch (e) {
     hideLoading();
     showToast('Error: ' + e.message, 'error');
   }
@@ -963,7 +1234,7 @@ async function deletePublication(key) {
     renderPublications();
     hideLoading();
     showToast('Publication deleted', 'success');
-  } catch(e) {
+  } catch (e) {
     hideLoading();
     showToast('Error: ' + e.message, 'error');
   }
@@ -1001,287 +1272,11 @@ function buildBibEntry() {
 }
 
 function replaceBibEntry(bib, key, replacement) {
-  // Find the entry by key and replace it
   const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const regex = new RegExp(`@\\w+\\s*\\{\\s*${escapedKey}\\s*,[\\s\\S]*?\\n\\}`, 'g');
   let result = bib.replace(regex, replacement);
-  // Clean up double blank lines
   result = result.replace(/\n{3,}/g, '\n\n');
   return result;
-}
-
-// ============================================================
-// Members CRUD
-// ============================================================
-function showAddMember() {
-  openModal(`
-    <h3>Add Team Member</h3>
-    <div class="form-group">
-      <label>Group</label>
-      <select id="member-group">
-        <option value="staff">Research Staff</option>
-        <option value="alumni">Alumni</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Full Name</label>
-      <input id="member-name" placeholder="First Last">
-    </div>
-    <div class="form-group">
-      <label>Role / Description</label>
-      <input id="member-desc" placeholder="PhD student">
-    </div>
-    <div class="form-group">
-      <label>Website URL <span class="hint">optional</span></label>
-      <input id="member-website" placeholder="https://...">
-    </div>
-    <div class="form-group">
-      <label>Photo <span class="hint">recommended 400x400px, JPG/PNG</span></label>
-      <input type="file" id="member-photo" accept="image/*">
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-success" onclick="saveNewMember()">Save &amp; Commit</button>
-    </div>
-  `);
-}
-
-function showEditMember(group, index) {
-  const m = parsedMembers[group][index];
-  openModal(`
-    <h3>Edit Team Member</h3>
-    <input type="hidden" id="member-edit-group" value="${group}">
-    <input type="hidden" id="member-edit-index" value="${index}">
-    <div class="form-group">
-      <label>Group</label>
-      <select id="member-group">
-        <option value="staff" ${group==='staff'?'selected':''}>Research Staff</option>
-        <option value="alumni" ${group==='alumni'?'selected':''}>Alumni</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Full Name</label>
-      <input id="member-name" value="${escAttr(m.name)}">
-    </div>
-    <div class="form-group">
-      <label>Role / Description</label>
-      <input id="member-desc" value="${escAttr(m.description)}">
-    </div>
-    <div class="form-group">
-      <label>Website URL</label>
-      <input id="member-website" value="${escAttr(m.website)}">
-    </div>
-    <div class="form-group">
-      <label>Photo <span class="hint">leave empty to keep current (${escHtml(m.picture)})</span></label>
-      <input type="file" id="member-photo" accept="image/*">
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-success" onclick="saveEditMember()">Save &amp; Commit</button>
-    </div>
-  `);
-}
-
-async function saveNewMember() {
-  const group = document.getElementById('member-group').value;
-  const name = document.getElementById('member-name').value.trim();
-  const desc = document.getElementById('member-desc').value.trim();
-  const website = document.getElementById('member-website').value.trim();
-  const photoFile = document.getElementById('member-photo').files[0];
-
-  if (!name || !desc) {
-    showToast('Name and description are required', 'error');
-    return;
-  }
-
-  showLoading('Saving member...');
-  try {
-    let pictureName = 'hyper_matrix.png';
-    if (photoFile) {
-      const ext = photoFile.name.split('.').pop().toLowerCase();
-      pictureName = name.toLowerCase().replace(/\s+/g, '_') + '.' + ext;
-      const base64 = await fileToBase64(photoFile);
-      await uploadImage(`assets/img/${pictureName}`, base64, `Add photo: ${pictureName}`);
-    }
-
-    const newMember = { name, description: desc, website: website || '', picture: pictureName };
-    parsedMembers[group].push(newMember);
-    await commitAboutMd(`Add team member: ${name}`);
-    renderMembers();
-    closeModal();
-    hideLoading();
-    showToast('Member added!', 'success');
-  } catch(e) {
-    hideLoading();
-    showToast('Error: ' + e.message, 'error');
-  }
-}
-
-async function saveEditMember() {
-  const origGroup = document.getElementById('member-edit-group').value;
-  const origIndex = parseInt(document.getElementById('member-edit-index').value);
-  const newGroup = document.getElementById('member-group').value;
-  const name = document.getElementById('member-name').value.trim();
-  const desc = document.getElementById('member-desc').value.trim();
-  const website = document.getElementById('member-website').value.trim();
-  const photoFile = document.getElementById('member-photo').files[0];
-
-  if (!name || !desc) {
-    showToast('Name and description are required', 'error');
-    return;
-  }
-
-  showLoading('Updating member...');
-  try {
-    let pictureName = parsedMembers[origGroup][origIndex].picture;
-    if (photoFile) {
-      const ext = photoFile.name.split('.').pop().toLowerCase();
-      pictureName = name.toLowerCase().replace(/\s+/g, '_') + '.' + ext;
-      const base64 = await fileToBase64(photoFile);
-      await uploadImage(`assets/img/${pictureName}`, base64, `Update photo: ${pictureName}`);
-    }
-
-    // Remove from old group
-    parsedMembers[origGroup].splice(origIndex, 1);
-    // Add to new group
-    parsedMembers[newGroup].push({ name, description: desc, website: website || '', picture: pictureName });
-
-    await commitAboutMd(`Update team member: ${name}`);
-    renderMembers();
-    closeModal();
-    hideLoading();
-    showToast('Member updated!', 'success');
-  } catch(e) {
-    hideLoading();
-    showToast('Error: ' + e.message, 'error');
-  }
-}
-
-async function deleteMember(group, index) {
-  const m = parsedMembers[group][index];
-  if (!confirm(`Delete ${m.name}?`)) return;
-  showLoading('Deleting member...');
-  try {
-    parsedMembers[group].splice(index, 1);
-    await commitAboutMd(`Remove team member: ${m.name}`);
-    renderMembers();
-    hideLoading();
-    showToast('Member removed', 'success');
-  } catch(e) {
-    hideLoading();
-    showToast('Error: ' + e.message, 'error');
-  }
-}
-
-// ============================================================
-// News CRUD
-// ============================================================
-function showAddNews() {
-  openModal(`
-    <h3>Add News Item</h3>
-    <div class="form-group">
-      <label>Date <span class="hint">e.g., 2025 or 2025-03</span></label>
-      <input id="news-date" placeholder="2025">
-    </div>
-    <div class="form-group">
-      <label>Title</label>
-      <input id="news-title" placeholder="Accepted Papers 2025">
-    </div>
-    <div class="form-group">
-      <label>Content <span class="hint">URLs will automatically become clickable links on the website</span></label>
-      <textarea id="news-content" rows="3" placeholder="Details about the news..."></textarea>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-success" onclick="saveNewNews()">Save &amp; Commit</button>
-    </div>
-  `);
-}
-
-function showEditNews(index) {
-  const n = parsedNews[index];
-  openModal(`
-    <h3>Edit News Item</h3>
-    <input type="hidden" id="news-edit-index" value="${index}">
-    <div class="form-group">
-      <label>Date</label>
-      <input id="news-date" value="${escAttr(n.date)}">
-    </div>
-    <div class="form-group">
-      <label>Title</label>
-      <input id="news-title" value="${escAttr(n.title)}">
-    </div>
-    <div class="form-group">
-      <label>Content</label>
-      <textarea id="news-content" rows="3">${escHtml(n.content)}</textarea>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-success" onclick="saveEditNews()">Save &amp; Commit</button>
-    </div>
-  `);
-}
-
-async function saveNewNews() {
-  const date = document.getElementById('news-date').value.trim();
-  const title = document.getElementById('news-title').value.trim();
-  const content = document.getElementById('news-content').value.trim();
-  if (!date || !title || !content) {
-    showToast('All fields are required', 'error');
-    return;
-  }
-
-  showLoading('Committing news...');
-  try {
-    parsedNews.unshift({ date, title, content: autoLinkUrls(content) });
-    await commitAboutMd(`Add news: ${title}`);
-    renderNews();
-    closeModal();
-    hideLoading();
-    showToast('News added!', 'success');
-  } catch(e) {
-    hideLoading();
-    showToast('Error: ' + e.message, 'error');
-  }
-}
-
-async function saveEditNews() {
-  const index = parseInt(document.getElementById('news-edit-index').value);
-  const date = document.getElementById('news-date').value.trim();
-  const title = document.getElementById('news-title').value.trim();
-  const content = document.getElementById('news-content').value.trim();
-  if (!date || !title || !content) {
-    showToast('All fields are required', 'error');
-    return;
-  }
-
-  showLoading('Updating news...');
-  try {
-    parsedNews[index] = { date, title, content: autoLinkUrls(content) };
-    await commitAboutMd(`Update news: ${title}`);
-    renderNews();
-    closeModal();
-    hideLoading();
-    showToast('News updated!', 'success');
-  } catch(e) {
-    hideLoading();
-    showToast('Error: ' + e.message, 'error');
-  }
-}
-
-async function deleteNews(index) {
-  if (!confirm('Delete this news item?')) return;
-  showLoading('Deleting news...');
-  try {
-    parsedNews.splice(index, 1);
-    await commitAboutMd(`Delete news item`);
-    renderNews();
-    hideLoading();
-    showToast('News deleted', 'success');
-  } catch(e) {
-    hideLoading();
-    showToast('Error: ' + e.message, 'error');
-  }
 }
 
 // ============================================================
@@ -1295,7 +1290,7 @@ async function commitAboutMd(message) {
 }
 
 function rebuildAboutMd() {
-  // Update the front matter object with current data
+  // Update only the editable fields in the front matter object
   aboutFrontMatter.news_items = parsedNews.map(n => ({
     date: n.date,
     title: n.title,
@@ -1322,11 +1317,11 @@ function rebuildAboutMd() {
     }))
   };
 
-  // Serialize YAML and reconstruct the file, preserving the body template
+  // Serialize YAML — preserves all other fields (banner, sponsors, etc.)
   const yamlStr = jsyaml.dump(aboutFrontMatter, {
-    lineWidth: -1,      // no line wrapping
-    quotingType: '"',    // use double quotes
-    forceQuotes: false,  // only quote when needed
+    lineWidth: -1,
+    quotingType: '"',
+    forceQuotes: false,
     noRefs: true
   });
 
@@ -1336,13 +1331,9 @@ function rebuildAboutMd() {
 // ============================================================
 // Utilities
 // ============================================================
-function yamlEscape(s) {
-  // Escape double quotes inside YAML double-quoted strings
-  return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-}
-
 function autoLinkUrls(text) {
-  // Convert plain URLs to <a> tags, but skip URLs already inside href="..."
+  // Skip if already contains <a> tags
+  if (text.includes('<a ')) return text;
   return text.replace(/(https?:\/\/[^\s<>"]+)/g, '<a href="$1">$1</a>');
 }
 
@@ -1351,8 +1342,9 @@ function escHtml(s) {
   d.textContent = s;
   return d.innerHTML;
 }
+
 function escAttr(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function fileToBase64(file) {
@@ -1368,6 +1360,7 @@ function openModal(html) {
   document.getElementById('modal').innerHTML = html;
   document.getElementById('modal-backdrop').classList.add('show');
 }
+
 function closeModal() {
   document.getElementById('modal-backdrop').classList.remove('show');
 }
@@ -1376,6 +1369,7 @@ function showLoading(text) {
   document.getElementById('loading-text').textContent = text || 'Saving...';
   document.getElementById('loading').classList.add('show');
 }
+
 function hideLoading() {
   document.getElementById('loading').classList.remove('show');
 }
@@ -1388,9 +1382,249 @@ function showToast(msg, type) {
 }
 
 // Close modal on backdrop click
-document.getElementById('modal-backdrop').addEventListener('click', function(e) {
+document.getElementById('modal-backdrop').addEventListener('click', function (e) {
   if (e.target === this) closeModal();
 });
+
+// ============================================================
+// Google Scholar Import
+// ============================================================
+const CORS_PROXIES = [
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+];
+
+async function fetchGoogleScholar() {
+  showLoading('Fetching from Google Scholar...');
+  const scholarUrl = `https://scholar.google.com/citations?user=${SCHOLAR_ID}&hl=en&cstart=0&pagesize=100`;
+
+  let html = null;
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const res = await fetch(proxy(scholarUrl), {signal: AbortSignal.timeout(10000)});
+      if (res.ok) { html = await res.text(); break; }
+    } catch (e) { continue; }
+  }
+
+  if (!html || !html.includes('gsc_a_at')) {
+    hideLoading();
+    showToast('Could not fetch from Google Scholar. Use "Paste BibTeX" instead.', 'error');
+    return;
+  }
+
+  // Parse the HTML
+  scholarPapers = [];
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const rows = doc.querySelectorAll('tr.gsc_a_tr');
+
+  rows.forEach(row => {
+    const titleEl = row.querySelector('a.gsc_a_at');
+    const grays = row.querySelectorAll('.gs_gray');
+    const yearEl = row.querySelector('.gsc_a_hc');
+
+    if (!titleEl) return;
+
+    const title = titleEl.textContent.trim();
+    const authors = grays[0] ? grays[0].textContent.trim() : '';
+    const venueText = grays[1] ? grays[1].textContent.trim() : '';
+    const year = yearEl ? yearEl.textContent.trim() : '';
+
+    // Parse venue — remove trailing year if present
+    const venue = venueText.replace(/,?\s*\d{4}\s*$/, '').trim();
+
+    scholarPapers.push({ title, authors, venue, year });
+  });
+
+  // Check which already exist in bib
+  const existingTitles = new Set(
+    parsedPubs.map(p => (p.fields.title || '').replace(/[{}]/g, '').toLowerCase().trim())
+  );
+
+  // Render results
+  const resultsEl = document.getElementById('scholar-results');
+  const listEl = document.getElementById('scholar-list');
+  const countEl = document.getElementById('scholar-count');
+
+  const newPapers = scholarPapers.filter(p => !existingTitles.has(p.title.toLowerCase().trim()));
+  countEl.textContent = `Found ${scholarPapers.length} papers (${newPapers.length} new)`;
+
+  listEl.innerHTML = scholarPapers.map((p, i) => {
+    const isExisting = existingTitles.has(p.title.toLowerCase().trim());
+    return `
+      <li>
+        <div class="scholar-item ${isExisting ? 'existing' : ''}">
+          <input type="checkbox" id="scholar-cb-${i}" ${isExisting ? 'disabled' : 'checked'} data-index="${i}">
+          <div class="item-info">
+            <h4>${escHtml(p.title)}${isExisting ? '<span class="badge">already added</span>' : ''}</h4>
+            <p>${escHtml(p.authors)} ${p.year ? '(' + p.year + ')' : ''} ${p.venue ? '&mdash; ' + escHtml(p.venue) : ''}</p>
+          </div>
+        </div>
+      </li>`;
+  }).join('');
+
+  resultsEl.style.display = 'block';
+  hideLoading();
+  showToast(`Found ${newPapers.length} new papers`, 'success');
+}
+
+async function importSelectedScholar() {
+  const checkboxes = document.querySelectorAll('#scholar-list input[type="checkbox"]:checked:not(:disabled)');
+  if (checkboxes.length === 0) return showToast('No papers selected', 'error');
+
+  showLoading(`Importing ${checkboxes.length} papers...`);
+  try {
+    let newEntries = '';
+    checkboxes.forEach(cb => {
+      const p = scholarPapers[parseInt(cb.dataset.index)];
+      // Generate a citation key
+      const firstAuthor = p.authors.split(',')[0].trim().split(' ').pop().toLowerCase();
+      const titleWord = p.title.split(/\s+/)[0].toLowerCase().replace(/[^a-z]/g, '');
+      const key = `${firstAuthor}_${titleWord}_${p.year || 'nd'}`;
+
+      // Determine entry type
+      const type = p.venue.toLowerCase().includes('journal') || p.venue.toLowerCase().includes('transactions')
+        ? 'article' : 'inproceedings';
+      const venueField = type === 'article' ? 'journal' : 'booktitle';
+
+      // Convert authors: "Y Belinkov, N Durrani, H Sajjad" => "Y Belinkov and N Durrani and H Sajjad"
+      const bibAuthors = p.authors.split(',').map(a => a.trim()).join(' and ');
+
+      let entry = `@${type}{${key},\n`;
+      entry += `  title = {${p.title}},\n`;
+      entry += `  author = {${bibAuthors}},\n`;
+      entry += `  year = {${p.year}},\n`;
+      if (p.venue) entry += `  ${venueField} = {${p.venue}},\n`;
+      entry += `}\n`;
+      newEntries += '\n' + entry;
+    });
+
+    const updated = bibContent.trimEnd() + '\n' + newEntries;
+    const res = await updateFile('_bibliography/papers.bib', updated, bibSha,
+      `Import ${checkboxes.length} publications from Google Scholar`);
+    bibSha = res.content.sha;
+    bibContent = updated;
+    parseBib();
+    renderPublications();
+
+    // Update the scholar list to reflect imports
+    document.getElementById('scholar-results').style.display = 'none';
+    hideLoading();
+    showToast(`${checkboxes.length} papers imported!`, 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+function showPasteBibtex() {
+  openModal(`
+    <h3>Paste BibTeX</h3>
+    <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:1rem;">
+      Go to <a href="https://scholar.google.com/citations?user=${SCHOLAR_ID}&hl=en" target="_blank">Google Scholar</a>,
+      select the papers you want, click <strong>Export &rarr; BibTeX</strong>, then paste below.
+    </p>
+    <div class="form-group">
+      <label>BibTeX entries</label>
+      <textarea id="paste-bibtex" rows="12" placeholder="@inproceedings{...}\n\n@article{...}"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-success" onclick="importPastedBibtex()">Import</button>
+    </div>
+  `);
+}
+
+async function importPastedBibtex() {
+  const raw = document.getElementById('paste-bibtex').value.trim();
+  if (!raw) return showToast('Please paste BibTeX entries', 'error');
+
+  showLoading('Importing publications...');
+  try {
+    const updated = bibContent.trimEnd() + '\n\n' + raw + '\n';
+    const res = await updateFile('_bibliography/papers.bib', updated, bibSha, 'Import publications from BibTeX');
+    bibSha = res.content.sha;
+    bibContent = updated;
+    parseBib();
+    renderPublications();
+    closeModal();
+    hideLoading();
+    showToast('Publications imported!', 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+// Admin: Collaborators
+// ============================================================
+async function loadCollaborators() {
+  try {
+    const collabs = await ghAPI('/collaborators');
+    const el = document.getElementById('collaborators-list');
+    if (!collabs.length) {
+      el.innerHTML = '<li><em>No collaborators</em></li>';
+      return;
+    }
+    el.innerHTML = collabs.map(c => `
+      <li>
+        <div class="item-info">
+          <h4>${escHtml(c.login)}</h4>
+          <p>${escHtml(c.role_name || c.permissions && Object.entries(c.permissions).filter(([k,v])=>v).map(([k])=>k).pop() || 'collaborator')}</p>
+        </div>
+        <div class="item-actions">
+          <a href="https://github.com/${escAttr(c.login)}" target="_blank" class="btn btn-outline">Profile</a>
+          ${c.login !== REPO_OWNER ? `<button class="btn btn-danger" onclick="removeCollaborator('${escAttr(c.login)}')">Remove</button>` : ''}
+        </div>
+      </li>`).join('');
+  } catch (e) {
+    document.getElementById('collaborators-list').innerHTML =
+      '<li><em>Could not load collaborators (requires admin access)</em></li>';
+  }
+}
+
+async function inviteCollaborator() {
+  const username = document.getElementById('invite-username').value.trim();
+  const permission = document.getElementById('invite-permission').value;
+  if (!username) return showToast('Please enter a GitHub username', 'error');
+
+  showLoading('Sending invitation...');
+  try {
+    await ghAPI(`/collaborators/${username}`, {
+      method: 'PUT',
+      body: JSON.stringify({ permission })
+    });
+    document.getElementById('invite-username').value = '';
+    await loadCollaborators();
+    hideLoading();
+    showToast(`Invitation sent to ${username}!`, 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+async function removeCollaborator(username) {
+  if (!confirm(`Remove ${username} as a collaborator?`)) return;
+  showLoading('Removing collaborator...');
+  try {
+    await fetch(API_BASE + `/collaborators/${username}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+    await loadCollaborators();
+    hideLoading();
+    showToast(`${username} removed`, 'success');
+  } catch (e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+  }
+}
 </script>
 </body>
 </html>
