@@ -1452,12 +1452,13 @@ async function fetchGoogleScholar() {
 
   listEl.innerHTML = scholarPapers.map((p, i) => {
     const isExisting = existingTitles.has(p.title.toLowerCase().trim());
+    const isTruncated = p.authors.includes('...') || p.venue.includes('...') || p.venue.includes('\u2026') || p.authors.includes('\u2026');
     return `
       <li>
         <div class="scholar-item ${isExisting ? 'existing' : ''}">
-          <input type="checkbox" id="scholar-cb-${i}" ${isExisting ? 'disabled' : 'checked'} data-index="${i}">
+          <input type="checkbox" id="scholar-cb-${i}" ${isExisting ? 'disabled' : ''} ${!isExisting && !isTruncated ? 'checked' : ''} data-index="${i}">
           <div class="item-info">
-            <h4>${escHtml(p.title)}${isExisting ? '<span class="badge">already added</span>' : ''}</h4>
+            <h4>${escHtml(p.title)}${isExisting ? '<span class="badge">already added</span>' : ''}${isTruncated && !isExisting ? '<span class="badge" style="background:var(--warning);">truncated data</span>' : ''}</h4>
             <p>${escHtml(p.authors)} ${p.year ? '(' + p.year + ')' : ''} ${p.venue ? '&mdash; ' + escHtml(p.venue) : ''}</p>
           </div>
         </div>
@@ -1473,13 +1474,31 @@ async function importSelectedScholar() {
   const checkboxes = document.querySelectorAll('#scholar-list input[type="checkbox"]:checked:not(:disabled)');
   if (checkboxes.length === 0) return showToast('No papers selected', 'error');
 
-  showLoading(`Importing ${checkboxes.length} papers...`);
+  // Warn about truncated data from Scholar
+  const selected = [];
+  const warnings = [];
+  checkboxes.forEach(cb => {
+    const p = scholarPapers[parseInt(cb.dataset.index)];
+    if (p.authors.includes('...') || p.venue.includes('...') || p.venue.includes('\u2026') || p.authors.includes('\u2026')) {
+      warnings.push(p.title);
+    }
+    selected.push(p);
+  });
+
+  if (warnings.length > 0) {
+    const proceed = confirm(
+      `Warning: ${warnings.length} paper(s) have truncated author/venue data from Google Scholar. ` +
+      `These entries may need manual editing after import.\n\nProceed?`
+    );
+    if (!proceed) return;
+  }
+
+  showLoading(`Importing ${selected.length} papers...`);
   try {
     let newEntries = '';
-    checkboxes.forEach(cb => {
-      const p = scholarPapers[parseInt(cb.dataset.index)];
+    selected.forEach(p => {
       // Generate a citation key
-      const firstAuthor = p.authors.split(',')[0].trim().split(' ').pop().toLowerCase();
+      const firstAuthor = p.authors.split(',')[0].trim().split(' ').pop().toLowerCase().replace(/[^a-z]/g, '');
       const titleWord = p.title.split(/\s+/)[0].toLowerCase().replace(/[^a-z]/g, '');
       const key = `${firstAuthor}_${titleWord}_${p.year || 'nd'}`;
 
@@ -1488,21 +1507,25 @@ async function importSelectedScholar() {
         ? 'article' : 'inproceedings';
       const venueField = type === 'article' ? 'journal' : 'booktitle';
 
+      // Clean up truncated markers
+      const cleanAuthors = p.authors.replace(/,?\s*\.{3}\s*$/, '').replace(/,?\s*\u2026\s*$/, '');
+      const cleanVenue = p.venue.replace(/\u2026.*$/, '').replace(/\.{3}.*$/, '').trim();
+
       // Convert authors: "Y Belinkov, N Durrani, H Sajjad" => "Y Belinkov and N Durrani and H Sajjad"
-      const bibAuthors = p.authors.split(',').map(a => a.trim()).join(' and ');
+      const bibAuthors = cleanAuthors.split(',').map(a => a.trim()).filter(Boolean).join(' and ');
 
       let entry = `@${type}{${key},\n`;
       entry += `  title = {${p.title}},\n`;
       entry += `  author = {${bibAuthors}},\n`;
       entry += `  year = {${p.year}},\n`;
-      if (p.venue) entry += `  ${venueField} = {${p.venue}},\n`;
+      if (cleanVenue) entry += `  ${venueField} = {${cleanVenue}},\n`;
       entry += `}\n`;
       newEntries += '\n' + entry;
     });
 
     const updated = bibContent.trimEnd() + '\n' + newEntries;
     const res = await updateFile('_bibliography/papers.bib', updated, bibSha,
-      `Import ${checkboxes.length} publications from Google Scholar`);
+      `Import ${selected.length} publications from Google Scholar`);
     bibSha = res.content.sha;
     bibContent = updated;
     parseBib();
