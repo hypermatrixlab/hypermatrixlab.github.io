@@ -6,6 +6,9 @@ description:
 nav: true
 nav_order: 2
 ---
+
+For an updated list of publications, please visit Google Scholar page: <a href="https://scholar.google.de/citations?user=t3BH6NkAAAAJ&hl=en">https://scholar.google.de/citations?user=t3BH6NkAAAAJ&hl=en</a>
+
 <div class="publications">
 <h2 class="category">All Publications</h2>
   {% bibliography --file papers --template bib %}
