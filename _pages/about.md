@@ -86,6 +86,10 @@ staff:
       description: Research intern
       website: ""
       picture: momen.jpeg
+    - name: Swapnil Kanade
+      description: Master student
+      website: ""
+      picture: hyper_matrix.png
 alumni:
   title: Alumni
   people:
