@@ -11,33 +11,7 @@ banner:
 news_items:
   - date: "2026-04"
     title: "Accepted Papers 2026"
-    content: "1 paper (TMLR), 2 papers (ACL), 1 paper (ACL findings)
-and on the top of publication page:
-For an updated list of publications, please visit Google Scholar page: https://scholar.google.de/citations?user=t3BH6NkAAAAJ&hl=en"
-  - date: "2025"
-    title: "Accepted Papers 2025"
-    content: "2 papers (ICML), 1 paper (ICLR), 1 paper (IJMIR)"
-  - date: "2024"
-    title: "Accepted Papers 2024"
-    content: "2 papers (NeurIPS), 2 papers (NAACL), 2 papers (EMNLP)"
-  - date: "2023"
-    title: "Accepted Papers 2023"
-    content: "3 conference papers (NeurIPS, ICLR, ACL), 1 journal paper (JMLR), 3 demo papers (AAAI, ACL, EACL)"
-  - date: "2023"
-    title: "NeurIPS 2023"
-    content: "Evaluating Neuron Interpretation Methods of NLP Models"
-  - date: "2023"
-    title: "ICLR 2023"
-    content: "Learning Uncertainty for Unknown Domains with Zero-Target-Assumption"
-  - date: "2023"
-    title: "JMLR 2023"
-    content: "Discovering Salient Neurons in Deep NLP Models"
-  - date: "2023"
-    title: "ACL Demo 2023"
-    content: "NeuroX 2.0 Library for Neuron Analysis of Deep NLP Models"
-  - date: "2023"
-    title: "ACL Findings 2023"
-    content: "Impact of Adversarial Training on Robustness and Generalizability of Language Models"
+    content: "1 paper (TMLR), 2 papers (ACL), 1 paper (ACL findings)"
 
 selected_papers: false
 social: false
@@ -138,7 +112,7 @@ sponsors:
   <div class="about-content">
     Welcome! We are the HyperMatrix research lab at Dalhousie University, Halifax, Canada, directed by <a href="https://hsajjad.github.io/">Prof. Hassan Sajjad</a>. We conduct cutting-edge research in Artificial Intelligence, focusing on Natural Language Processing, Deep Learning, and Safe and Trustworthy AI.
     
-    <p style="margin-top: 1rem;">Our mission is to advance the field of AI by making models that are not only powerful but also transparent, safe, and aligned with social needs. Our research interests include language generation, interpretability, explainability, generalization, robustness, and model editingâall with the aim of developing trustworthy AI systems.</p>
+    <p style="margin-top: 1rem;">Our mission is to advance the field of AI by making models that are not only powerful but also transparent, safe, and aligned with social needs. Our research interests include language generation, interpretability, explainability, generalization, robustness, and model editingÃ¢ÂÂall with the aim of developing trustworthy AI systems.</p>
   </div>
 
   <h2 class="category">News</h2>
@@ -195,7 +169,7 @@ sponsors:
   </div>
 
   <h2 class="category">Find us</h2>
-  <p>We are located at 6050 University Ave, Halifax, NS B3H 1W5 (<a href="/contact">â directions</a>).</p>
+  <p>We are located at 6050 University Ave, Halifax, NS B3H 1W5 (<a href="/contact">Ã¢ÂÂ directions</a>).</p>
   <p><a href="https://www.dal.ca/faculty/computerscience.html"><i class="fa fa-university" aria-hidden="true"></i> Faculty of Computer Science, Dalhousie University, Halifax, NS</a></p>
   <p><a href="https://twitter.com/hassaan84s"><i class="fab fa-twitter"></i> Hassan Sajjad</a></p>
 </div>
