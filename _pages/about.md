@@ -5,10 +5,15 @@ permalink: /
 subtitle: ""
 
 banner:
-  image: cs_building.jpg 
+  image: cs_building.jpg
   alt_text: "Dalhousie University, Faculty of Computer Science Building"
 
 news_items:
+  - date: "2026-04"
+    title: "Accepted Papers 2026"
+    content: "1 paper (TMLR), 2 papers (ACL), 1 paper (ACL findings)
+and on the top of publication page:
+For an updated list of publications, please visit Google Scholar page: https://scholar.google.de/citations?user=t3BH6NkAAAAJ&hl=en"
   - date: "2025"
     title: "Accepted Papers 2025"
     content: "2 papers (ICML), 1 paper (ICLR), 1 paper (IJMIR)"
@@ -84,11 +89,11 @@ staff:
       description: Research intern
       website: ""
       picture: hyper_matrix.png
-    - name: Moamen Moustafa 
+    - name: Moamen Moustafa
       description: Research intern
       website: ""
       picture: momen.jpeg
-      
+
 alumni:
   title: Alumni
   people:
@@ -133,7 +138,7 @@ sponsors:
   <div class="about-content">
     Welcome! We are the HyperMatrix research lab at Dalhousie University, Halifax, Canada, directed by <a href="https://hsajjad.github.io/">Prof. Hassan Sajjad</a>. We conduct cutting-edge research in Artificial Intelligence, focusing on Natural Language Processing, Deep Learning, and Safe and Trustworthy AI.
     
-    <p style="margin-top: 1rem;">Our mission is to advance the field of AI by making models that are not only powerful but also transparent, safe, and aligned with social needs. Our research interests include language generation, interpretability, explainability, generalization, robustness, and model editing—all with the aim of developing trustworthy AI systems.</p>
+    <p style="margin-top: 1rem;">Our mission is to advance the field of AI by making models that are not only powerful but also transparent, safe, and aligned with social needs. Our research interests include language generation, interpretability, explainability, generalization, robustness, and model editingâall with the aim of developing trustworthy AI systems.</p>
   </div>
 
   <h2 class="category">News</h2>
@@ -190,7 +195,7 @@ sponsors:
   </div>
 
   <h2 class="category">Find us</h2>
-  <p>We are located at 6050 University Ave, Halifax, NS B3H 1W5 (<a href="/contact">→ directions</a>).</p>
+  <p>We are located at 6050 University Ave, Halifax, NS B3H 1W5 (<a href="/contact">â directions</a>).</p>
   <p><a href="https://www.dal.ca/faculty/computerscience.html"><i class="fa fa-university" aria-hidden="true"></i> Faculty of Computer Science, Dalhousie University, Halifax, NS</a></p>
   <p><a href="https://twitter.com/hassaan84s"><i class="fab fa-twitter"></i> Hassan Sajjad</a></p>
 </div>
