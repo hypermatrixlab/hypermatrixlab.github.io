@@ -9,7 +9,7 @@ banner:
 news_items:
   - date: "2026"
     title: Accepted Papers 2026
-    content: 1 paper (TMLR), 2 papers (ACL), 1 paper (ACL findings)
+    content: 1 paper (TMLR), 1 paper (ICML), 2 papers (ACL), 1 paper (ACL findings)
   - date: "2025"
     title: Accepted Papers 2025
     content: 2 papers (ICML), 1 paper (ICLR), 1 paper (IJMIR)
