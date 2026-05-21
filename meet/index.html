@@ -425,6 +425,15 @@
     }
     .field { margin-bottom: 14px; }
     .field label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--text-dim); font-weight: 500; }
+    .field-help { font-size: 12px; color: var(--text-faint); margin-top: 6px; line-height: 1.4; }
+    .field-error {
+      background: color-mix(in srgb, var(--danger) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
+      color: var(--danger);
+      padding: 8px 12px; border-radius: 8px;
+      font-size: 13px; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     @media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
 
@@ -803,6 +812,13 @@
     const fmt12h = m => { const h = Math.floor(m/60), mm = m%60; const ap = h>=12?"PM":"AM"; const h12 = h%12===0?12:h%12; return mm===0?`${h12} ${ap}`:`${h12}:${String(mm).padStart(2,"0")} ${ap}`; };
     const toast = msg => { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 1800); };
     const sanitizeName = s => String(s||"").trim().slice(0,40).replace(/[<>"]/g,"");
+
+    async function hashPwd(s) {
+      if (!s) return "";
+      const buf = new TextEncoder().encode(`whenly|${s}`);
+      const hash = await crypto.subtle.digest("SHA-256", buf);
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
+    }
 
     // User color palette
     const COLORS = [
@@ -1349,19 +1365,58 @@
       let myName = localStorage.getItem(nameKey);
       let myColor = localStorage.getItem(`whenly.color.${roomId}`);
 
+      // Validate stored identity against current participants
+      if (myId) {
+        const meSnap = await get(ref(db, `rooms/${roomId}/participants/${myId}`)).catch(() => null);
+        if (!meSnap || !meSnap.exists()) {
+          myId = null; myName = null; myColor = null;
+          localStorage.removeItem(idKey);
+          localStorage.removeItem(nameKey);
+          localStorage.removeItem(`whenly.color.${roomId}`);
+        }
+      }
+
       if (!myId || !myName) {
-        const n = await promptName(meta.title);
-        if (!n) { location.hash = ""; return; }
-        myName = n;
-        myId = randId(10);
-        localStorage.setItem(idKey, myId);
-        localStorage.setItem(nameKey, myName);
-        // assign next color
-        const existing = (await get(ref(db, `rooms/${roomId}/participants`))).val() || {};
-        const used = Object.values(existing).map(p => p.color).filter(Boolean);
-        myColor = COLORS.find(c => !used.includes(c)) || colorFor(Object.keys(existing).length);
-        localStorage.setItem(`whenly.color.${roomId}`, myColor);
-        await set(ref(db, `rooms/${roomId}/participants/${myId}`), { name: myName, color: myColor, joinedAt: Date.now() });
+        let errorMsg = null;
+        let lastName = "";
+        while (true) {
+          const result = await promptName(meta.title, { errorMsg, currentName: lastName });
+          if (!result) { location.hash = ""; return; }
+          const { name, password } = result;
+          lastName = name;
+
+          const existing = (await get(ref(db, `rooms/${roomId}/participants`))).val() || {};
+          const match = Object.entries(existing).find(([, p]) => p.name === name);
+
+          if (match) {
+            const [pid, p] = match;
+            if (p.passwordHash) {
+              if (!password) { errorMsg = `"${name}" is taken — enter the password to continue as them.`; continue; }
+              const hash = await hashPwd(password);
+              if (hash !== p.passwordHash) { errorMsg = "Wrong password for that name."; continue; }
+              myId = pid; myName = name; myColor = p.color || colorFor(0);
+            } else {
+              // No password set — claim it; if user provided a password, lock it down now
+              myId = pid; myName = name; myColor = p.color || colorFor(0);
+              if (password) {
+                await update(ref(db, `rooms/${roomId}/participants/${pid}`), { passwordHash: await hashPwd(password) });
+              }
+            }
+          } else {
+            myId = randId(10);
+            myName = name;
+            const used = Object.values(existing).map(p => p.color).filter(Boolean);
+            myColor = COLORS.find(c => !used.includes(c)) || colorFor(Object.keys(existing).length);
+            const data = { name: myName, color: myColor, joinedAt: Date.now() };
+            if (password) data.passwordHash = await hashPwd(password);
+            await set(ref(db, `rooms/${roomId}/participants/${myId}`), data);
+          }
+
+          localStorage.setItem(idKey, myId);
+          localStorage.setItem(nameKey, myName);
+          localStorage.setItem(`whenly.color.${roomId}`, myColor);
+          break;
+        }
       }
       if (!myColor) {
         myColor = colorFor(0);
@@ -1715,12 +1770,27 @@
       }
 
       async function changeName() {
-        const next = await promptName(meta.title, myName);
-        if (!next) return;
-        myName = next;
-        localStorage.setItem(nameKey, myName);
-        await update(ref(db, `rooms/${roomId}/participants/${myId}`), { name: myName });
-        head.querySelector(".room-actions .btn-ghost").childNodes[1].textContent = myName;
+        let errorMsg = null;
+        let currentName = myName;
+        while (true) {
+          const result = await promptName(meta.title, { currentName, errorMsg, isRename: true });
+          if (!result) return;
+          const { name, password } = result;
+          if (name === myName && !password) return;
+
+          const existing = (await get(ref(db, `rooms/${roomId}/participants`))).val() || {};
+          const conflict = Object.entries(existing).find(([pid, p]) => p.name === name && pid !== myId);
+          if (conflict) { errorMsg = `"${name}" is already taken in this meeting. Pick another name.`; currentName = name; continue; }
+
+          const updates = { name };
+          if (password) updates.passwordHash = await hashPwd(password);
+          await update(ref(db, `rooms/${roomId}/participants/${myId}`), updates);
+          myName = name;
+          localStorage.setItem(nameKey, myName);
+          head.querySelector(".room-actions .btn-ghost").childNodes[1].textContent = myName;
+          if (password) toast("Password updated");
+          return;
+        }
       }
     }
 
@@ -1868,27 +1938,44 @@
     // ============================================================
     // Name prompt
     // ============================================================
-    function promptName(title, current = "") {
+    function promptName(title, opts = {}) {
       return new Promise(resolve => {
         const bg = el("div", { class: "modal-bg" });
-        const input = el("input", { class: "input", placeholder: "Your name", value: current, maxlength: 40 });
+        const nameInput = el("input", { class: "input", placeholder: "Your name", value: opts.currentName || "", maxlength: 40, autocomplete: "name" });
+        const pwInput = el("input", { class: "input", type: "password", placeholder: "Password (optional)", maxlength: 80, autocomplete: "current-password" });
+        const errorBox = el("div", { class: "field-error", style: { display: opts.errorMsg ? "block" : "none" } }, opts.errorMsg || "");
         const join = () => {
-          const n = sanitizeName(input.value);
-          if (!n) { input.focus(); return; }
-          bg.remove(); resolve(n);
+          const n = sanitizeName(nameInput.value);
+          if (!n) { nameInput.focus(); return; }
+          bg.remove();
+          resolve({ name: n, password: pwInput.value });
         };
         bg.appendChild(el("div", { class: "modal modal-sm" },
-          el("h2", {}, "Join meeting"),
+          el("h2", {}, opts.isRename ? "Edit your name" : "Join meeting"),
           el("p", { class: "modal-sub" }, title || ""),
-          el("div", { class: "field" }, input),
+          el("div", { class: "field" },
+            el("label", {}, "Your name"),
+            nameInput
+          ),
+          el("div", { class: "field" },
+            el("label", {}, "Password ", el("span", { style: { color: "var(--text-faint)", fontWeight: "400" } }, "(optional)")),
+            pwInput,
+            el("div", { class: "field-help" },
+              opts.isRename
+                ? "Set a new password to protect this name (leave blank to keep current)."
+                : "Set a password so you can edit your response from another device — or to lock this name. Leave blank if you don't need to."
+            )
+          ),
+          errorBox,
           el("div", { class: "modal-foot" },
             el("button", { class: "btn btn-ghost", onClick: () => { bg.remove(); resolve(null); } }, "Cancel"),
-            el("button", { class: "btn btn-primary", onClick: join }, "Join")
+            el("button", { class: "btn btn-primary", onClick: join }, opts.isRename ? "Save" : "Join")
           )
         ));
         document.body.appendChild(bg);
-        setTimeout(() => input.focus(), 60);
-        input.addEventListener("keydown", e => { if (e.key === "Enter") join(); });
+        setTimeout(() => nameInput.focus(), 60);
+        nameInput.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); pwInput.focus(); } });
+        pwInput.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); join(); } });
       });
     }
 
