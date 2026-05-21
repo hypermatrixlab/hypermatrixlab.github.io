@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>HyperMatrix Meet</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%238b5cf6'/%3E%3Cpath d='M18 22h28M18 32h28M18 42h28' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #0a0f1e;
+      --bg-elev: #111827;
+      --card: #161e2e;
+      --card-2: #1e2738;
+      --border: #2a3447;
+      --text: #e6e9f0;
+      --text-dim: #8b94a8;
+      --text-faint: #5b6478;
+      --accent: #8b5cf6;
+      --accent-2: #a78bfa;
+      --accent-soft: rgba(139, 92, 246, 0.12);
+      --danger: #ef4444;
+      --success: #10b981;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+    [data-theme="light"] {
+      --bg: #f6f7fb;
+      --bg-elev: #ffffff;
+      --card: #ffffff;
+      --card-2: #f1f3f9;
+      --border: #e2e6ee;
+      --text: #1a1f2e;
+      --text-dim: #5a6478;
+      --text-faint: #8b94a8;
+      --accent: #7c3aed;
+      --accent-2: #6d28d9;
+      --accent-soft: rgba(124, 58, 237, 0.10);
+      --shadow: 0 6px 20px rgba(10, 15, 30, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    body { overflow-x: hidden; }
+
+    /* Layout */
+    .app { max-width: 1200px; margin: 0 auto; padding: 24px 20px 60px; }
+    .topbar {
+      display: flex; align-items: center; gap: 12px;
+      padding-bottom: 20px; border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 600; font-size: 17px; letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .brand-mark {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid; place-items: center;
+      box-shadow: 0 4px 12px var(--accent-soft);
+    }
+    .brand-mark svg { width: 16px; height: 16px; }
+    .topbar-spacer { flex: 1; }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--card);
+      color: var(--text-dim); cursor: pointer; display: grid; place-items: center;
+      transition: all 0.15s ease;
+    }
+    .icon-btn:hover { color: var(--text); border-color: var(--accent); }
+    .icon-btn svg { width: 18px; height: 18px; }
+
+    /* Cards / panels */
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Buttons */
+    .btn {
+      appearance: none; border: 1px solid var(--border);
+      background: var(--card-2); color: var(--text);
+      padding: 10px 16px; font-size: 14px; font-weight: 500;
+      border-radius: 10px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white; border-color: transparent;
+      box-shadow: 0 4px 14px var(--accent-soft);
+    }
+    .btn-primary:hover { box-shadow: 0 6px 20px var(--accent-soft); }
+    .btn-ghost { background: transparent; border-color: transparent; color: var(--text-dim); }
+    .btn-ghost:hover { color: var(--text); background: var(--card-2); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Inputs */
+    .input, .select {
+      width: 100%; padding: 11px 14px;
+      background: var(--bg-elev); border: 1px solid var(--border);
+      color: var(--text); border-radius: 10px;
+      font-size: 14px; font-family: inherit;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .input:focus, .select:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--text-dim); font-weight: 500; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+
+    /* Heading */
+    h1 { font-size: 24px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.02em; }
+    h2 { font-size: 18px; font-weight: 600; margin: 0 0 12px; letter-spacing: -0.01em; }
+    .subtitle { color: var(--text-dim); margin: 0 0 24px; font-size: 14px; }
+    .label-small { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); font-weight: 600; }
+
+    /* ===== Landing (create meeting) ===== */
+    .hero-wrap { max-width: 640px; margin: 40px auto 0; }
+    .hero-title {
+      font-size: 36px; font-weight: 700; letter-spacing: -0.03em;
+      margin: 0 0 8px;
+      background: linear-gradient(135deg, var(--text), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub { color: var(--text-dim); font-size: 16px; margin: 0 0 32px; }
+    .date-picker-wrap {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding: 12px; background: var(--bg-elev);
+      border: 1px solid var(--border); border-radius: 10px;
+      min-height: 50px;
+    }
+    .date-chip {
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--accent-soft); color: var(--accent-2);
+      font-size: 13px; font-weight: 500;
+      display: inline-flex; align-items: center; gap: 6px;
+      animation: chipIn 0.18s ease;
+    }
+    .date-chip button {
+      appearance: none; border: 0; background: transparent;
+      color: inherit; cursor: pointer; padding: 0; font-size: 14px;
+      opacity: 0.6;
+    }
+    .date-chip button:hover { opacity: 1; }
+    @keyframes chipIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    /* Mini calendar */
+    .cal { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+    .cal-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .cal-head .month { flex: 1; font-weight: 600; font-size: 14px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cal-dow { font-size: 11px; color: var(--text-faint); text-align: center; padding: 4px 0; font-weight: 600; }
+    .cal-day {
+      aspect-ratio: 1; display: grid; place-items: center;
+      font-size: 13px; border-radius: 8px; cursor: pointer;
+      transition: background 0.12s ease, transform 0.12s ease;
+      user-select: none;
+    }
+    .cal-day:hover { background: var(--card-2); }
+    .cal-day.is-other { color: var(--text-faint); opacity: 0.5; }
+    .cal-day.is-today { font-weight: 700; color: var(--accent-2); }
+    .cal-day.is-selected {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white; font-weight: 600; transform: scale(0.96);
+    }
+    .cal-day.is-past { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+
+    /* ===== Room ===== */
+    .room-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .room-head h1 { flex: 1; min-width: 240px; }
+    .room-meta { color: var(--text-dim); font-size: 14px; margin-top: 4px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; background: var(--accent-soft); color: var(--accent-2);
+      border-radius: 999px; font-size: 12px; font-weight: 500;
+    }
+
+    .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 900px) { .panels { grid-template-columns: 1fr; } }
+
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+    .panel-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .panel-head h2 { margin: 0; flex: 1; }
+    .panel-head .hint { font-size: 12px; color: var(--text-faint); }
+
+    /* Grid */
+    .grid-wrap { overflow-x: auto; padding-bottom: 4px; }
+    .grid-table { border-collapse: separate; border-spacing: 0; user-select: none; -webkit-user-select: none; }
+    .grid-table th, .grid-table td { padding: 0; }
+    .grid-table .col-head {
+      font-size: 11px; font-weight: 600; color: var(--text-dim);
+      text-align: center; padding: 6px 4px; min-width: 60px;
+      border-bottom: 1px solid var(--border);
+    }
+    .grid-table .col-head .dow { display: block; color: var(--text-faint); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .grid-table .col-head .dnum { font-size: 14px; color: var(--text); margin-top: 2px; }
+    .grid-table .time-label {
+      font-size: 10px; color: var(--text-faint); text-align: right;
+      padding-right: 8px; width: 50px; white-space: nowrap;
+      vertical-align: top;
+      transform: translateY(-6px);
+    }
+    .grid-cell {
+      width: 60px; height: 18px;
+      background: var(--card-2);
+      border-right: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.08s ease;
+      position: relative;
+    }
+    .grid-cell.boundary-top { border-top: 1px solid var(--border); }
+    .grid-cell.hour-mark { border-top: 1px solid var(--border); }
+    .grid-cell.last-col { border-right: 1px solid var(--border); }
+    .grid-cell.is-selected {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    }
+    .grid-cell.is-disabled { opacity: 0.3; cursor: not-allowed; }
+    .grid-cell:hover { outline: 1px solid var(--accent); outline-offset: -1px; z-index: 1; }
+
+    /* Group heatmap */
+    .grid-cell.heat { cursor: default; }
+    .grid-cell.heat:hover { outline: 2px solid var(--accent); }
+
+    /* Tooltip */
+    .tip {
+      position: absolute; pointer-events: none; opacity: 0;
+      background: var(--bg-elev); color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 10px 12px; font-size: 12px;
+      box-shadow: var(--shadow);
+      min-width: 180px; max-width: 280px;
+      transition: opacity 0.12s ease;
+      z-index: 100;
+    }
+    .tip.show { opacity: 1; }
+    .tip .tip-time { font-weight: 600; margin-bottom: 6px; font-size: 13px; }
+    .tip .tip-section { margin-top: 6px; }
+    .tip .tip-label { font-size: 10px; text-transform: uppercase; color: var(--text-faint); letter-spacing: 0.06em; margin-bottom: 2px; }
+    .tip .tip-list { color: var(--text-dim); line-height: 1.4; }
+
+    /* Responses panel */
+    .responses { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .resp-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; background: var(--card-2); border: 1px solid var(--border);
+      border-radius: 999px; font-size: 12px; color: var(--text-dim);
+    }
+    .resp-chip.you { border-color: var(--accent); color: var(--accent-2); }
+    .resp-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+    /* Best times */
+    .best-times { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .best-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0; border-bottom: 1px dashed var(--border);
+      font-size: 13px;
+    }
+    .best-row:last-child { border-bottom: 0; }
+    .best-row .when { flex: 1; color: var(--text); font-weight: 500; }
+    .best-row .count { color: var(--text-dim); font-size: 12px; }
+
+    /* Modal */
+    .modal-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      display: grid; place-items: center; z-index: 50;
+      animation: fadeIn 0.18s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px; max-width: 420px; width: 90%;
+      box-shadow: var(--shadow);
+      animation: slideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--card); border: 1px solid var(--border); color: var(--text);
+      padding: 10px 18px; border-radius: 999px; font-size: 13px;
+      box-shadow: var(--shadow);
+      opacity: 0; transition: all 0.22s ease; z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Setup screen */
+    .setup-steps { counter-reset: step; padding-left: 0; }
+    .setup-step {
+      list-style: none; counter-increment: step;
+      padding: 16px; border-left: 3px solid var(--accent);
+      background: var(--card-2); border-radius: 0 10px 10px 0;
+      margin-bottom: 12px;
+    }
+    .setup-step::before {
+      content: counter(step); display: inline-grid; place-items: center;
+      width: 24px; height: 24px; background: var(--accent);
+      color: white; border-radius: 50%; font-weight: 700; font-size: 12px;
+      margin-right: 10px; vertical-align: middle;
+    }
+    code, pre {
+      font-family: "SF Mono", Menlo, monospace; font-size: 12.5px;
+      background: var(--bg); color: var(--accent-2);
+      padding: 2px 6px; border-radius: 4px;
+    }
+    pre {
+      padding: 12px 14px; border-radius: 8px; overflow-x: auto;
+      border: 1px solid var(--border); margin: 8px 0;
+      color: var(--text);
+    }
+    pre code { padding: 0; background: transparent; color: inherit; }
+
+    .empty {
+      text-align: center; padding: 40px 20px; color: var(--text-dim);
+      border: 2px dashed var(--border); border-radius: var(--radius);
+    }
+    .empty-icon { font-size: 36px; margin-bottom: 8px; opacity: 0.6; }
+
+    /* Loading */
+    .spinner {
+      width: 20px; height: 20px; border: 2px solid var(--border);
+      border-top-color: var(--accent); border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Utility */
+    .stack > * + * { margin-top: 16px; }
+    .mt-2 { margin-top: 8px; }
+    .mt-4 { margin-top: 16px; }
+    .text-dim { color: var(--text-dim); }
+    .text-small { font-size: 13px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <main id="app" class="app">
+    <!-- topbar always present -->
+    <div class="topbar">
+      <a href="#" class="brand" id="brand-home">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round">
+            <rect x="3" y="5" width="18" height="16" rx="2"/>
+            <path d="M3 10h18M8 3v4M16 3v4"/>
+          </svg>
+        </span>
+        HyperMatrix Meet
+      </a>
+      <div class="topbar-spacer"></div>
+      <button class="icon-btn" id="theme-toggle" title="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="theme-icon">
+          <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="view"></div>
+    <div class="toast" id="toast"></div>
+  </main>
+
+  <script type="module">
+    // ============================================================
+    // CONFIG — paste your Firebase config here after creating a project.
+    // See SETUP.md in this folder for the 5-minute walkthrough.
+    // ============================================================
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyBA23VsXoGCYqQd6HFP169xDaZj1DX5XpM",
+      authDomain: "hypermatrix-meet.firebaseapp.com",
+      databaseURL: "https://hypermatrix-meet-default-rtdb.firebaseio.com",
+      projectId: "hypermatrix-meet",
+      storageBucket: "hypermatrix-meet.firebasestorage.app",
+      messagingSenderId: "933576793454",
+      appId: "1:933576793454:web:2ac4662e8091449d78f57f"
+    };
+
+    const FIREBASE_CONFIGURED = !!FIREBASE_CONFIG.databaseURL;
+
+    // ============================================================
+    // Theme
+    // ============================================================
+    (function initTheme() {
+      const saved = localStorage.getItem("meet.theme");
+      if (saved) document.documentElement.dataset.theme = saved;
+      document.getElementById("theme-toggle").addEventListener("click", () => {
+        const cur = document.documentElement.dataset.theme || "dark";
+        const next = cur === "dark" ? "light" : "dark";
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem("meet.theme", next);
+      });
+    })();
+
+    // ============================================================
+    // Utilities
+    // ============================================================
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+    const el = (tag, attrs = {}, ...children) => {
+      const n = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === "class") n.className = v;
+        else if (k === "html") n.innerHTML = v;
+        else if (k.startsWith("on")) n.addEventListener(k.slice(2).toLowerCase(), v);
+        else if (v === false || v == null) continue;
+        else if (v === true) n.setAttribute(k, "");
+        else n.setAttribute(k, v);
+      }
+      for (const c of children.flat()) {
+        if (c == null || c === false) continue;
+        n.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+      }
+      return n;
+    };
+
+    const randId = (n = 7) => {
+      const chars = "abcdefghjkmnpqrstuvwxyz23456789";
+      let s = "";
+      for (let i = 0; i < n; i++) s += chars[Math.floor(Math.random() * chars.length)];
+      return s;
+    };
+
+    const ymd = (d) => {
+      const yy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      return `${yy}-${mm}-${dd}`;
+    };
+    const parseYmd = (s) => {
+      const [y, m, d] = s.split("-").map(Number);
+      return new Date(y, m - 1, d);
+    };
+
+    const DOW_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+    const fmt12h = (mins) => {
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      const ampm = h >= 12 ? "PM" : "AM";
+      const h12 = h % 12 === 0 ? 12 : h % 12;
+      return m === 0 ? `${h12} ${ampm}` : `${h12}:${String(m).padStart(2, "0")} ${ampm}`;
+    };
+
+    const toast = (msg) => {
+      const t = $("#toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => t.classList.remove("show"), 1800);
+    };
+
+    const sanitizeName = (s) => String(s || "").trim().slice(0, 40).replace(/[<>"]/g, "");
+
+    // ============================================================
+    // Firebase (lazy)
+    // ============================================================
+    let fbApp = null;
+    let fbDb = null;
+    let fbMod = null;
+    async function fb() {
+      if (fbDb) return { db: fbDb, ...fbMod };
+      const [appMod, dbMod] = await Promise.all([
+        import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"),
+        import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"),
+      ]);
+      fbApp = appMod.initializeApp(FIREBASE_CONFIG);
+      fbDb = dbMod.getDatabase(fbApp);
+      fbMod = dbMod;
+      return { db: fbDb, ...dbMod };
+    }
+
+    // ============================================================
+    // Routing
+    // ============================================================
+    function parseHash() {
+      const h = location.hash.replace(/^#/, "");
+      const params = new URLSearchParams(h);
+      return { room: params.get("room") };
+    }
+
+    window.addEventListener("hashchange", route);
+    $("#brand-home").addEventListener("click", (e) => {
+      e.preventDefault();
+      location.hash = "";
+    });
+
+    function route() {
+      const view = $("#view");
+      view.innerHTML = "";
+      if (!FIREBASE_CONFIGURED) return renderSetupScreen(view);
+      const { room } = parseHash();
+      if (room) renderRoom(view, room);
+      else renderLanding(view);
+    }
+    route();
+
+    // ============================================================
+    // SETUP screen (shown when FIREBASE_CONFIG not filled)
+    // ============================================================
+    function renderSetupScreen(view) {
+      view.appendChild(el("div", { class: "hero-wrap" },
+        el("h1", { class: "hero-title" }, "Setup needed"),
+        el("p", { class: "hero-sub" },
+          "This page needs a free Firebase Realtime Database to sync availability between people. ",
+          "Takes about 5 minutes — then paste the config into ", el("code", {}, "/meet/index.html"), " and push."),
+
+        el("ol", { class: "setup-steps" },
+          el("li", { class: "setup-step" },
+            "Go to ", el("a", { href: "https://console.firebase.google.com/", target: "_blank", rel: "noopener", style: "color: var(--accent-2);" }, "console.firebase.google.com"),
+            " → ", el("b", {}, "Add project"), ". Name it anything, e.g. ", el("code", {}, "hypermatrix-meet"), ". Skip Google Analytics."),
+          el("li", { class: "setup-step" },
+            "In the project, open ", el("b", {}, "Build → Realtime Database"), " → ", el("b", {}, "Create Database"),
+            ". Choose a region near you. Start in ", el("b", {}, "test mode"), " (we'll fix rules in step 4)."),
+          el("li", { class: "setup-step" },
+            "Open ", el("b", {}, "Project Settings (gear icon) → General"), ". Scroll down to ", el("b", {}, "Your apps"),
+            ", click the ", el("b", {}, "</>"), " (web) icon, register an app called ", el("code", {}, "meet"),
+            ". Copy the ", el("code", {}, "firebaseConfig"), " block.",
+            el("pre", {}, el("code", { html: `const firebaseConfig = {<br>&nbsp;&nbsp;apiKey: "...",<br>&nbsp;&nbsp;authDomain: "...",<br>&nbsp;&nbsp;databaseURL: "https://&lt;project&gt;-default-rtdb.firebaseio.com",<br>&nbsp;&nbsp;projectId: "...",<br>&nbsp;&nbsp;...<br>};` }))),
+          el("li", { class: "setup-step" },
+            "In ", el("b", {}, "Realtime Database → Rules"), ", paste these rules so anyone can create/read rooms but each room is its own bucket:",
+            el("pre", {}, el("code", { html: `{<br>&nbsp;&nbsp;"rules": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"rooms": {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"$room": {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".read": true,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".write": true<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}` })),
+            "Click ", el("b", {}, "Publish"), "."),
+          el("li", { class: "setup-step" },
+            "Edit ", el("code", {}, "/meet/index.html"), ". Find ", el("code", {}, "FIREBASE_CONFIG = { ... }"),
+            " near the top of the ", el("code", {}, "<script>"), " block and paste the values from step 3. Commit and push."),
+        ),
+        el("p", { class: "text-dim text-small mt-4" },
+          "Note: meeting URLs are unguessable (random IDs). Anyone with a link can join — same as when2meet. ",
+          "Don't share for anything sensitive."),
+      ));
+    }
+
+    // ============================================================
+    // LANDING — create new meeting
+    // ============================================================
+    function renderLanding(view) {
+      const today = new Date(); today.setHours(0,0,0,0);
+      let selectedDates = new Set();
+      let calMonth = today.getMonth();
+      let calYear = today.getFullYear();
+
+      const renderCal = () => {
+        const first = new Date(calYear, calMonth, 1);
+        const start = new Date(first);
+        start.setDate(1 - first.getDay()); // back to Sunday
+        const grid = [];
+        for (let i = 0; i < 42; i++) {
+          const d = new Date(start);
+          d.setDate(start.getDate() + i);
+          grid.push(d);
+        }
+        const cellNodes = grid.map(d => {
+          const inMonth = d.getMonth() === calMonth;
+          const isToday = ymd(d) === ymd(today);
+          const isPast = d < today;
+          const isSel = selectedDates.has(ymd(d));
+          const cls = ["cal-day"];
+          if (!inMonth) cls.push("is-other");
+          if (isToday) cls.push("is-today");
+          if (isSel) cls.push("is-selected");
+          if (isPast) cls.push("is-past");
+          return el("div", {
+            class: cls.join(" "),
+            onClick: () => {
+              const key = ymd(d);
+              if (selectedDates.has(key)) selectedDates.delete(key);
+              else {
+                if (selectedDates.size >= 14) { toast("Up to 14 days"); return; }
+                selectedDates.add(key);
+              }
+              update();
+            }
+          }, String(d.getDate()));
+        });
+
+        return el("div", { class: "cal" },
+          el("div", { class: "cal-head" },
+            el("button", { class: "icon-btn", onClick: () => { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } update(); } },
+              el("span", { html: "&larr;" })),
+            el("div", { class: "month" }, `${MONTHS[calMonth]} ${calYear}`),
+            el("button", { class: "icon-btn", onClick: () => { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } update(); } },
+              el("span", { html: "&rarr;" })),
+          ),
+          el("div", { class: "cal-grid" },
+            ...DOW_SHORT.map(d => el("div", { class: "cal-dow" }, d.slice(0,1))),
+            ...cellNodes
+          )
+        );
+      };
+
+      const renderChips = () => {
+        const sorted = [...selectedDates].sort();
+        if (!sorted.length) return el("span", { class: "text-dim text-small" }, "Pick days on the calendar →");
+        return el("div", {}, sorted.map(s => {
+          const d = parseYmd(s);
+          return el("span", { class: "date-chip" },
+            `${DOW_SHORT[d.getDay()]} ${MONTHS[d.getMonth()].slice(0,3)} ${d.getDate()}`,
+            el("button", { onClick: () => { selectedDates.delete(s); update(); }, html: "&times;", "aria-label": "remove" })
+          );
+        }));
+      };
+
+      const update = () => {
+        $("#cal-mount").replaceChildren(renderCal());
+        $("#chip-mount").replaceChildren(renderChips());
+      };
+
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+
+      view.appendChild(el("div", { class: "hero-wrap" },
+        el("h1", { class: "hero-title" }, "Find a time."),
+        el("p", { class: "hero-sub" }, "A modern, drag-to-paint group scheduler. No accounts. Real-time."),
+
+        el("div", { class: "card stack" },
+          el("div", { class: "field" },
+            el("label", {}, "Meeting title"),
+            el("input", { id: "f-title", class: "input", placeholder: "e.g. Lab standup", maxlength: 80 })
+          ),
+          el("div", { class: "field" },
+            el("label", {}, "Pick days"),
+            el("div", { class: "date-picker-wrap", id: "chip-mount" })
+          ),
+          el("div", { id: "cal-mount" }, renderCal()),
+
+          el("div", { class: "row mt-4" },
+            el("div", { class: "field" },
+              el("label", {}, "Earliest time"),
+              el("select", { id: "f-start", class: "select" },
+                ...Array.from({length: 24}, (_, h) =>
+                  el("option", { value: String(h*60), ...(h === 9 ? { selected: true } : {}) }, fmt12h(h*60)))
+              )
+            ),
+            el("div", { class: "field" },
+              el("label", {}, "Latest time"),
+              el("select", { id: "f-end", class: "select" },
+                ...Array.from({length: 24}, (_, h) =>
+                  el("option", { value: String((h+1)*60), ...(h === 21 ? { selected: true } : {}) }, fmt12h((h+1)*60 === 1440 ? 1440 : (h+1)*60)))
+              )
+            ),
+          ),
+          el("div", { class: "row" },
+            el("div", { class: "field" },
+              el("label", {}, "Slot length"),
+              el("select", { id: "f-slot", class: "select" },
+                el("option", { value: "15" }, "15 minutes"),
+                el("option", { value: "30", selected: true }, "30 minutes"),
+                el("option", { value: "60" }, "1 hour"),
+              )
+            ),
+            el("div", { class: "field" },
+              el("label", {}, "Timezone"),
+              el("input", { id: "f-tz", class: "input", value: tz })
+            ),
+          ),
+          el("button", { class: "btn btn-primary", style: "width: 100%; justify-content: center; padding: 14px;", onClick: () => createMeeting() },
+            "Create meeting"
+          )
+        ),
+      ));
+
+      // initial render for chips
+      update();
+
+      async function createMeeting() {
+        const title = sanitizeName($("#f-title").value) || "Untitled meeting";
+        const dates = [...selectedDates].sort();
+        if (!dates.length) { toast("Pick at least one day"); return; }
+        const startMin = Number($("#f-start").value);
+        const endMin = Number($("#f-end").value);
+        if (endMin <= startMin) { toast("End time must be after start"); return; }
+        const slotMin = Number($("#f-slot").value);
+        const tz = $("#f-tz").value.trim() || "UTC";
+
+        const roomId = randId(8);
+        const meta = { title, dates, startMin, endMin, slotMin, tz, createdAt: Date.now() };
+
+        try {
+          const { db, ref, set } = await fb();
+          await set(ref(db, `rooms/${roomId}/meta`), meta);
+          location.hash = `room=${roomId}`;
+        } catch (e) {
+          console.error(e);
+          toast("Could not create — check Firebase config");
+        }
+      }
+    }
+
+    // ============================================================
+    // ROOM — interactive when2meet
+    // ============================================================
+    async function renderRoom(view, roomId) {
+      view.appendChild(el("div", { class: "card" },
+        el("div", { style: "display:flex;align-items:center;gap:10px;" },
+          el("div", { class: "spinner" }),
+          el("span", { class: "text-dim" }, "Loading room…")
+        )
+      ));
+
+      let mod;
+      try { mod = await fb(); } catch (e) { view.innerHTML = ""; view.appendChild(errCard("Could not connect to Firebase.")); return; }
+      const { db, ref, onValue, set, update, get, child, remove } = mod;
+
+      let metaSnap;
+      try {
+        metaSnap = await get(ref(db, `rooms/${roomId}/meta`));
+      } catch (e) {
+        view.innerHTML = "";
+        view.appendChild(errCard("Could not load this meeting."));
+        return;
+      }
+
+      if (!metaSnap.exists()) {
+        view.innerHTML = "";
+        view.appendChild(errCard("This meeting doesn't exist. The link may be invalid or the meeting was deleted."));
+        return;
+      }
+      const meta = metaSnap.val();
+
+      // Participant identity (per-device, per-room)
+      const storageKey = `meet.id.${roomId}`;
+      let myId = localStorage.getItem(storageKey);
+      let myName = localStorage.getItem(`meet.name.${roomId}`);
+
+      if (!myId || !myName) {
+        const result = await askName(meta.title);
+        if (!result) { location.hash = ""; return; }
+        myName = result;
+        myId = randId(10);
+        localStorage.setItem(storageKey, myId);
+        localStorage.setItem(`meet.name.${roomId}`, myName);
+        await set(ref(db, `rooms/${roomId}/participants/${myId}/name`), myName);
+      }
+
+      // Build slot grid descriptors
+      const dates = meta.dates;
+      const startMin = meta.startMin;
+      const endMin = meta.endMin;
+      const slotMin = meta.slotMin;
+      const slotsPerDay = Math.floor((endMin - startMin) / slotMin);
+      const slotIds = []; // 2D row-major: [slotIdx * dates.length + dateIdx]
+      const slotKeyOf = (dateIdx, slotIdx) => {
+        const t = startMin + slotIdx * slotMin;
+        return `${dates[dateIdx]}_${String(t).padStart(4, "0")}`;
+      };
+
+      // Build UI
+      view.innerHTML = "";
+
+      const titleH = el("h1", {}, meta.title);
+      const dateLabel = (() => {
+        if (dates.length === 1) {
+          const d = parseYmd(dates[0]);
+          return `${DOW_SHORT[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}`;
+        }
+        const first = parseYmd(dates[0]);
+        const last = parseYmd(dates[dates.length-1]);
+        return `${MONTHS[first.getMonth()].slice(0,3)} ${first.getDate()} – ${MONTHS[last.getMonth()].slice(0,3)} ${last.getDate()} · ${dates.length} days`;
+      })();
+
+      const head = el("div", { class: "room-head" },
+        el("div", { style: "flex:1;min-width:240px;" },
+          titleH,
+          el("div", { class: "room-meta" },
+            dateLabel, " · ", fmt12h(startMin), "–", fmt12h(endMin), " · ", meta.tz
+          )
+        ),
+        el("button", { class: "btn", onClick: copyLink },
+          el("svg", { viewBox: "0 0 24 24", width: 16, height: 16, fill: "none", stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }, el("path", { d: "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72" }), el("path", { d: "M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" })),
+          "Share"
+        ),
+        el("button", { class: "btn btn-ghost", onClick: changeName }, "Not ", myName, "?")
+      );
+      view.appendChild(head);
+
+      // Panels
+      const myGrid = buildGrid("you", dates, slotsPerDay, startMin, slotMin, true);
+      const allGrid = buildGrid("all", dates, slotsPerDay, startMin, slotMin, false);
+
+      const responsesNode = el("div", { class: "responses" });
+      const bestNode = el("div", { class: "best-times" });
+
+      const panels = el("div", { class: "panels" },
+        el("div", { class: "panel" },
+          el("div", { class: "panel-head" },
+            el("h2", {}, "Your availability"),
+            el("span", { class: "hint" }, "click + drag")
+          ),
+          el("div", { class: "grid-wrap" }, myGrid.table)
+        ),
+        el("div", { class: "panel" },
+          el("div", { class: "panel-head" },
+            el("h2", {}, "Group"),
+            el("span", { class: "hint" }, "hover to see who")
+          ),
+          el("div", { class: "grid-wrap" }, allGrid.table),
+          responsesNode,
+          bestNode
+        ),
+      );
+      view.appendChild(panels);
+
+      // tooltip
+      const tip = el("div", { class: "tip" });
+      view.appendChild(tip);
+
+      // ====== State ======
+      let mySlots = new Set();        // slot keys
+      let allParticipants = {};       // pid -> {name, slots: {key: true}}
+
+      // Subscribe my slots
+      onValue(ref(db, `rooms/${roomId}/participants/${myId}/slots`), (snap) => {
+        const v = snap.val() || {};
+        mySlots = new Set(Object.keys(v));
+        repaintMine();
+      });
+
+      // Subscribe everyone
+      onValue(ref(db, `rooms/${roomId}/participants`), (snap) => {
+        allParticipants = snap.val() || {};
+        repaintAll();
+      });
+
+      function repaintMine() {
+        myGrid.cells.forEach((c, idx) => {
+          const key = c.dataset.key;
+          c.classList.toggle("is-selected", mySlots.has(key));
+        });
+      }
+
+      function repaintAll() {
+        // Count availability per slot
+        const counts = {};
+        const peopleAt = {};
+        const N = Object.keys(allParticipants).length;
+        for (const [pid, p] of Object.entries(allParticipants)) {
+          const slots = p.slots || {};
+          for (const k of Object.keys(slots)) {
+            counts[k] = (counts[k] || 0) + 1;
+            (peopleAt[k] = peopleAt[k] || []).push(p.name || "?");
+          }
+        }
+        allGrid.cells.forEach(c => {
+          const k = c.dataset.key;
+          const cnt = counts[k] || 0;
+          const ratio = N > 0 ? cnt / N : 0;
+          c.style.background = ratio > 0
+            ? `linear-gradient(135deg, color-mix(in srgb, var(--accent) ${20 + ratio*60}%, transparent), color-mix(in srgb, var(--accent-2) ${20 + ratio*60}%, transparent))`
+            : "";
+          c.dataset.count = cnt;
+        });
+
+        // Responses chip list
+        responsesNode.innerHTML = "";
+        const names = Object.entries(allParticipants).map(([pid, p]) => ({ pid, name: p.name || "?", count: Object.keys(p.slots || {}).length }));
+        names.sort((a, b) => b.count - a.count);
+        names.forEach(({ pid, name, count }) => {
+          responsesNode.appendChild(el("span", { class: "resp-chip " + (pid === myId ? "you" : "") },
+            el("span", { class: "dot" }),
+            `${name} · ${count}`
+          ));
+        });
+
+        // Best times: top 3 slots (consecutive bins collapsed)
+        bestNode.innerHTML = "";
+        if (N > 0) {
+          const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+          bestNode.appendChild(el("div", { class: "label-small" }, "Top times"));
+          const seen = new Set();
+          let shown = 0;
+          for (const [k, cnt] of ranked) {
+            if (cnt === 0 || shown >= 5) break;
+            if (seen.has(k)) continue;
+            const [dateStr, tStr] = k.split("_");
+            const t = parseInt(tStr, 10);
+            const d = parseYmd(dateStr);
+            const when = `${DOW_SHORT[d.getDay()]} ${MONTHS[d.getMonth()].slice(0,3)} ${d.getDate()}, ${fmt12h(t)}`;
+            bestNode.appendChild(el("div", { class: "best-row" },
+              el("span", { class: "when" }, when),
+              el("span", { class: "count" }, `${cnt} of ${N}`)
+            ));
+            seen.add(k);
+            shown++;
+          }
+        }
+
+        // Heatmap tooltip wiring
+        allGrid.cells.forEach(c => {
+          c.onmouseenter = (e) => {
+            const k = c.dataset.key;
+            const cnt = Number(c.dataset.count || 0);
+            const [dateStr, tStr] = k.split("_");
+            const t = parseInt(tStr, 10);
+            const d = parseYmd(dateStr);
+            const yes = peopleAt[k] || [];
+            const allNames = Object.values(allParticipants).map(p => p.name || "?");
+            const no = allNames.filter(n => !yes.includes(n));
+            tip.innerHTML = "";
+            tip.appendChild(el("div", { class: "tip-time" },
+              `${DOW_SHORT[d.getDay()]} ${MONTHS[d.getMonth()].slice(0,3)} ${d.getDate()}, ${fmt12h(t)}–${fmt12h(t + slotMin)}`));
+            tip.appendChild(el("div", { class: "tip-section" },
+              el("div", { class: "tip-label" }, `Available (${cnt})`),
+              el("div", { class: "tip-list" }, yes.length ? yes.join(", ") : "—")
+            ));
+            if (no.length) {
+              tip.appendChild(el("div", { class: "tip-section" },
+                el("div", { class: "tip-label" }, `Unavailable (${no.length})`),
+                el("div", { class: "tip-list" }, no.join(", "))
+              ));
+            }
+            const rect = c.getBoundingClientRect();
+            const tipRect = tip.getBoundingClientRect();
+            let left = rect.right + 10 + window.scrollX;
+            let top = rect.top + window.scrollY - 4;
+            // clamp right edge
+            if (left + 280 > window.innerWidth + window.scrollX) {
+              left = rect.left + window.scrollX - tipRect.width - 10;
+            }
+            tip.style.left = left + "px";
+            tip.style.top = top + "px";
+            tip.classList.add("show");
+          };
+          c.onmouseleave = () => tip.classList.remove("show");
+        });
+      }
+
+      // ====== Painting (mouse + touch) ======
+      let painting = null; // { mode: "add" | "remove", touched: Set }
+      const cellAtPoint = (x, y) => {
+        const el = document.elementFromPoint(x, y);
+        if (!el || !el.classList.contains("grid-cell") || el.dataset.grid !== "you") return null;
+        return el;
+      };
+      const beginPaint = (target) => {
+        const key = target.dataset.key;
+        const mode = mySlots.has(key) ? "remove" : "add";
+        painting = { mode, touched: new Set() };
+        applyPaint(target);
+      };
+      const applyPaint = (target) => {
+        if (!target || !painting) return;
+        const key = target.dataset.key;
+        if (painting.touched.has(key)) return;
+        painting.touched.add(key);
+        if (painting.mode === "add") mySlots.add(key); else mySlots.delete(key);
+        target.classList.toggle("is-selected", painting.mode === "add");
+      };
+      const endPaint = async () => {
+        if (!painting) return;
+        const touched = painting.touched;
+        painting = null;
+        if (!touched.size) return;
+        // commit changed cells
+        try {
+          const updates = {};
+          for (const k of touched) {
+            updates[`rooms/${roomId}/participants/${myId}/slots/${k}`] = mySlots.has(k) ? true : null;
+          }
+          await update(ref(db), updates);
+        } catch (e) {
+          console.error(e);
+          toast("Sync error");
+        }
+      };
+
+      // Mouse events on the "you" grid
+      myGrid.table.addEventListener("mousedown", (e) => {
+        const t = e.target.closest(".grid-cell");
+        if (!t || t.dataset.grid !== "you" || t.classList.contains("is-disabled")) return;
+        e.preventDefault();
+        beginPaint(t);
+      });
+      document.addEventListener("mousemove", (e) => {
+        if (!painting) return;
+        const t = cellAtPoint(e.clientX, e.clientY);
+        if (t) applyPaint(t);
+      });
+      document.addEventListener("mouseup", endPaint);
+
+      // Touch
+      myGrid.table.addEventListener("touchstart", (e) => {
+        const t = e.target.closest(".grid-cell");
+        if (!t || t.dataset.grid !== "you" || t.classList.contains("is-disabled")) return;
+        e.preventDefault();
+        beginPaint(t);
+      }, { passive: false });
+      document.addEventListener("touchmove", (e) => {
+        if (!painting) return;
+        const tt = e.touches[0];
+        const t = cellAtPoint(tt.clientX, tt.clientY);
+        if (t) { e.preventDefault(); applyPaint(t); }
+      }, { passive: false });
+      document.addEventListener("touchend", endPaint);
+      document.addEventListener("touchcancel", endPaint);
+
+      function buildGrid(kind, dates, slotsPerDay, startMin, slotMin, interactive) {
+        const table = el("table", { class: "grid-table" });
+        const cells = [];
+
+        // Header row: blank | date | date ...
+        const thead = el("thead");
+        const tr0 = el("tr");
+        tr0.appendChild(el("th", { class: "time-label" }, ""));
+        dates.forEach(s => {
+          const d = parseYmd(s);
+          tr0.appendChild(el("th", { class: "col-head" },
+            el("span", { class: "dow" }, DOW_SHORT[d.getDay()]),
+            el("span", { class: "dnum" }, `${d.getDate()}`)
+          ));
+        });
+        thead.appendChild(tr0);
+        table.appendChild(thead);
+
+        const tbody = el("tbody");
+        for (let si = 0; si < slotsPerDay; si++) {
+          const t = startMin + si * slotMin;
+          const showLabel = (t % 60 === 0);
+          const tr = el("tr");
+          tr.appendChild(el("td", { class: "time-label" }, showLabel ? fmt12h(t) : ""));
+          dates.forEach((dateStr, di) => {
+            const isHourMark = t % 60 === 0;
+            const cls = ["grid-cell"];
+            if (kind === "all") cls.push("heat");
+            if (isHourMark) cls.push("hour-mark");
+            if (si === 0) cls.push("boundary-top");
+            if (di === dates.length - 1) cls.push("last-col");
+            const cell = el("td", {
+              class: cls.join(" "),
+              "data-key": `${dateStr}_${String(t).padStart(4,"0")}`,
+              "data-grid": kind,
+            });
+            tr.appendChild(cell);
+            cells.push(cell);
+          });
+          tbody.appendChild(tr);
+        }
+        table.appendChild(tbody);
+        return { table, cells };
+      }
+
+      function copyLink() {
+        const url = `${location.origin}${location.pathname}#room=${roomId}`;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(url).then(() => toast("Link copied")).catch(() => prompt("Copy link:", url));
+        } else {
+          prompt("Copy link:", url);
+        }
+      }
+
+      async function changeName() {
+        const next = await askName(meta.title, myName);
+        if (!next) return;
+        myName = next;
+        localStorage.setItem(`meet.name.${roomId}`, myName);
+        await set(ref(db, `rooms/${roomId}/participants/${myId}/name`), myName);
+        head.querySelector(".btn-ghost").childNodes[1].textContent = myName;
+      }
+    }
+
+    // ============================================================
+    // Helpers
+    // ============================================================
+    function askName(title, current = "") {
+      return new Promise(resolve => {
+        const bg = el("div", { class: "modal-bg" });
+        const input = el("input", { class: "input", placeholder: "Your name", value: current, maxlength: 40, autofocus: true });
+        const modal = el("div", { class: "modal" },
+          el("h2", { style: "margin-top:0;" }, "Join meeting"),
+          el("p", { class: "text-dim text-small", style: "margin-top:0;" }, title || ""),
+          el("div", { class: "field mt-2" }, input),
+          el("div", { style: "display:flex;gap:8px;justify-content:flex-end;" },
+            el("button", { class: "btn btn-ghost", onClick: () => { bg.remove(); resolve(null); } }, "Cancel"),
+            el("button", { class: "btn btn-primary", onClick: submit }, "Join")
+          )
+        );
+        bg.appendChild(modal);
+        document.body.appendChild(bg);
+        setTimeout(() => input.focus(), 50);
+        input.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
+        function submit() {
+          const n = sanitizeName(input.value);
+          if (!n) { input.focus(); return; }
+          bg.remove();
+          resolve(n);
+        }
+      });
+    }
+
+    function errCard(msg) {
+      return el("div", { class: "card" },
+        el("h2", {}, "Hmm."),
+        el("p", { class: "text-dim" }, msg),
+        el("button", { class: "btn", onClick: () => location.hash = "" }, "Back to home")
+      );
+    }
+  </script>
+</body>
+</html>
