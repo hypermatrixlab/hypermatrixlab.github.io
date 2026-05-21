@@ -1280,8 +1280,13 @@
       const endSel = el("select", { class: "select" }, ...Array.from({ length: 24 }, (_, h) => el("option", { value: String((h + 1) * 60), selected: h === 21 }, fmt12h((h + 1) * 60 === 1440 ? 1440 : (h + 1) * 60))));
       const slotSel = el("select", { class: "select" },
         el("option", { value: "15" }, "15 minutes"),
+        el("option", { value: "20" }, "20 minutes"),
         el("option", { value: "30", selected: true }, "30 minutes"),
+        el("option", { value: "45" }, "45 minutes"),
         el("option", { value: "60" }, "1 hour"),
+        el("option", { value: "90" }, "1.5 hours"),
+        el("option", { value: "120" }, "2 hours"),
+        el("option", { value: "180" }, "3 hours"),
       );
       const tzInput = el("input", { class: "input", value: tz });
 
@@ -1744,7 +1749,7 @@
         const tbody = el("tbody");
         for (let si = 0; si < slotsPerDay; si++) {
           const t = startMin + si * slotMin;
-          const showLabel = t % 60 === 0;
+          const showLabel = (t % 60 === 0) || (slotMin > 60) || (60 % slotMin !== 0);
           const tr = el("tr");
           tr.appendChild(el("td", { class: "time-label" }, showLabel ? fmt12h(t) : ""));
           dates.forEach((dateStr, di) => {
