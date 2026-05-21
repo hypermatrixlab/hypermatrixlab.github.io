@@ -598,23 +598,55 @@
     .dur-btn.is-active { background: var(--card-hi); color: var(--text); box-shadow: var(--shadow-sm); }
 
     .best-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px; border-radius: 10px;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px 12px;
+      padding: 12px 14px; border-radius: 10px;
       background: var(--card-2); border: 1px solid var(--border);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       transition: all 0.15s ease;
+      align-items: start;
     }
     .best-row:hover { border-color: var(--border-hi); background: var(--card-hi); }
     .best-row.is-top { border-color: color-mix(in srgb, var(--accent-2) 50%, transparent); background: color-mix(in srgb, var(--accent-2) 6%, var(--card-2)); }
-    .best-row .when { flex: 1; font-weight: 500; font-size: 13.5px; }
-    .best-row .when .sub { font-size: 11.5px; color: var(--text-faint); font-weight: 400; display: block; }
-    .best-row .count { font-size: 12px; color: var(--text-dim); }
+    .best-row .when { font-weight: 500; font-size: 13.5px; min-width: 0; }
+    .best-row .when .sub { font-size: 11.5px; color: var(--text-faint); font-weight: 400; display: block; margin-top: 2px; }
+    .best-row .count {
+      font-size: 12px; color: var(--text-dim);
+      padding: 4px 10px; background: var(--bg-elev); border-radius: 999px;
+      align-self: center; white-space: nowrap;
+    }
+    .best-row.is-top .count { background: var(--accent-soft); color: var(--accent-2); font-weight: 600; }
     .best-row .export {
-      padding: 4px 8px; font-size: 11.5px; border: 1px solid var(--border); background: var(--card);
+      padding: 5px 10px; font-size: 11.5px; border: 1px solid var(--border); background: var(--card);
       color: var(--text-dim); border-radius: 8px; cursor: pointer;
-      transition: all 0.12s ease;
+      transition: all 0.12s ease; align-self: center;
+      display: inline-flex; align-items: center; gap: 4px;
+      white-space: nowrap;
     }
     .best-row .export:hover { color: var(--accent-2); border-color: var(--accent); }
+    .best-row .who { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px; }
+    .who-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12px; }
+    .who-label {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--text-faint); font-weight: 700;
+      flex-shrink: 0; min-width: 70px;
+    }
+    .who-label .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+    .who-label.yes .dot { background: var(--success); }
+    .who-label.maybe .dot { background: var(--warn); }
+    .who-label.no .dot { background: var(--text-faint); }
+    .who-chips { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; }
+    .pmini {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 2px 8px; border-radius: 999px;
+      background: var(--card); border: 1px solid var(--border);
+      font-size: 11.5px; color: var(--text);
+      max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .pmini .sw { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .pmini.maybe { font-style: italic; opacity: 0.85; }
+    .pmini.no { opacity: 0.55; text-decoration: line-through; text-decoration-color: var(--text-faint); }
 
     /* Headings on landing */
     h1 { font-size: 28px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.02em; }
@@ -730,10 +762,15 @@
     // Utilities
     // ============================================================
     const $ = (s, r = document) => r.querySelector(s);
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const SVG_TAGS = new Set(["svg","path","circle","rect","line","polyline","polygon","ellipse","g","text","tspan","use","defs","linearGradient","radialGradient","stop","clipPath","mask","pattern","filter","marker","symbol","foreignObject","image"]);
     const el = (tag, attrs = {}, ...children) => {
-      const n = document.createElement(tag);
+      const isSvg = SVG_TAGS.has(tag);
+      const n = isSvg ? document.createElementNS(SVG_NS, tag) : document.createElement(tag);
       for (const [k, v] of Object.entries(attrs)) {
-        if (k === "class") n.className = v;
+        if (k === "class") {
+          if (isSvg) n.setAttribute("class", v); else n.className = v;
+        }
         else if (k === "html") n.innerHTML = v;
         else if (k === "style" && typeof v === "object") Object.assign(n.style, v);
         else if (k.startsWith("on")) n.addEventListener(k.slice(2).toLowerCase(), v);
@@ -1097,42 +1134,42 @@
       let calMonth = today.getMonth();
       let calYear = today.getFullYear();
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+      const modalAC = new AbortController();
+      const sig = modalAC.signal;
 
       const calMount = el("div");
       const chipMount = el("div", { class: "chips" });
 
+      function makeDay(d) {
+        const key = ymd(d);
+        const inMo = d.getMonth() === calMonth;
+        const isToday = key === ymd(today);
+        const isPast = d < today;
+        const isSel = selectedDates.has(key);
+        const cls = ["cal-day"];
+        if (!inMo) cls.push("is-other");
+        if (isToday) cls.push("is-today");
+        if (isSel) cls.push("is-selected");
+        if (isPast) cls.push("is-past");
+        return el("div", { class: cls.join(" "), "data-key": key, "data-past": isPast ? "1" : null }, String(d.getDate()));
+      }
       function renderCal() {
         const first = new Date(calYear, calMonth, 1);
         const start = new Date(first); start.setDate(1 - first.getDay());
         const cells = [];
         for (let i = 0; i < 42; i++) {
           const d = new Date(start); d.setDate(start.getDate() + i);
-          const inMo = d.getMonth() === calMonth;
-          const isToday = ymd(d) === ymd(today);
-          const isPast = d < today;
-          const isSel = selectedDates.has(ymd(d));
-          const cls = ["cal-day"];
-          if (!inMo) cls.push("is-other");
-          if (isToday) cls.push("is-today");
-          if (isSel) cls.push("is-selected");
-          if (isPast) cls.push("is-past");
-          cells.push(el("div", {
-            class: cls.join(" "),
-            onClick: () => {
-              const k = ymd(d);
-              if (selectedDates.has(k)) selectedDates.delete(k);
-              else { if (selectedDates.size >= 21) { toast("Up to 21 days"); return; } selectedDates.add(k); }
-              update();
-            }
-          }, String(d.getDate())));
+          cells.push(makeDay(d));
         }
         return el("div", { class: "cal" },
           el("div", { class: "cal-head" },
-            el("button", { class: "icon-btn", style: { width: "28px", height: "28px" }, onClick: () => { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } update(); } },
-              el("svg", { viewBox: "0 0 24 24", width: 14, height: 14, fill: "none", stroke: "currentColor", "stroke-width": 2.4, "stroke-linecap": "round", "stroke-linejoin": "round" }, el("polyline", { points: "15 18 9 12 15 6" }))),
+            el("button", { class: "icon-btn", type: "button", style: { width: "30px", height: "30px" }, "aria-label": "Previous month",
+              onClick: () => { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } updateCal(); } },
+              el("svg", { viewBox: "0 0 24 24", width: "16", height: "16", fill: "none", stroke: "currentColor", "stroke-width": "2.4", "stroke-linecap": "round", "stroke-linejoin": "round" }, el("polyline", { points: "15 18 9 12 15 6" }))),
             el("div", { class: "month" }, `${MO[calMonth]} ${calYear}`),
-            el("button", { class: "icon-btn", style: { width: "28px", height: "28px" }, onClick: () => { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } update(); } },
-              el("svg", { viewBox: "0 0 24 24", width: 14, height: 14, fill: "none", stroke: "currentColor", "stroke-width": 2.4, "stroke-linecap": "round", "stroke-linejoin": "round" }, el("polyline", { points: "9 18 15 12 9 6" })))
+            el("button", { class: "icon-btn", type: "button", style: { width: "30px", height: "30px" }, "aria-label": "Next month",
+              onClick: () => { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } updateCal(); } },
+              el("svg", { viewBox: "0 0 24 24", width: "16", height: "16", fill: "none", stroke: "currentColor", "stroke-width": "2.4", "stroke-linecap": "round", "stroke-linejoin": "round" }, el("polyline", { points: "9 18 15 12 9 6" })))
           ),
           el("div", { class: "cal-grid" },
             ...["S","M","T","W","T","F","S"].map(d => el("div", { class: "cal-dow" }, d)),
@@ -1143,22 +1180,82 @@
       function renderChips() {
         const sorted = [...selectedDates].sort();
         const node = el("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", width: "100%" } });
-        if (!sorted.length) node.appendChild(el("span", { class: "hint" }, "Pick days on the calendar below"));
+        if (!sorted.length) node.appendChild(el("span", { class: "hint" }, "Click or drag across days on the calendar below"));
         sorted.forEach(s => {
           const d = parseYmd(s);
           node.appendChild(el("span", { class: "chip" },
             `${DOW[d.getDay()]} ${MO_SHORT[d.getMonth()]} ${d.getDate()}`,
-            el("button", { onClick: () => { selectedDates.delete(s); update(); }, "aria-label": "remove" }, "×")
+            el("button", { onClick: () => { selectedDates.delete(s); updateChips(); refreshCells(); }, "aria-label": "remove" }, "×")
           ));
         });
         return node;
       }
-      function update() {
-        calMount.replaceChildren(renderCal());
-        chipMount.replaceChildren(renderChips());
+      function updateChips() { chipMount.replaceChildren(renderChips()); }
+      function updateCal() { calMount.replaceChildren(renderCal()); updateChips(); }
+      function refreshCells() {
+        calMount.querySelectorAll(".cal-day").forEach(c => {
+          c.classList.toggle("is-selected", selectedDates.has(c.dataset.key));
+        });
       }
 
-      const bg = el("div", { class: "modal-bg", onClick: e => { if (e.target === bg) bg.remove(); } });
+      // Drag-select
+      let dragMode = null;
+      function applyDay(dayEl) {
+        if (!dayEl) return;
+        const k = dayEl.dataset.key;
+        if (!k || dayEl.dataset.past === "1") return;
+        if (dragMode === "add") {
+          if (!selectedDates.has(k)) {
+            if (selectedDates.size >= 21) { toast("Up to 21 days"); dragMode = null; return; }
+            selectedDates.add(k);
+            dayEl.classList.add("is-selected");
+          }
+        } else {
+          if (selectedDates.has(k)) {
+            selectedDates.delete(k);
+            dayEl.classList.remove("is-selected");
+          }
+        }
+      }
+      function dayAtPoint(x, y) {
+        const e = document.elementFromPoint(x, y);
+        return e ? e.closest(".cal-day") : null;
+      }
+      calMount.addEventListener("mousedown", (e) => {
+        const day = e.target.closest(".cal-day");
+        if (!day || day.dataset.past === "1") return;
+        e.preventDefault();
+        dragMode = selectedDates.has(day.dataset.key) ? "remove" : "add";
+        applyDay(day);
+      }, { signal: sig });
+      document.addEventListener("mousemove", (e) => {
+        if (!dragMode) return;
+        applyDay(dayAtPoint(e.clientX, e.clientY));
+      }, { signal: sig });
+      document.addEventListener("mouseup", () => {
+        if (dragMode) updateChips();
+        dragMode = null;
+      }, { signal: sig });
+      calMount.addEventListener("touchstart", (e) => {
+        const day = e.target.closest(".cal-day");
+        if (!day || day.dataset.past === "1") return;
+        e.preventDefault();
+        dragMode = selectedDates.has(day.dataset.key) ? "remove" : "add";
+        applyDay(day);
+      }, { passive: false, signal: sig });
+      document.addEventListener("touchmove", (e) => {
+        if (!dragMode) return;
+        const t = e.touches[0];
+        const day = dayAtPoint(t.clientX, t.clientY);
+        if (day) { e.preventDefault(); applyDay(day); }
+      }, { passive: false, signal: sig });
+      document.addEventListener("touchend", () => {
+        if (dragMode) updateChips();
+        dragMode = null;
+      }, { signal: sig });
+
+      const closeBg = () => { modalAC.abort(); bg.remove(); };
+      const bg = el("div", { class: "modal-bg", onClick: e => { if (e.target === bg) closeBg(); } });
       const titleInput = el("input", { class: "input", placeholder: "e.g. Lab standup", maxlength: 80 });
       const startSel = el("select", { class: "select" }, ...Array.from({ length: 24 }, (_, h) => el("option", { value: String(h * 60), selected: h === 9 }, fmt12h(h * 60))));
       const endSel = el("select", { class: "select" }, ...Array.from({ length: 24 }, (_, h) => el("option", { value: String((h + 1) * 60), selected: h === 21 }, fmt12h((h + 1) * 60 === 1440 ? 1440 : (h + 1) * 60))));
@@ -1190,7 +1287,7 @@
           const { db, ref, set } = await fb();
           await set(ref(db, `rooms/${room}/meta`), meta);
           saveRecent(room, title);
-          bg.remove();
+          closeBg();
           location.hash = `room=${room}`;
         } catch (e) {
           console.error(e);
@@ -1214,12 +1311,12 @@
           el("div", { class: "field" }, el("label", {}, "Timezone"), tzInput),
         ),
         el("div", { class: "modal-foot" },
-          el("button", { class: "btn btn-ghost", onClick: () => bg.remove() }, "Cancel"),
+          el("button", { class: "btn btn-ghost", onClick: closeBg }, "Cancel"),
           createBtn
         )
       ));
       document.body.appendChild(bg);
-      update();
+      updateCal();
       setTimeout(() => titleInput.focus(), 60);
     }
 
@@ -1446,13 +1543,20 @@
           ranked.slice(0, 5).forEach((w, idx) => {
             const startDate = parseYmd(w.dateStr);
             const endTime = w.startMin + duration;
+            const countLabel = w.scoreMaybe > 0
+              ? `${w.scoreYes} + ${w.scoreMaybe} maybe`
+              : `${w.scoreYes} / ${N}`;
             const row = el("div", { class: "best-row" + (idx === 0 ? " is-top" : "") },
               el("div", { class: "when" },
                 `${DOW[startDate.getDay()]} ${MO_SHORT[startDate.getMonth()]} ${startDate.getDate()} · ${fmt12h(w.startMin)} – ${fmt12h(endTime)}`,
                 el("span", { class: "sub" }, `${formatPeople(w, allParticipants)}`)
               ),
-              el("span", { class: "count" }, `${w.scoreYes}/${N}`),
-              el("button", { class: "export", onClick: (e) => { e.stopPropagation(); exportSlot(meta, w, duration); } }, "Add to calendar")
+              el("span", { class: "count" }, countLabel),
+              el("button", { class: "export", onClick: (e) => { e.stopPropagation(); exportSlot(meta, w, duration); } },
+                el("svg", { viewBox: "0 0 24 24", width: "13", height: "13", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" }, el("rect", { x: "3", y: "4", width: "18", height: "18", rx: "2" }), el("line", { x1: "16", y1: "2", x2: "16", y2: "6" }), el("line", { x1: "8", y1: "2", x2: "8", y2: "6" }), el("line", { x1: "3", y1: "10", x2: "21", y2: "10" })),
+                "Add"
+              ),
+              renderWho(w, allParticipants)
             );
             bestNode.appendChild(row);
           });
@@ -1620,6 +1724,32 @@
       return `${yes} of ${N} free` + (maybe ? ` · ${maybe} maybe` : "");
     }
 
+    function renderWho(window, allParticipants) {
+      const who = el("div", { class: "who" });
+      const mkRow = (labelText, kindClass, pids) => {
+        if (!pids || !pids.length) return null;
+        return el("div", { class: "who-row" },
+          el("span", { class: `who-label ${kindClass}` }, el("span", { class: "dot" }), labelText),
+          el("div", { class: "who-chips" },
+            ...pids.map(pid => {
+              const p = allParticipants[pid] || { name: "?", color: COLORS[0] };
+              return el("span", { class: `pmini ${kindClass}` },
+                el("span", { class: "sw", style: { background: p.color || COLORS[0] } }),
+                p.name || "?"
+              );
+            })
+          )
+        );
+      };
+      const rows = [
+        mkRow("Available", "yes", window.yesPids),
+        mkRow("Maybe", "maybe", window.maybePids),
+        mkRow("Can't make it", "no", window.noPids),
+      ].filter(Boolean);
+      rows.forEach(r => who.appendChild(r));
+      return who;
+    }
+
     function computeBestWindows(tally, allPids, dates, slotsPerDay, startMin, slotMin, duration) {
       const N = allPids.length;
       if (!N) return [];
@@ -1627,14 +1757,12 @@
       const windows = [];
       for (const dateStr of dates) {
         for (let si = 0; si + slotsNeeded <= slotsPerDay; si++) {
-          // Compute set intersection across the window
           const keys = [];
           for (let k = 0; k < slotsNeeded; k++) {
             const t = startMin + (si + k) * slotMin;
             keys.push(`${dateStr}_${String(t).padStart(4, "0")}`);
           }
-          // For each participant, are they YES (for all slots), MAYBE (yes/maybe across all), or NO?
-          let yes = 0, maybe = 0;
+          const yesPids = [], maybePids = [], noPids = [];
           for (const pid of allPids) {
             let allYes = true, allYesOrMaybe = true;
             for (const k of keys) {
@@ -1642,14 +1770,17 @@
               if (status !== "yes") allYes = false;
               if (status !== "yes" && status !== "maybe") allYesOrMaybe = false;
             }
-            if (allYes) yes++;
-            else if (allYesOrMaybe) maybe++;
+            if (allYes) yesPids.push(pid);
+            else if (allYesOrMaybe) maybePids.push(pid);
+            else noPids.push(pid);
           }
+          const yes = yesPids.length, maybe = maybePids.length;
           const score = yes + 0.5 * maybe;
           if (score > 0) {
             windows.push({
               dateStr, startMin: startMin + si * slotMin, keys,
-              scoreYes: yes, scoreMaybe: maybe, score
+              scoreYes: yes, scoreMaybe: maybe, score,
+              yesPids, maybePids, noPids
             });
           }
         }
