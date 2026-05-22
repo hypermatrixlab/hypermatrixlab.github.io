@@ -1494,13 +1494,16 @@
 
       // Duration picker for best-slot finder
       let duration = slotMin; // minutes
-      const durOptions = [slotMin, 60, 90, 120, 180].filter((v, i, a) => a.indexOf(v) === i && v >= slotMin);
+      const durCandidates = [30, 45, 60, 90, 120, 180, 240, 300, 360];
+      const durOptions = durCandidates.filter(v => v >= slotMin && v % slotMin === 0).slice(0, 5);
+      if (!durOptions.length) durOptions.push(slotMin);
       const durBtns = durOptions.map(d =>
         el("button", { class: "dur-btn" + (d === duration ? " is-active" : ""), "data-d": d, onClick: () => { duration = d; durBtns.forEach(b => b.classList.toggle("is-active", Number(b.dataset.d) === d)); repaintAll(); } },
-          d >= 60 ? `${d/60}h` : `${d}m`
+          d >= 60 ? (d % 60 === 0 ? `${d/60}h` : `${(d/60).toFixed(1)}h`) : `${d}m`
         )
       );
       const durPicker = el("div", { class: "dur-picker" }, ...durBtns);
+      const showDurPicker = durOptions.length > 1;
 
       view.appendChild(el("div", { class: "room-grid" },
         el("div", { class: "panel" },
@@ -1520,8 +1523,8 @@
           el("div", {},
             el("div", { class: "best-head", style: { marginTop: "16px" } },
               el("h3", {}, "Best times"),
-              el("span", { class: "text-faint text-small", style: { color: "var(--text-faint)", marginRight: "6px" } }, "duration:"),
-              durPicker
+              showDurPicker && el("span", { class: "text-faint text-small", style: { color: "var(--text-faint)", marginRight: "6px" } }, "meeting length:"),
+              showDurPicker && durPicker
             ),
             bestNode
           ),
