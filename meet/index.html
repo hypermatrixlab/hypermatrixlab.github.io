@@ -1862,7 +1862,14 @@
           }
         }
       }
-      windows.sort((a, b) => b.score - a.score || a.startMin - b.startMin);
+      // Tie-break chronologically: same-score windows must compare date first,
+      // otherwise every day's earliest slot outranks any later slot and the
+      // top-K fills with one time of day repeated across dates.
+      windows.sort((a, b) =>
+        b.score - a.score ||
+        (a.dateStr < b.dateStr ? -1 : a.dateStr > b.dateStr ? 1 : 0) ||
+        a.startMin - b.startMin
+      );
       // dedupe overlapping windows for top-K display: keep top, then skip any overlapping with already-shown
       const final = [];
       const used = new Set();
