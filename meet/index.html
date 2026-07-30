@@ -906,13 +906,13 @@
     function renderSetup(view) {
       view.appendChild(el("div", { class: "setup-card" },
         el("h1", {}, "Setup needed"),
-        el("p", { class: "text-dim" }, "Whenly needs a free Firebase Realtime Database to sync availability between people. About 5 minutes — then paste the config into ", el("code", {}, "/meet/index.html"), " and push."),
+        el("p", { class: "text-dim" }, "Whenly needs a free Firebase Realtime Database to sync availability between people. About 5 minutes, then paste the config into ", el("code", {}, "index.html"), " and push."),
         el("ol", { class: "setup-steps" },
-          el("li", { class: "setup-step" }, "Go to ", el("a", { href: "https://console.firebase.google.com/", target: "_blank", rel: "noopener" }, "console.firebase.google.com"), " → ", el("b", {}, "Add project"), ". Skip Analytics."),
-          el("li", { class: "setup-step" }, el("b", {}, "Build → Realtime Database → Create Database"), ". Pick a region. Start in test mode."),
+          el("li", { class: "setup-step" }, "Go to ", el("a", { href: "https://console.firebase.google.com/", target: "_blank", rel: "noopener" }, "console.firebase.google.com"), " → ", el("b", {}, "Add project"), ". Skip Analytics. The free Spark plan is enough and has no billing attached."),
+          el("li", { class: "setup-step" }, el("b", {}, "Build → Realtime Database → Create Database"), ". Pick a region. If it offers test mode, that is fine for now, but you ", el("b", {}, "must"), " replace the rules in step 4: test-mode rules expire after about 30 days and the app then stops working."),
           el("li", { class: "setup-step" }, el("b", {}, "Project Settings → General → Your apps"), ", click ", el("code", {}, "</>"), ", register the app and copy the config."),
-          el("li", { class: "setup-step" }, "In ", el("b", {}, "Realtime DB → Rules"), " paste:", el("pre", {}, el("code", { html: `{<br>&nbsp; "rules": {<br>&nbsp;&nbsp; "rooms": { "$room": { ".read": true, ".write": true } }<br>&nbsp; }<br>}` }))),
-          el("li", { class: "setup-step" }, "Paste the config into ", el("code", {}, "FIREBASE_CONFIG"), " in ", el("code", {}, "/meet/index.html"), " and push.")
+          el("li", { class: "setup-step" }, "In ", el("b", {}, "Realtime DB → Rules"), ", replace everything with the contents of ", el("code", {}, "database.rules.json"), " from this repo, then ", el("b", {}, "Publish"), ". Those rules close the database root so nobody can list your meetings, make each meeting write-once, and stop participants being deleted. Do not leave the database wide open."),
+          el("li", { class: "setup-step" }, "Paste the config into ", el("code", {}, "FIREBASE_CONFIG"), " near the top of ", el("code", {}, "index.html"), " and push. The API key belongs in the file: it identifies the project, it does not grant access. Your rules are what protect the data.")
         )
       ));
     }
