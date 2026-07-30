@@ -15,6 +15,7 @@
           "startMin":  { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1440" },
           "endMin":    { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1440" },
           "slotMin":   { ".validate": "newData.isNumber() && newData.val() >= 5 && newData.val() <= 240" },
+          "duration":  { ".validate": "newData.isNumber() && newData.val() >= 5 && newData.val() <= 1440" },
           "createdAt": { ".validate": "newData.isNumber()" },
           "dates": {
             ".validate": "newData.hasChildren()",

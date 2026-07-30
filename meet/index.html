@@ -812,6 +812,13 @@
     const MO = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     const MO_SHORT = MO.map(m => m.slice(0,3));
     const fmt12h = m => { const h = Math.floor(m/60), mm = m%60; const ap = h>=12?"PM":"AM"; const h12 = h%12===0?12:h%12; return mm===0?`${h12} ${ap}`:`${h12}:${String(mm).padStart(2,"0")} ${ap}`; };
+    // Duration labels: 45 -> "45 minutes", 60 -> "1 hour", 90 -> "1.5 hours"
+    const durLabel = m => {
+      if (m < 60) return `${m} minutes`;
+      const h = m / 60;
+      return `${Number.isInteger(h) ? h : h.toFixed(1)} hour${h === 1 ? "" : "s"}`;
+    };
+    const durShort = m => m >= 60 ? (m % 60 === 0 ? `${m/60}h` : `${(m/60).toFixed(1)}h`) : `${m}m`;
     const toast = msg => { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 1800); };
     const sanitizeName = s => String(s||"").trim().replace(/\s+/g, " ").slice(0,40).replace(/[<>"]/g,"");
 
@@ -1285,16 +1292,26 @@
       const titleInput = el("input", { class: "input", placeholder: "e.g. Lab standup", maxlength: 80 });
       const startSel = el("select", { class: "select" }, ...Array.from({ length: 24 }, (_, h) => el("option", { value: String(h * 60), selected: h === 9 }, fmt12h(h * 60))));
       const endSel = el("select", { class: "select" }, ...Array.from({ length: 24 }, (_, h) => el("option", { value: String((h + 1) * 60), selected: h === 21 }, fmt12h((h + 1) * 60 === 1440 ? 1440 : (h + 1) * 60))));
-      const slotSel = el("select", { class: "select" },
+      // Grid detail is how finely the day is chopped up; meeting length is how
+      // long the meeting runs. Keeping them separate lets a 2h meeting start on
+      // any 30m boundary instead of only every 2h.
+      const gridSel = el("select", { class: "select" },
         el("option", { value: "15" }, "15 minutes"),
-        el("option", { value: "20" }, "20 minutes"),
         el("option", { value: "30", selected: true }, "30 minutes"),
-        el("option", { value: "45" }, "45 minutes"),
         el("option", { value: "60" }, "1 hour"),
-        el("option", { value: "90" }, "1.5 hours"),
-        el("option", { value: "120" }, "2 hours"),
-        el("option", { value: "180" }, "3 hours"),
       );
+      const durSel = el("select", { class: "select" });
+      const DUR_CHOICES = [15, 30, 45, 60, 90, 120, 180];
+      const syncDurations = () => {
+        const grid = Number(gridSel.value);
+        const prev = Number(durSel.value) || 60;
+        const valid = DUR_CHOICES.filter(d => d >= grid && d % grid === 0);
+        const pick = valid.includes(prev) ? prev : (valid.includes(60) ? 60 : valid[0]);
+        durSel.innerHTML = "";
+        valid.forEach(d => durSel.appendChild(el("option", { value: String(d), selected: d === pick }, durLabel(d))));
+      };
+      gridSel.addEventListener("change", syncDurations);
+      syncDurations();
       const tzInput = el("input", { class: "input", value: tz });
 
       const createBtn = el("button", { class: "btn btn-primary", style: { flex: "1", justifyContent: "center" } },
@@ -1308,9 +1325,12 @@
         const startMin = Number(startSel.value);
         const endMin = Number(endSel.value);
         if (endMin <= startMin) { toast("End must be after start"); return; }
-        const slotMin = Number(slotSel.value);
+        const slotMin = Number(gridSel.value);
+        const duration = Number(durSel.value);
+        if (duration % slotMin !== 0) { toast("Meeting length must be a multiple of the grid detail"); return; }
+        if (duration > endMin - startMin) { toast("Meeting is longer than the daily time range"); return; }
         const room = randId(8);
-        const meta = { title, dates, startMin, endMin, slotMin, tz: tzInput.value.trim() || "UTC", createdAt: Date.now() };
+        const meta = { title, dates, startMin, endMin, slotMin, duration, tz: tzInput.value.trim() || "UTC", createdAt: Date.now() };
         try {
           createBtn.disabled = true;
           createBtn.innerHTML = "";
@@ -1338,9 +1358,10 @@
           el("div", { class: "field" }, el("label", {}, "Latest"), endSel),
         ),
         el("div", { class: "row" },
-          el("div", { class: "field" }, el("label", {}, "Slot length"), slotSel),
-          el("div", { class: "field" }, el("label", {}, "Timezone"), tzInput),
+          el("div", { class: "field" }, el("label", {}, "Grid detail"), gridSel),
+          el("div", { class: "field" }, el("label", {}, "Meeting length"), durSel),
         ),
+        el("div", { class: "field" }, el("label", {}, "Timezone"), tzInput),
         el("div", { class: "modal-foot" },
           el("button", { class: "btn btn-ghost", onClick: closeBg }, "Cancel"),
           createBtn
@@ -1499,8 +1520,9 @@
         modeBtns.forEach(b => b.classList.toggle("is-active", b.dataset.mode === m));
       }
 
-      // Meeting length is fixed to the slot length the creator picked
-      const duration = slotMin;
+      // Rooms created before meeting length was separated from grid detail have
+      // no meta.duration; for those the meeting is one slot, as it always was.
+      const duration = Number(meta.duration) || slotMin;
 
       view.appendChild(el("div", { class: "room-grid" },
         el("div", { class: "panel" },
@@ -1520,7 +1542,7 @@
           el("div", {},
             el("div", { class: "best-head", style: { marginTop: "16px" } },
               el("h3", {}, "Best times"),
-              el("span", { class: "text-faint text-small", style: { color: "var(--text-faint)" } }, `${duration >= 60 ? (duration % 60 === 0 ? `${duration/60}h` : `${(duration/60).toFixed(1)}h`) : `${duration}m`} meetings`)
+              el("span", { class: "text-faint text-small", style: { color: "var(--text-faint)" } }, `${durShort(duration)} meetings`)
             ),
             bestNode
           ),
