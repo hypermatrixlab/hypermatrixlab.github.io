@@ -68,6 +68,9 @@ nav_order: 4
   </div>
   <h2 class="tp-title">SAGE: A Search-AuGmented Evaluation of Large Language Models on Free-Form QA</h2>
   <p class="tp-authors">Sher Badshah, Ali Emami, Hassan Sajjad</p>
+    <p class="tp-links">
+    <a href="https://aclanthology.org/2026.acl-long.66/">ACL Anthology</a>
+  </p>s
 
   <h3 class="tp-h">Abstract</h3>
   <p class="tp-abstract">
