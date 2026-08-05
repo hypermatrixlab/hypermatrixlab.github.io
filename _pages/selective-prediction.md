@@ -205,25 +205,7 @@ among the verdicts actually returned.
 
   <h3 class="tp-h">Abstract</h3>
   <p class="tp-abstract">
-    LLM-as-a-judge has become a widely adopted paradigm for scalable evaluation of language
-    model outputs. However, when applied to objective, factual question answering in a
-    reference-free setting, LLM judges must rely entirely on their parametric knowledge to
-    assess correctness, making them vulnerable to hallucination and knowledge gaps that
-    produce silent evaluation errors. While uncertainty quantification methods can flag
-    unreliable verdicts, heuristic thresholds offer no formal guarantee on the error rate
-    among accepted evaluations. We propose a risk-controlled selective evaluation framework
-    that calibrates statistically valid uncertainty thresholds on a held-out set, ensuring
-    that the false discovery rate (FDR) among non-abstained verdicts is bounded by a
-    user-specified level&nbsp;&alpha; with high probability. Rather than defaulting to
-    abstention when uncertain, the framework routes uncertain instances to a
-    retrieval-augmented mode: the judge searches the web for relevant evidence and
-    re-evaluates with the retrieved context. A second calibrated threshold governs this mode,
-    and we show that the Clopper&ndash;Pearson finite-sample FDR guarantee extends to the
-    joint two-threshold routing without additional assumptions. Experiments across
-    open-domain QA benchmarks and judge models of varying scales demonstrate rigorous error
-    rate control with substantially improved coverage over single-mode baselines, with
-    retrieval triggered selectively only when the judge is not confident enough to evaluate
-    on its own.
+    Using LLMs as judges has become standard practice for evaluating model outputs at scale. This is particularly common for subjective, open-ended tasks such as assessing helpfulness or alignment, where no single reference answer exists. However, objective tasks introduce a distinct reliability challenge for reference-free LLM judging. In the absence of a reference answer, the judge evaluates factual correctness either through its parametric knowledge or tool augmentation. While parametric knowledge enables efficient evaluation, it may suffer from hallucinations or lack of evidence. Conversely, tool augmentation can provide additional evidence but introduces extra computational cost and yet requires an appropriate mechanism to determine when and how that evidence should be used reliably. More importantly, neither approach alone provides formal control over the risk of accepted verdicts, making it difficult to guarantee a desired level of reliability. We propose a risk-controlled framework that calibrates uncertainty thresholds on a held-out set so that the false discovery rate among accepted verdicts stays below a user-specified level~$\alpha$ with high probability, using finite-sample Clopper--Pearson intervals. When the parametric mode is not confident, the instance is routed to a retrieval-augmented mode, where the judge gathers web evidence and re-evaluates under a second calibrated threshold. The finite-sample guarantee carries over to this two-threshold routing without additional assumptions. Across open-domain QA benchmarks and judges of varying scale, the framework holds the target error rate while achieving substantially higher coverage than single-mode baselines.
   </p>
 
   <figure class="tp-figure">
