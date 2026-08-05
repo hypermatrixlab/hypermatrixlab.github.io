@@ -1,23 +1,12 @@
 ---
 layout: page
 permalink: /selective-prediction/
-title: Uncertainty-Guarded Selective Prediction
-description: Papers on reliable LLM-as-a-judge, from multi-judge consensus to provable risk control. Each entry lists the title, abstract, and method figure.
+title: Uncertainty-Guarded Selective Prediction for Large Language Models
 nav: false
 nav_order: 4
 ---
 
 <div class="thesis-papers" markdown="0">
-
-<p class="tp-intro">
-An LLM answers every input, whether or not it is competent on that input, and its
-confidence is a poor guide to when it is correct. This line of work treats reliable
-prediction as a <em>selective</em> decision: the model returns a verdict only when it is
-sufficiently confident, and otherwise aggregates several judgments, retrieves external
-evidence, or abstains. The papers below trace that arc in the setting of LLM-as-a-judge,
-from empirical agreement with human raters to a distribution-free bound on the error rate
-among the verdicts actually returned.
-</p>
 
 <nav class="tp-toc">
   <a href="#scope">SCOPE <span>ICML 2026</span></a>
@@ -214,10 +203,7 @@ among the verdicts actually returned.
             alt="Two algorithms: offline calibration of the two routing thresholds, and the online test-time decision to answer, retrieve and re-judge, or abstain." loading="lazy">
     </a>
     <figcaption>
-      Offline, a calibration set fixes two thresholds under a Clopper&ndash;Pearson FDR
-      bound. Online, a confident judgment is returned directly; an uncertain one is routed to
-      retrieval and re-judged; if it is still uncertain, the instance is abstained on and sent
-      for human review.
+      Offline, two thresholds are calibrated using a Clopper--Pearson FDR bound. In the Online setting, confident cases are accepted directly while uncertain cases are routed to retrieval and re-evaluated. The remaining uncertain cases abstained and sent for human review.
     </figcaption>
   </figure>
 </article>
