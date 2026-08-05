@@ -70,7 +70,7 @@ nav_order: 4
   <p class="tp-authors">Sher Badshah, Ali Emami, Hassan Sajjad</p>
     <p class="tp-links">
     <a href="https://aclanthology.org/2026.acl-long.66/">ACL Anthology</a>
-  </p>s
+  </p>
 
   <h3 class="tp-h">Abstract</h3>
   <p class="tp-abstract">
