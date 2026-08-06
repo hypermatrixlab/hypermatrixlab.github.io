@@ -20,27 +20,7 @@ nav_order: 4
 <section class="tp-overview">
   <h3 class="tp-h">Abstract</h3>
   <p class="tp-abstract">
-    LLMs are increasingly used as verifiers or judges for benchmarking, reward modeling in
-    reinforcement learning, and data curation. However, LLMs, specifically in their judging
-    role, remain vulnerable to systematic bias, hallucination, and miscalibration. Such
-    limitations reduce the reliability of LLM-based evaluation and can propagate erroneous
-    judgments into downstream systems. This thesis develops uncertainty-guarded selective
-    evaluation to improve the reliability of LLM-based judging. We first develop a
-    reference-guided consensus framework that aggregates the verdicts of multiple LLM judges.
-    This reduces judge uncertainty and improves agreement with human evaluation. We then
-    develop a lightweight selective voting approach that uses inter-judge disagreement as an
-    uncertainty signal. The approach invokes a third judge only when the primary judges
-    disagree. This avoids unnecessary model calls and lowers the cost of multi-judge
-    evaluation. Next, we develop a search-augmented evaluation framework to address knowledge
-    uncertainty. The LLM judge retrieves and synthesizes external evidence instead of relying
-    solely on parametric knowledge. We further develop a conformal selective evaluation
-    framework for pairwise LLM judging. It combines a bias-aware uncertainty measure with
-    formal risk control to bound the error rate among accepted judgments at a user-specified
-    level. Finally, we propose a unified judge&ndash;retrieve&ndash;abstain framework that
-    combines parametric judging, adaptive retrieval, and calibrated abstention. The framework
-    provides finite-sample risk guarantees while preserving useful coverage. These
-    contributions establish a principled approach to reliable and risk-controlled LLM-based
-    evaluation.
+LLMs are increasingly used as verifiers or judges for benchmarking, reward modeling in reinforcement learning, and data curation. However, LLMs, specifically in their judging role, remain vulnerable to systematic bias, hallucination, and miscalibration. Such limitations reduce the reliability of LLM-based evaluation and can propagate erroneous judgments into downstream systems. This thesis develops uncertainty-guarded selective evaluation to improve the reliability of LLM-based judging. We first develop a reference-guided consensus framework that aggregates the verdicts of multiple LLM judges. This reduces judge uncertainty and improves agreement with human evaluation. We then develop a lightweight selective voting approach that uses inter-judge disagreement as an uncertainty signal. The approach invokes a third judge only when the primary judges disagree. This avoids unnecessary model calls and lowers the cost of multi-judge evaluation. Next, we develop a search-augmented evaluation framework to address knowledge uncertainty. The LLM judge retrieves and synthesizes external evidence instead of relying solely on parametric knowledge. We further develop a conformal selective evaluation framework for pairwise LLM judging. It combines a bias-aware uncertainty measure with formal risk control to bound the error rate among accepted judgments at a user-specified level. Finally, we propose a unified judge--retrieve--abstain framework that combines parametric judging, adaptive retrieval, and calibrated abstention. The framework provides finite-sample risk guarantees while preserving useful coverage. These contributions establish a principled approach to reliable and risk-controlled LLM-based evaluation.
   </p>
 </section>
 
